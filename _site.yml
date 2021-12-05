@@ -2,7 +2,7 @@ name: "lukas-r.blog"
 title: "Lukas R Blog"
 description: |
   Lukas R Blog
-output_dir: "_site"
+output_dir: "."
 navbar:
   right:
     - text: "Home"
