@@ -112,7 +112,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Looping over the bridge"]},{"type":"character","attributes":{},"value":["Comparing loops by simulating a Squid Game scene"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["12-05-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["df_print","toc","self_contained"]}},"value":[{"type":"character","attributes":{},"value":["paged"]},{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Looping over the bridge"]},{"type":"character","attributes":{},"value":["Comparing loops by simulating a Squid Game scene"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["12-05-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2111,18 +2111,20 @@ document.addEventListener('DOMContentLoaded', function() {
 </ul>
 </nav>
 </div>
-<p>A few weeks ago I did an introductory R workshop where one of the students asked about loops and the difference of <em>for</em> vs <em>while</em> loops.</p>
+<p>A few weeks ago I did an introductory R workshop where one of the students asked about loops and the difference of <em>for</em> vs <em>while</em> loops. This blogpost is about illustrating these two types of loops using a simulation example.</p>
 <h1 id="let-the-game-begin">Let the Game begin</h1>
-<p>I think the majority knows the Netflix series “Squid Game”. It consists of a series of games where the contestants have to survive several deadly games. Here I want to focus on the 5. game of the show. There are 16 players who have to pass a bridge of 18 * 2 glass plates. At each step they have to decide on which plate they step. With a 50% chance they jump on the harder glass which is able to hold their body, the other 50% will mean their death.</p>
-<p>The question I now want to answer is:</p>
+<p>I think the majority knows the Netflix show “Squid Game”. In this series the contestants have to survive several deadly games. Here I want to focus on the 5. game of the show. There are 16 players who have to pass a bridge of 18 * 2 glass plates. At each step they have to decide on which plate they step. With a 50% chance they jump on the harder glass which is able to hold their body, the other 50% will mean their death. As I was watching the show I thought that this would be a perfect example to answer a statistical question by using loops and simulation.</p>
+<p>The question I wanted to answer was:</p>
 <blockquote>
 <p>How many players do we expect to survive the game?</p>
 </blockquote>
 <div class="layout-chunk" data-layout="l-body-outset">
 <p><img src="img/squid_game_bridge.jpg" width="600" /></p>
 </div>
+<p><strong>Remark:</strong></p>
+<p>After opening twitter, I came across a tweet discussing John Helvy’s <a href="https://www.jhelvy.com/posts/2021-10-19-monte-carlo-bridge-game/">blogpost</a> where he basically explained exactly what I wanted to do. I highly recommend his <a href="https://www.jhelvy.com/blog.html">blog</a>. I adapted his <code>run_game</code> function and where he used <code>data.table</code> I went with the <em>tidy</em> alternative.</p>
 <h2 id="monte-carlo-solution">Monte Carlo Solution</h2>
-<p>We can solve this question by simulating the game. When we use random simulation to answer statistical problems, this is called Monte Carlo Simulation.</p>
+<p>We can solve the question about the number of survivors to expect by simulating the game. When using random simulation to answer statistical problems, this is called Monte Carlo Simulation.</p>
 <p>First we load the necessary library and set a custom theme for our plots.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2133,6 +2135,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
+<p>Then we create a dataframe as an input for the game. In this dataframe the <code>alive</code> column is set to 1 as in the beginning obviously every player is alive.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define number of players</span>
@@ -2164,7 +2167,7 @@ document.addEventListener('DOMContentLoaded', function() {
 15     15     1
 16     16     1</code></pre>
 </div>
-<p>Now we are going to create the function for our game. This is a great example to look at the differences between for and while loops. That’s why we are going to create two functions.</p>
+<p>Now we are going to create the function for our game. This is a great example to look at the differences between for and while loops.</p>
 <p>We start by creating a function using a for loop:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2191,6 +2194,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 </div>
 <p>Then we create a function using a while loop:</p>
+<p>The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define a function for simulating one game using a while loop</span>
@@ -2263,11 +2267,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   0.000   6.000   7.000   6.976   8.000  15.000 </code></pre>
 </div>
+<p>There were games where zero players survived the game and there were games where almost all players managed to survive.</p>
 <p>Of course we can also visualize our distribution:</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Visualizing the resulting distribution</span>
-<span class='va'>sims</span> <span class='op'>%&gt;%</span> 
+<span class='va'>sims</span> |&gt; 
   <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>loop</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>geom_bar</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_dodge</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>scale_x_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>num_players</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
@@ -2278,7 +2283,9 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p><img src="looping-over-the-bridge_files/figure-html5/unnamed-chunk-9-1.png" width="768" /></p>
 </div>
+<p>The two different colours indicate which function was used to calculate the result. From this graph we directly see almost the exact same result from the two functions.</p>
 <h2 id="benchmarking-for-vs-while-loop">Benchmarking for vs while loop</h2>
+<p>Now we can also test the performance of the different functions against each other.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html'>microbenchmark</a></span><span class='op'>(</span>
@@ -2291,9 +2298,9 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p><img src="looping-over-the-bridge_files/figure-html5/unnamed-chunk-10-1.png" width="960" /></p>
 </div>
-<p>There is not really a difference…</p>
+<p>Again there is not really a difference…</p>
 <h2 id="mathematical-solution">Mathematical Solution</h2>
-<p>Of course we can not only simulate the game to get to our solution of 7.</p>
+<p>Of course we can not only simulate the game to get to our solution.</p>
 <p>Here is the mathematical formula for n players:</p>
 <p><span class="math display">\[
 \sum_{i = 0}^{n-1} \binom{18}{i} * 0.5^i * 0.5^{18-i} * (n-i)
@@ -2313,7 +2320,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <pre><code>[1] 7.000076</code></pre>
 </div>
-<p>Et voilà!</p>
+<p>Et voilà! We would expect 7 players to survive the game.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
