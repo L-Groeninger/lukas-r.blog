@@ -1,7 +1,7 @@
 ---
-title: "Welcome to Lukas R Blog"
+title: "I started a Blog"
 description: |
-  Welcome to my new blog. I hope you enjoy reading it!
+  Why did I start it and what are my plans?
 author:
   - name: Lukas Gröninger 
 date: 12-03-2021
@@ -17,6 +17,11 @@ knitr::opts_chunk$set(echo = FALSE)
 # https://rstudio.github.io/distill/blog.html
 
 ```
+
+## Why did I start it?
+
+After reading and seeing so many great R or data science blogs I wanted to join
+the game. 
 
 
 
