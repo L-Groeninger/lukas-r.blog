@@ -7,21 +7,45 @@ author:
 date: 12-03-2021
 output:
   distill::distill_article:
+    toc: true
     self_contained: false
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-
-# Learn more about creating blogs with Distill at:
-# https://rstudio.github.io/distill/blog.html
-
-```
 
 ## Why did I start it?
 
 After reading and seeing so many great R or data science blogs I wanted to join
-the game. 
+the game. Whenever I'm searching for a solution for a problem at work or at the
+university, I stumble across a blog post that explains something or pushes me 
+in the right direction. I've benefited soo much from various articles, posts or ideas.
+Additionally having a small place in the Internet sounded like a nice idea. 
+Moreover, the R community is so friendly, welcoming and inspiring, that
+I thought I could participate a bit.
 
+## What are my plans?
+
+At the moment I don't have any big plans for article series about certain topics.
+I just wanted to create something where I could share some of my work. 
+In the best case, this blog then also serves someone to come across the solution 
+to his or her problem.
+
+Just a small warning in the end. You should not expect to see only fully elaborated work
+and also the code might not be that elegant and efficient as seen on other great blogs (see list below).
+
+This provides me with both an excuse and the motivation to get stuff online. 
+Pls consider the whole thing as a work in progress...
+
+Blogs/People that inspired me:
+
+- [The Mockup Blog](https://themockup.blog/)
+- [Jesse Mostipak](https://www.jessemaegan.com/)
+- [Josiah Parry](https://josiahparry.com/)
+- [John Paul Helveston](https://www.jhelvy.com/)
+- [Danielle Navarro](https://blog.djnavarro.net/)
+- [Shannon Pileggi](https://www.pipinghotdata.com/)
+- [Alison Hill](https://www.apreshill.com/blog/)
+- [Colin Fay](https://colinfay.me/)
+
+and many more!
 
 
