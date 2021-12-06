@@ -46,8 +46,11 @@ The question I wanted to answer was:
 
 > How many players do we expect to survive the game?
 
-```{r echo = FALSE, layout="l-body-outset"}
+```{r echo=FALSE}
+#| fig.cap = "Source: https://www.distractify.com/p/games-played-in-squid-game"
+
 knitr::include_graphics(here::here("_posts/2021-12-05-looping-over-the-bridge/img", "squid_game_bridge.jpg"))
+# https://www.distractify.com/p/games-played-in-squid-game
 ```
 
 **Remark:**
@@ -207,6 +210,8 @@ sims %>%
 ## Benchmarking for vs while loop
 
 ```{r fig.height=6, fig.width=10, layout="l-body-outset"}
+set.seed(456)
+
 test <- microbenchmark(
   run_game_for(players, num_steps = 18),
   run_game_while(players, num_steps = 18)
