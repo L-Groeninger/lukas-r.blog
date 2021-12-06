@@ -55,7 +55,7 @@ knitr::include_graphics(here::here("_posts/2021-12-05-looping-over-the-bridge/im
 
 **Remark:**
 
-After opening twitter, I came across a tweet discussing John Helvy's 
+After opening twitter, I came across a tweet discussing John Helveston's 
 [blogpost](https://www.jhelvy.com/posts/2021-10-19-monte-carlo-bridge-game/) 
 where he basically explained exactly what I wanted to do. I highly recommend his
 [blog](https://www.jhelvy.com/blog.html). I adapted his `run_game` function and 
@@ -77,7 +77,8 @@ library(microbenchmark)
 plotutils::set_custom_theme(base_size = 32)
 ```
 
-Then we create a dataframe as an input for the game
+Then we create a dataframe as an input for the game. In this dataframe the 
+`alive` column is set to 1 as in the beginning obviously every player is alive.
 
 ```{r}
 # Define number of players
@@ -87,12 +88,11 @@ players <- tibble(player = seq(num_players),
 
 # Let's have a look at the dataframe
 players
-
 ```
 
 Now we are going to create the function for our game.
 This is a great example to look at the differences between for and while 
-loops. That's why we are going to create two functions.
+loops. 
 
 We start by creating a function using a for loop:
 
@@ -119,7 +119,8 @@ run_game_for <- function(players, num_steps) {
 
 ```
 
-Then we create a function using a while loop:
+Then we create a function using a while loop.
+The setup is quite similar to the previously used `run_game_for` function.
 
 ```{r}
 # Define a function for simulating one game using a while loop
@@ -191,6 +192,8 @@ Have a look at the descriptive statistics:
 summary(sims$value)
 ```
 
+There were games where zero players survived the game and there were 
+games where almost all players managed to survive.
 
 Of course we can also visualize our distribution:
 
@@ -206,11 +209,18 @@ sims %>%
 
 ```
 
+The two different colours indicate which function was used to calculate the result. 
+From this graph we directly see almost the exact same result from the two functions.
+
+To answer our previously posed question: We would expect 7 players to survive the game.
+
 
 ## Benchmarking for vs while loop
 
+Now we can also test the performance of the different functions against each other.
+
 ```{r fig.height=6, fig.width=10, layout="l-body-outset"}
-set.seed(456)
+set.seed(001)
 
 test <- microbenchmark(
   run_game_for(players, num_steps = 18),
@@ -225,7 +235,7 @@ There is not really a difference...
 
 ## Mathematical Solution
 
-Of course we can not only simulate the game to get to our solution of 7.
+Of course we can not only simulate the game to get to our solution.
 
 Here is the mathematical formula for n players:
 
@@ -237,17 +247,14 @@ We can convert it to R Code and calculate the result.
 
 ```{r}
 n <- 16
-res <- c()
 
-for (i in 0:(n-1)) {
-  res[i+1] <- choose(18, i) * 0.5^i * 0.5^(18-i) * (n - i)
-}
+expected_fun <- function(i) choose(18, i) * 0.5^i * 0.5^(18-i) * (n - i)
 
-sum(res)
+map_dbl(0:(n-1), expected_fun) |> sum()
 
 ```
 
-Et voilà!
+Et voilà! The result from the Monte Carlo simulation was confirmed.
 
 
 
