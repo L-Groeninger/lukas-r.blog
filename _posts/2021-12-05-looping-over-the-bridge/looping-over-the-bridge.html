@@ -1511,7 +1511,11 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 </div>
 </div>
 <p><strong>Remark:</strong></p>
+<<<<<<< HEAD
 <p>After opening twitter, I came across a tweet discussing John Helveston’s <a href="https://www.jhelvy.com/posts/2021-10-19-monte-carlo-bridge-game/">blogpost</a> where he basically explained exactly what I wanted to do. I highly recommend his <a href="https://www.jhelvy.com/blog.html">blog</a>. I adapted his <code>run_game</code> function and where he used <code>data.table</code> I went with the <em>tidy</em> alternative.</p>
+=======
+<p>After opening twitter, I came across a tweet discussing John Helvy’s <a href="https://www.jhelvy.com/posts/2021-10-19-monte-carlo-bridge-game/">blogpost</a> where he basically explained exactly what I wanted to do. I highly recommend his <a href="https://www.jhelvy.com/blog.html">blog</a>. I adapted his <code>run_game</code> function and where he used <code>data.table</code> I went with the <em>tidy</em> alternative.</p>
+>>>>>>> main
 <h2 id="monte-carlo-solution">Monte Carlo Solution</h2>
 <p>We can solve the question about the number of survivors to expect by simulating the game. When using random simulation to answer statistical problems, this is called Monte Carlo Simulation.</p>
 <p>First we load the necessary library and set a custom theme for our plots.</p>
@@ -1582,7 +1586,12 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 </code></pre>
 </div>
 </div>
+<<<<<<< HEAD
 <p>Then we create a function using a while loop. The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
+=======
+<p>Then we create a function using a while loop:</p>
+<p>The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
+>>>>>>> main
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define a function for simulating one game using a while loop</span>
@@ -1660,11 +1669,19 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 <div class="layout-chunk" data-layout="l-body-outset">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Visualizing the resulting distribution</span>
+<<<<<<< HEAD
 <span class='va'>sims</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>loop</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_dodge.html'>position_dodge</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>num_players</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Distribution of numbers of surviving players"</span>,
+=======
+<span class='va'>sims</span> |&gt; 
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>loop</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_bar</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_dodge</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>num_players</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Distribution of numbers of surviving players"</span>,
+>>>>>>> main
        x <span class='op'>=</span> <span class='st'>"N surviving players"</span>,
        fill <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 </code></pre>
@@ -1672,7 +1689,10 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 <p><img src="looping-over-the-bridge_files/figure-html5/unnamed-chunk-9-1.png" width="768" /></p>
 </div>
 <p>The two different colours indicate which function was used to calculate the result. From this graph we directly see almost the exact same result from the two functions.</p>
+<<<<<<< HEAD
 <p>To answer our previously posed question: We would expect 7 players to survive the game.</p>
+=======
+>>>>>>> main
 <h2 id="benchmarking-for-vs-while-loop">Benchmarking for vs while loop</h2>
 <p>Now we can also test the performance of the different functions against each other.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
@@ -1689,7 +1709,7 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 </div>
 <p><img src="looping-over-the-bridge_files/figure-html5/unnamed-chunk-10-1.png" width="960" /></p>
 </div>
-<p>There is not really a difference…</p>
+<p>Again there is not really a difference…</p>
 <h2 id="mathematical-solution">Mathematical Solution</h2>
 <p>Of course we can not only simulate the game to get to our solution.</p>
 <p>Here is the mathematical formula for n players:</p>
@@ -1708,7 +1728,11 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 </div>
 <pre><code>[1] 7.000076</code></pre>
 </div>
+<<<<<<< HEAD
 <p>Et voilà! The result from the Monte Carlo simulation was confirmed.</p>
+=======
+<p>Et voilà! We would expect 7 players to survive the game.</p>
+>>>>>>> main
 <div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
