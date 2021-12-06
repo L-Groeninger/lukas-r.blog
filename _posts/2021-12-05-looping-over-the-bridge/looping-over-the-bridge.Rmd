@@ -77,14 +77,9 @@ library(microbenchmark)
 plotutils::set_custom_theme(base_size = 32)
 ```
 
-<<<<<<< HEAD
 Then we create a dataframe as an input for the game. In this dataframe the 
 `alive` column is set to 1 as in the beginning obviously every player is alive.
-=======
-Then we create a dataframe as an input for the game. 
-In this dataframe the `alive` column is set to 1 as in the beginning
-obviously every player is alive.
->>>>>>> main
+
 
 ```{r}
 # Define number of players
@@ -200,13 +195,9 @@ Have a look at the descriptive statistics:
 summary(sims$value)
 ```
 
-<<<<<<< HEAD
+
 There were games where zero players survived the game and there were 
 games where almost all players managed to survive.
-=======
-There were games where zero players survived the game and there were games
-where almost all players managed to survive.
->>>>>>> main
 
 Of course we can also visualize our distribution:
 
@@ -222,17 +213,11 @@ sims |>
 
 ```
 
-<<<<<<< HEAD
 The two different colours indicate which function was used to calculate the result. 
 From this graph we directly see almost the exact same result from the two functions.
 
 To answer our previously posed question: We would expect 7 players to survive the game.
 
-=======
-The two different colours indicate which function was used to calculate the
-result. From this graph we directly see almost the exact same result from the 
-two functions. 
->>>>>>> main
 
 ## Benchmarking for vs while loop
 
@@ -273,11 +258,8 @@ map_dbl(0:(n-1), expected_fun) |> sum()
 
 ```
 
-<<<<<<< HEAD
 Et voilà! The result from the Monte Carlo simulation was confirmed.
-=======
-Et voilà! We would expect 7 players to survive the game.
->>>>>>> main
+
 
 
 
