@@ -56,7 +56,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
 code span.cf { color: #007ba5; } /* ControlFlow */
@@ -77,7 +77,7 @@ code span.kw { color: #007ba5; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
 code span.ot { color: #007ba5; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -85,11 +85,13 @@ code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
+
   <!--radix_placeholder_meta_tags-->
 <title>Lukas R Blog: Looping over the bridge</title>
 
 <meta property="description" itemprop="description" content="Comparing loops by simulating a Squid Game scene"/>
 
+<link rel="canonical" href="https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/"/>
 
 <!--  https://schema.org/Article -->
 <meta property="article:published" itemprop="datePublished" content="2021-12-05"/>
@@ -100,6 +102,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="og:title" content="Lukas R Blog: Looping over the bridge"/>
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="Comparing loops by simulating a Squid Game scene"/>
+<meta property="og:url" content="https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Lukas R Blog"/>
 
@@ -107,12 +110,19 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <meta property="twitter:card" content="summary"/>
 <meta property="twitter:title" content="Lukas R Blog: Looping over the bridge"/>
 <meta property="twitter:description" content="Comparing loops by simulating a Squid Game scene"/>
+<meta property="twitter:url" content="https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/"/>
 
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="Lukas R Blog: Looping over the bridge"/>
+<meta name="citation_fulltext_html_url" content="https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/"/>
+<meta name="citation_online_date" content="2021/12/05"/>
+<meta name="citation_publication_date" content="2021/12/05"/>
+<meta name="citation_author" content="Lukas Gröninger"/>
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Looping over the bridge"]},{"type":"character","attributes":{},"value":["Comparing loops by simulating a Squid Game scene"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["12-05-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Looping over the bridge"]},{"type":"character","attributes":{},"value":["Comparing loops by simulating a Squid Game scene"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["12-05-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1870,7 +1880,10 @@ function init_distill() {
 
     // hoverable references
     $('span.citation[data-cites]').each(function() {
-      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      var refs = $(this).attr('data-cites').split(" ");
+      var refHtml = refs.map(function(ref) {
+        return "<p>" + $('#ref-' + ref).html() + "</p>";
+      }).join("\n");
       window.tippy(this, {
         allowHTML: true,
         content: refHtml,
@@ -2076,6 +2089,9 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="nav-right">
 <a href="../../index.html">Home</a>
 <a href="../../about.html">About</a>
+<a href="../../index.xml">
+<i class="fa fa-rss" aria-hidden="true"></i>
+</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2118,11 +2134,16 @@ document.addEventListener('DOMContentLoaded', function() {
 <blockquote>
 <p>How many players do we expect to survive the game?</p>
 </blockquote>
-<div class="layout-chunk" data-layout="l-body-outset">
-<p><img src="img/squid_game_bridge.jpg" width="600" /></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
+<img src="img/squid_game_bridge.jpg" alt="Source: https://www.distractify.com/p/games-played-in-squid-game" width="600" />
+<p class="caption">
+Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-game" class="uri">https://www.distractify.com/p/games-played-in-squid-game</a>
+</p>
+</div>
 </div>
 <p><strong>Remark:</strong></p>
-<p>After opening twitter, I came across a tweet discussing John Helvy’s <a href="https://www.jhelvy.com/posts/2021-10-19-monte-carlo-bridge-game/">blogpost</a> where he basically explained exactly what I wanted to do. I highly recommend his <a href="https://www.jhelvy.com/blog.html">blog</a>. I adapted his <code>run_game</code> function and where he used <code>data.table</code> I went with the <em>tidy</em> alternative.</p>
+<p>After opening twitter, I came across a tweet discussing John Helveston’s <a href="https://www.jhelvy.com/posts/2021-10-19-monte-carlo-bridge-game/">blogpost</a> where he basically explained exactly what I wanted to do. I highly recommend his <a href="https://www.jhelvy.com/blog.html">blog</a>. I adapted his <code>run_game</code> function and where he used <code>data.table</code> I went with the <em>tidy</em> alternative.</p>
 <h2 id="monte-carlo-solution">Monte Carlo Solution</h2>
 <p>We can solve the question about the number of survivors to expect by simulating the game. When using random simulation to answer statistical problems, this is called Monte Carlo Simulation.</p>
 <p>First we load the necessary library and set a custom theme for our plots.</p>
@@ -2140,7 +2161,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define number of players</span>
 <span class='va'>num_players</span> <span class='op'>&lt;-</span> <span class='fl'>16</span>
-<span class='va'>players</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='op'>(</span>player <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='va'>num_players</span><span class='op'>)</span>, 
+<span class='va'>players</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>player <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='va'>num_players</span><span class='op'>)</span>, 
                   alive <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
 <span class='co'># Let's have a look at the dataframe</span>
@@ -2193,7 +2214,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </code></pre>
 </div>
 </div>
-<p>Then we create a function using a while loop:</p>
+<p>Then we create a function using a while loop. The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
 <p>The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -2251,10 +2272,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <span class='va'>n_runs</span> <span class='op'>&lt;-</span> <span class='fl'>10000</span>
 
 <span class='co'># Create dataframe with outcome of each game</span>
-<span class='va'>sims</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='op'>(</span>trial <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='va'>n_runs</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-  <span class='fu'>mutate</span><span class='op'>(</span>while_loop <span class='op'>=</span> <span class='fu'>map_dbl</span><span class='op'>(</span><span class='va'>trial</span>, <span class='op'>~</span><span class='fu'>run_game_while</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span>,
-         for_loop <span class='op'>=</span> <span class='fu'>map_dbl</span><span class='op'>(</span><span class='va'>trial</span>, <span class='op'>~</span><span class='fu'>run_game_for</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-  <span class='fu'>pivot_longer</span><span class='op'>(</span><span class='op'>-</span><span class='va'>trial</span>, names_to <span class='op'>=</span> <span class='st'>"loop"</span><span class='op'>)</span>
+<span class='va'>sims</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>trial <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='va'>n_runs</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>while_loop <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span><span class='op'>(</span><span class='va'>trial</span>, <span class='op'>~</span><span class='fu'>run_game_while</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span>,
+         for_loop <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span><span class='op'>(</span><span class='va'>trial</span>, <span class='op'>~</span><span class='fu'>run_game_for</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>trial</span>, names_to <span class='op'>=</span> <span class='st'>"loop"</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
@@ -2273,10 +2294,10 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Visualizing the resulting distribution</span>
 <span class='va'>sims</span> |&gt; 
-  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>loop</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>geom_bar</span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'>position_dodge</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>scale_x_continuous</span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>num_players</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>labs</span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Distribution of numbers of surviving players"</span>,
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>value</span>, fill <span class='op'>=</span> <span class='va'>loop</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_bar</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_dodge.html'>position_dodge</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>num_players</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Distribution of numbers of surviving players"</span>,
        x <span class='op'>=</span> <span class='st'>"N surviving players"</span>,
        fill <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 </code></pre>
@@ -2284,16 +2305,19 @@ document.addEventListener('DOMContentLoaded', function() {
 <p><img src="looping-over-the-bridge_files/figure-html5/unnamed-chunk-9-1.png" width="768" /></p>
 </div>
 <p>The two different colours indicate which function was used to calculate the result. From this graph we directly see almost the exact same result from the two functions.</p>
+<p>To answer our previously posed question: We would expect 7 players to survive the game.</p>
 <h2 id="benchmarking-for-vs-while-loop">Benchmarking for vs while loop</h2>
 <p>Now we can also test the performance of the different functions against each other.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html'>microbenchmark</a></span><span class='op'>(</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>001</span><span class='op'>)</span>
+
+<span class='va'>test</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html'>microbenchmark</a></span><span class='op'>(</span>
   <span class='fu'>run_game_for</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span>,
   <span class='fu'>run_game_while</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='fu'>autoplot</span><span class='op'>(</span><span class='va'>test</span><span class='op'>)</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span><span class='op'>(</span><span class='va'>test</span><span class='op'>)</span>
 </code></pre>
 </div>
 <p><img src="looping-over-the-bridge_files/figure-html5/unnamed-chunk-10-1.png" width="960" /></p>
@@ -2309,18 +2333,15 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>n</span> <span class='op'>&lt;-</span> <span class='fl'>16</span>
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>0</span><span class='op'>:</span><span class='op'>(</span><span class='va'>n</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>res</span><span class='op'>[</span><span class='va'>i</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Special.html'>choose</a></span><span class='op'>(</span><span class='fl'>18</span>, <span class='va'>i</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>0.5</span><span class='op'>^</span><span class='va'>i</span> <span class='op'>*</span> <span class='fl'>0.5</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>18</span><span class='op'>-</span><span class='va'>i</span><span class='op'>)</span> <span class='op'>*</span> <span class='op'>(</span><span class='va'>n</span> <span class='op'>-</span> <span class='va'>i</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='va'>expected_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>i</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Special.html'>choose</a></span><span class='op'>(</span><span class='fl'>18</span>, <span class='va'>i</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>0.5</span><span class='op'>^</span><span class='va'>i</span> <span class='op'>*</span> <span class='fl'>0.5</span><span class='op'>^</span><span class='op'>(</span><span class='fl'>18</span><span class='op'>-</span><span class='va'>i</span><span class='op'>)</span> <span class='op'>*</span> <span class='op'>(</span><span class='va'>n</span> <span class='op'>-</span> <span class='va'>i</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span>
+<span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='op'>(</span><span class='va'>n</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>, <span class='va'>expected_fun</span><span class='op'>)</span> |&gt; <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='op'>)</span>
 </code></pre>
 </div>
 <pre><code>[1] 7.000076</code></pre>
 </div>
-<p>Et voilà! We would expect 7 players to survive the game.</p>
+<p>Et voilà! The result from the Monte Carlo simulation was confirmed.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
@@ -2342,7 +2363,18 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom"></div>
+<div class="appendix-bottom">
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Gröninger (2021, Dec. 5). Lukas R Blog: Looping over the bridge. Retrieved from https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{gröninger2021looping,
+  author = {Gröninger, Lukas},
+  title = {Lukas R Blog: Looping over the bridge},
+  url = {https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/},
+  year = {2021}
+}</pre>
+</div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->
