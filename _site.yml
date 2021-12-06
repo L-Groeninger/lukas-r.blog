@@ -3,7 +3,7 @@ title: "Lukas R Blog"
 description: |
   Lukas R Blog
 base_url: https://lukas-r.blog
-output_dir: "_site"
+output_dir: "."
 navbar:
   right:
     - text: "Home"
