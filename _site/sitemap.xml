@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
+  <url>
+    <loc>https://lukas-r.blog/about.html</loc>
+    <lastmod>2021-12-05T11:30:52+01:00</lastmod>
+  </url>
+  <url>
+    <loc>https://lukas-r.blog/</loc>
+    <lastmod>2021-12-05T11:30:52+01:00</lastmod>
+  </url>
+  <url>
+    <loc>https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/</loc>
+    <lastmod>2021-12-05T14:05:01+01:00</lastmod>
+  </url>
+  <url>
+    <loc>https://lukas-r.blog/posts/welcome/</loc>
+    <lastmod>2021-12-06T11:37:32+01:00</lastmod>
+  </url>
+</urlset>
