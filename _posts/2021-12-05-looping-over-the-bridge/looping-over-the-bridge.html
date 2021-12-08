@@ -1583,7 +1583,6 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 </div>
 </div>
 <p>Then we create a function using a while loop. The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
-<p>The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define a function for simulating one game using a while loop</span>
@@ -1641,8 +1640,9 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 
 <span class='co'># Create dataframe with outcome of each game</span>
 <span class='va'>sims</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>trial <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='va'>n_runs</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>while_loop <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span><span class='op'>(</span><span class='va'>trial</span>, <span class='op'>~</span><span class='fu'>run_game_while</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span>,
-         for_loop <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span><span class='op'>(</span><span class='va'>trial</span>, <span class='op'>~</span><span class='fu'>run_game_for</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='op'>(</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>while_loop <span class='op'>=</span> <span class='fu'>run_game_while</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span>,
+         for_loop <span class='op'>=</span> <span class='fu'>run_game_for</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
   <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>trial</span>, names_to <span class='op'>=</span> <span class='st'>"loop"</span><span class='op'>)</span>
 </code></pre>
 </div>
