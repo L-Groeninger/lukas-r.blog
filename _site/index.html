@@ -2045,6 +2045,38 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+  <script>
+     document.addEventListener("DOMContentLoaded", function () {
+       if (!/posts/.test(location.pathname)) {
+         return;
+       }
+
+       var script = document.createElement("script");
+       script.src = "https://giscus.app/client.js";
+       script.setAttribute("data-repo", "L-Groeninger/lukas-r.blog");
+       script.setAttribute("data-repo-id", "R_kgDOGedlTQ");
+       script.setAttribute("data-category", "Comments");
+       script.setAttribute("data-category-id", "DIC_kwDOGedlTc4CAMnH");
+       script.setAttribute("data-mapping", "pathname");
+       script.setAttribute("data-reactions-enabled", "0");
+       script.setAttribute("data-emit-metadata", "0");
+       script.setAttribute("data-theme", "light");
+       script.setAttribute("data-lang", "en");
+
+       /* wait for article to load, append script to article element */
+       var observer = new MutationObserver(function (mutations, observer) {
+         var article = document.querySelector("d-article");
+         if (article) {
+           observer.disconnect();
+           /* HACK: article scroll */
+           article.setAttribute("style", "overflow-y: hidden");
+           article.appendChild(script);
+         }
+       });
+
+       observer.observe(document.body, { childList: true });
+     });
+   </script>
   <!--/radix_placeholder_site_in_header-->
 
 
@@ -2218,7 +2250,7 @@ function init_posts_list() {
 <a href="posts/2021-12-05-looping-over-the-bridge/" class="post-preview">
 <script class="post-metadata" type="text/json">{"categories":[]}</script>
 <div class="metadata">
-<div class="publishedDate">Dec. 4, 2021</div>
+<div class="publishedDate">Dec. 5, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Lukas Gröninger</div>
 </div>
@@ -2254,7 +2286,7 @@ function init_posts_list() {
 <a href="#">More articles &raquo;</a>
 </div>
 </div>
-<!--/radix_placeholder_article_listing-->
+<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
 <h1>Lukas R Blog</h1>
