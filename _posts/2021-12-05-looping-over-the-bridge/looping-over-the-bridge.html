@@ -112,12 +112,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Looping over the bridge"]},{"type":"character","attributes":{},"value":["Comparing loops by simulating a Squid Game scene\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["12-05-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","base_url","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Looping over the bridge"]},{"type":"character","attributes":{},"value":["Comparing loops by simulating a Squid Game scene\n"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["12-05-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/squid_game_bridge.jpg","looping-over-the-bridge_files/anchor-4.2.2/anchor.min.js","looping-over-the-bridge_files/bowser-1.9.3/bowser.min.js","looping-over-the-bridge_files/distill-2.2.21/template.v2.js","looping-over-the-bridge_files/figure-html5/unnamed-chunk-10-1.png","looping-over-the-bridge_files/figure-html5/unnamed-chunk-9-1.png","looping-over-the-bridge_files/header-attrs-2.11/header-attrs.js","looping-over-the-bridge_files/jquery-3.6.0/jquery-3.6.0.js","looping-over-the-bridge_files/jquery-3.6.0/jquery-3.6.0.min.js","looping-over-the-bridge_files/jquery-3.6.0/jquery-3.6.0.min.map","looping-over-the-bridge_files/popper-2.6.0/popper.min.js","looping-over-the-bridge_files/tippy-6.2.7/tippy-bundle.umd.min.js","looping-over-the-bridge_files/tippy-6.2.7/tippy-light-border.css","looping-over-the-bridge_files/tippy-6.2.7/tippy.css","looping-over-the-bridge_files/tippy-6.2.7/tippy.umd.min.js","looping-over-the-bridge_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["img/squid_game_bridge.jpg","looping-over-the-bridge_files/anchor-4.2.2/anchor.min.js","looping-over-the-bridge_files/bowser-1.9.3/bowser.min.js","looping-over-the-bridge_files/distill-2.2.21/template.v2.js","looping-over-the-bridge_files/figure-html5/unnamed-chunk-10-1.png","looping-over-the-bridge_files/figure-html5/unnamed-chunk-8-1.png","looping-over-the-bridge_files/figure-html5/unnamed-chunk-9-1.png","looping-over-the-bridge_files/header-attrs-2.11/header-attrs.js","looping-over-the-bridge_files/jquery-3.6.0/jquery-3.6.0.js","looping-over-the-bridge_files/jquery-3.6.0/jquery-3.6.0.min.js","looping-over-the-bridge_files/jquery-3.6.0/jquery-3.6.0.min.map","looping-over-the-bridge_files/popper-2.6.0/popper.min.js","looping-over-the-bridge_files/tippy-6.2.7/tippy-bundle.umd.min.js","looping-over-the-bridge_files/tippy-6.2.7/tippy-light-border.css","looping-over-the-bridge_files/tippy-6.2.7/tippy.css","looping-over-the-bridge_files/tippy-6.2.7/tippy.umd.min.js","looping-over-the-bridge_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1504,7 +1504,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </blockquote>
 <div class="layout-chunk" data-layout="l-body">
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
-<img src="img/squid_game_bridge.jpg" alt="Source: https://www.distractify.com/p/games-played-in-squid-game" width="600" />
+<img src="img/squid_game_bridge.jpg" alt="Source: https://www.distractify.com/p/games-played-in-squid-game" width="600" data-distill-preview=1 />
 <p class="caption">
 Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-game" class="uri">https://www.distractify.com/p/games-played-in-squid-game</a>
 </p>
@@ -1583,7 +1583,6 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 </div>
 </div>
 <p>Then we create a function using a while loop. The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
-<p>The setup is quite similar to the previously used <code>run_game_for</code> function.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define a function for simulating one game using a while loop</span>
@@ -1641,8 +1640,9 @@ Figure 1: Source: <a href="https://www.distractify.com/p/games-played-in-squid-g
 
 <span class='co'># Create dataframe with outcome of each game</span>
 <span class='va'>sims</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>trial <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='va'>n_runs</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>while_loop <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span><span class='op'>(</span><span class='va'>trial</span>, <span class='op'>~</span><span class='fu'>run_game_while</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span>,
-         for_loop <span class='op'>=</span> <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map_dbl</a></span><span class='op'>(</span><span class='va'>trial</span>, <span class='op'>~</span><span class='fu'>run_game_for</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rowwise.html'>rowwise</a></span><span class='op'>(</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>while_loop <span class='op'>=</span> <span class='fu'>run_game_while</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span>,
+         for_loop <span class='op'>=</span> <span class='fu'>run_game_for</span><span class='op'>(</span><span class='va'>players</span>, num_steps <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
   <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>trial</span>, names_to <span class='op'>=</span> <span class='st'>"loop"</span><span class='op'>)</span>
 </code></pre>
 </div>

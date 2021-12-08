@@ -2,6 +2,7 @@
 title: "Looping over the bridge"
 description: |
   Comparing loops by simulating a Squid Game scene
+base_url: https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/
 author:
   - name: Lukas Gröninger
 date: 12-05-2021
@@ -47,7 +48,8 @@ The question I wanted to answer was:
 > How many players do we expect to survive the game?
 
 ```{r echo=FALSE}
-#| fig.cap = "Source: https://www.distractify.com/p/games-played-in-squid-game"
+#| fig.cap = "Source: https://www.distractify.com/p/games-played-in-squid-game",
+#| preview = TRUE
 
 knitr::include_graphics(here::here("_posts/2021-12-05-looping-over-the-bridge/img", "squid_game_bridge.jpg"))
 # https://www.distractify.com/p/games-played-in-squid-game
@@ -123,8 +125,6 @@ run_game_for <- function(players, num_steps) {
 Then we create a function using a while loop.
 The setup is quite similar to the previously used `run_game_for` function.
 
-The setup is quite similar to the previously used `run_game_for` function.
-
 
 ```{r}
 # Define a function for simulating one game using a while loop
@@ -183,8 +183,9 @@ n_runs <- 10000
 
 # Create dataframe with outcome of each game
 sims <- tibble(trial = seq(n_runs)) |> 
-  mutate(while_loop = map_dbl(trial, ~run_game_while(players, num_steps = 18)),
-         for_loop = map_dbl(trial, ~run_game_for(players, num_steps = 18))) |> 
+  rowwise() |> 
+  mutate(while_loop = run_game_while(players, num_steps = 18),
+         for_loop = run_game_for(players, num_steps = 18)) |> 
   pivot_longer(-trial, names_to = "loop")
 ```
 
