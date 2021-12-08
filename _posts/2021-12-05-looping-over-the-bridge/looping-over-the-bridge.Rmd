@@ -2,7 +2,8 @@
 title: "Looping over the bridge"
 description: |
   Comparing loops by simulating a Squid Game scene
-base_url: https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/
+repository_url: https://github.com/L-Groeninger/lukas-r.blog
+preview: img/squid_game_bridge.jpg
 author:
   - name: Lukas Gröninger
 date: 12-05-2021
@@ -48,8 +49,7 @@ The question I wanted to answer was:
 > How many players do we expect to survive the game?
 
 ```{r echo=FALSE}
-#| fig.cap = "Source: https://www.distractify.com/p/games-played-in-squid-game",
-#| preview = TRUE
+#| fig.cap = "Source: https://www.distractify.com/p/games-played-in-squid-game"
 
 knitr::include_graphics(here::here("_posts/2021-12-05-looping-over-the-bridge/img", "squid_game_bridge.jpg"))
 # https://www.distractify.com/p/games-played-in-squid-game
