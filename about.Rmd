@@ -1,9 +1,20 @@
 ---
-title: "About this blog"
-description: |
-  Some additional details about the blog
+title: "Lukas Gröninger"
+image: "img/me.jpg"
+links:
+  - label: LinkedIn
+    url: "https://www.linkedin.com/in/lukas-groeninger/"
+  - label: Email
+    url: "mailto: [lukas.groeninger]@[gmail]dot[com]"
+site: distill::distill_website
+output:
+  postcards::trestles
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
+
+Hey, I'm Lukas and am interested in the general field of Data Science, visualization
+and politics - especially in the intersection of these topics. 
