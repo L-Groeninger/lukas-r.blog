@@ -16,4 +16,5 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-Now some text and let's see how it will look:)
+Hey, I'm Lukas and am interested in the general field of Data Science, visualization
+and politics - especially in the intersection of these topics. 
