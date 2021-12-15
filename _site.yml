@@ -3,6 +3,9 @@ title: "Lukas R Blog"
 description: |
   Lukas R Blog
 base_url: https://lukas-r.blog
+collections:
+  posts:
+    share: [twitter, linkedin]
 output_dir: "_site"
 navbar:
   right:
