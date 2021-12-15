@@ -1,51 +1,23 @@
 ---
-title: "API's and parameterized reports"
-description: |
-  How to access the simfin API for financial reporting.
-repository_url: https://github.com/L-Groeninger/lukas-r.blog
-preview: img/use_apis.jpg
-author:
-  - name: Lukas Gröninger
-date: 2021-12-15
+title: "Social Media Companies"
+description: | 
+  Wie haben sich ihre Aktienkurse in der Pandemie verändert?
 output:
   distill::distill_article:
     toc: true
-    self_contained: false
+    toc_depth: 2
+    toc_float: false
 params:
   stocks: ["FB", "TWTR", "SNAP", "PINS"]
   fiscal_year: 2020
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
-
-
-API's (Application Programming Interfaces) are crucial when it comes to applications 
-communicating with each other. Today they are everywhere around us and I guess 
-we cannot imagine a world without them. We are interacting with API's several times 
-a day e.g. when we are using Google Maps or sending out a tweet.
-
-
-In the past years many organizations have decided to use an *API-first approach* 
-for their projects. In this blogpost I want to first show how to access the SimFin API
-and second how to create your own financial (or any other) report.
-
-## SimFin
-
-[SimFin](https://simfin.com/) stands for **sim**plifying **fi**nance and is an organization that
-provides fundamental financial data about public companies for everyone.
-In order to get an API-key and download data you need to register with a mail account first.
-
-
-
-
-
-
 ```{r setup, include = FALSE}
 library(knitr)
 library(kableExtra)
+library(gt)
+library(gtExtras)
 options(scipen = 1, digits = 3)
 opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 plotutils::set_custom_theme(base_size = 18)
@@ -60,15 +32,13 @@ library(simfinapi)
 library(httr)
 library(jsonlite)
 library(lubridate)
-library(gt)
-library(gtExtras)
 ```
 
 
 
 ```{r webapi, eval=FALSE, include = FALSE}
-
-my_apikey <- readLines("simfin_api_key.txt")
+# Einfaches Beispiel der Verwendung einer API
+my_apikey <- readLines(here::here("scripts", "api_key.txt"))
 
 base_url <- "https://simfin.com/api/v2/"
 
@@ -258,9 +228,8 @@ rule_40 %>%
   gt_color_rows(rule_40, palette = c("#AEEAE3", "#2BA193"), use_paletteer = FALSE)
 ```
 
-
-
-
+Wir sehen, dass das Unternehmen `r rule_40$ticker[which.max(rule_40$rule_40)]`
+den höchsten Wert aufweist. 
 
 
 
