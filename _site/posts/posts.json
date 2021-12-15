@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2021-12-15-apis-and-parameterized-reports/",
+    "title": "API's and parameterized reports",
+    "description": "How to access the simfin API for financial reporting.",
+    "author": [
+      {
+        "name": "Lukas Gröninger",
+        "url": {}
+      }
+    ],
+    "date": "2021-12-15",
+    "categories": [],
+    "contents": "\r\n\r\n\r\n\r\n",
+    "preview": "posts/2021-12-15-apis-and-parameterized-reports/img/use_apis.jpg",
+    "last_modified": "2021-12-15T13:49:22+01:00",
+    "input_file": "apis-and-parameterized-reports.knit.md"
+  },
+  {
     "path": "posts/2021-12-05-looping-over-the-bridge/",
     "title": "Looping over the bridge",
     "description": "Comparing loops by simulating a Squid Game scene",

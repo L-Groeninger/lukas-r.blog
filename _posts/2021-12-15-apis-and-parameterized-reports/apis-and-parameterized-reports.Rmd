@@ -1,0 +1,21 @@
+---
+title: "API's and parameterized reports"
+description: |
+  How to access the simfin API for financial reporting.
+repository_url: https://github.com/L-Groeninger/lukas-r.blog
+preview: img/use_apis.jpg
+author:
+  - name: Lukas Gröninger
+date: 2021-12-15
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
