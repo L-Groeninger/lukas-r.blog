@@ -16,8 +16,6 @@ params:
 ```{r setup, include = FALSE}
 library(knitr)
 library(kableExtra)
-library(gt)
-library(gtExtras)
 options(scipen = 1, digits = 3)
 opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 plotutils::set_custom_theme(base_size = 18)
@@ -32,6 +30,8 @@ library(simfinapi)
 library(httr)
 library(jsonlite)
 library(lubridate)
+library(gt)
+library(gtExtras)
 ```
 
 

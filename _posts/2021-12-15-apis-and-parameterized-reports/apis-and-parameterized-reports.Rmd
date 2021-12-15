@@ -17,15 +17,17 @@ params:
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
-
-
 API's (Application Programming Interfaces) are crucial when it comes to applications 
 communicating with each other. Today they are everywhere around us and I guess 
 we cannot imagine a world without them. We are interacting with API's several times 
 a day e.g. when we are using Google Maps or sending out a tweet.
+
+```{r echo=FALSE}
+#| fig.cap = "Source: www.pexels.com"
+
+knitr::include_graphics(here::here("_posts/2021-12-15-apis-and-parameterized-reports/img", "use_apis.jpg"))
+# https://www.pexels.com/photo/woman-writing-on-whiteboard-3861943/"
+```
 
 
 In the past years many organizations have decided to use an *API-first approach* 
@@ -34,7 +36,7 @@ and second how to create your own financial (or any other) report.
 
 ## SimFin
 
-[SimFin](https://simfin.com/) stands for **sim**plifying **fi**nance and is an organization that
+[SimFin](https://simfin.com/) stands for **sim**plifying **fin**ance and is an organization that
 provides fundamental financial data about public companies for everyone.
 In order to get an API-key and download data you need to register with a mail account first.
 
@@ -48,27 +50,31 @@ library(knitr)
 library(kableExtra)
 options(scipen = 1, digits = 3)
 opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
-plotutils::set_custom_theme(base_size = 18)
+
 ```
 
 
 
-```{r libraries, include=FALSE}
+```{r libraries}
 # required libraries
 library(tidyverse)
+library(here)
 library(simfinapi)
 library(httr)
 library(jsonlite)
 library(lubridate)
 library(gt)
 library(gtExtras)
+
+# Setting theme
+plotutils::set_custom_theme(base_size = 18)
 ```
 
 
 
 ```{r webapi, eval=FALSE, include = FALSE}
 
-my_apikey <- readLines("simfin_api_key.txt")
+my_apikey <- readLines(here("api_keys", "simfin_api_key.txt"))
 
 base_url <- "https://simfin.com/api/v2/"
 
@@ -146,10 +152,11 @@ Hier werfen wir einen näheren Blick auf die Aktienkurse der Unternehmen.
 
 ## Aktienkurse im Jahresverlauf
 
-```{r simfinapi, echo=FALSE, fig.height=4, fig.width=6, layout="l-body-outset"}
+```{r simfinapi, fig.height=4, fig.width=6, layout="l-body-outset"}
 # Setting the api key
-sfa_set_api_key(api_key = readLines(here::here("scripts", "api_key.txt")))
-sfa_set_cache_dir(here::here("scripts", "simfin_cache"), create = TRUE)
+sfa_set_api_key(api_key = readLines(here("api_keys", "simfin_api_key.txt")))
+sfa_set_cache_dir(here("_posts/2021-12-15-apis-and-parameterized-reports", 
+                       "simfin_cache"), create = TRUE)
 
 company_infos <- sfa_get_info(ticker = params$stocks)
 
@@ -170,7 +177,7 @@ shares %>%
   mutate(year = year(date)) %>% 
   filter(year == params$fiscal_year) %>%
   ggplot(aes(x = date, y = log(adj_close), colour = company_name)) +
-  geom_line(lwd = 1.2) +
+  geom_line(lwd = 1) +
   viridis::scale_colour_viridis(discrete = TRUE) +
   scale_x_date(date_breaks = "3 months", date_labels = "%b") +
   labs(
@@ -185,7 +192,7 @@ shares %>%
 Nun blicken wir auf den durchschnittlichen logarithmierten Return und seine
 Standardabweichung.
 
-```{r log returns, echo = FALSE}
+```{r log returns}
 mean_log_returns <- shares %>% 
   mutate(year = year(date)) %>% 
   filter(year == params$fiscal_year) %>% 
@@ -209,7 +216,7 @@ Profit. In den ersten Jahren eines Unternehmens ist es üblich, dass
 es noch keinen Profit gibt, aber Wert auf Wachstum gelegt wird. 
 
 $$
-Rule of 40 = Growth + Profit Margin
+Rule\; of\; 40 = Growth + Profit\; Margin
 $$
 
 Diese Metrik kann selbstverständlich auch gewichtet werden, falls eine der 
@@ -219,11 +226,7 @@ Nun schauen wir uns an wie diese Metrik für die Unternehmen am Ende des
 Geschäftsjahres `r params$fiscal_year` (4. Quartal) aussieht. 
 
 
-```{r rule_40, echo=FALSE}
-
-balance_sheet <- sfa_get_statement(ticker = params$stocks,
-                                   fyear = params$fiscal_year,
-                                   statement = "bs")
+```{r rule_40}
 
 derived_q4 <- sfa_get_statement(ticker = params$stocks,
                                 fyear = params$fiscal_year,

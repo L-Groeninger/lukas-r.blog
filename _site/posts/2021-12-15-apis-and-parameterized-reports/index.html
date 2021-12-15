@@ -124,12 +124,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","repository_url","preview","author","date","output","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["API's and parameterized reports"]},{"type":"character","attributes":{},"value":["How to access the simfin API for financial reporting."]},{"type":"character","attributes":{},"value":["https://github.com/L-Groeninger/lukas-r.blog"]},{"type":"character","attributes":{},"value":["img/use_apis.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["2021-12-15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","repository_url","preview","author","date","output","params","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["API's and parameterized reports"]},{"type":"character","attributes":{},"value":["How to access the simfin API for financial reporting."]},{"type":"character","attributes":{},"value":["https://github.com/L-Groeninger/lukas-r.blog"]},{"type":"character","attributes":{},"value":["img/use_apis.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["2021-12-15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["stocks","fiscal_year"]}},"value":[{"type":"character","attributes":{},"value":["FB","TWTR","SNAP","PINS"]},{"type":"integer","attributes":{},"value":[2020]}]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["apis-and-parameterized-reports_files/anchor-4.2.2/anchor.min.js","apis-and-parameterized-reports_files/bowser-1.9.3/bowser.min.js","apis-and-parameterized-reports_files/distill-2.2.21/template.v2.js","apis-and-parameterized-reports_files/header-attrs-2.11/header-attrs.js","apis-and-parameterized-reports_files/jquery-3.6.0/jquery-3.6.0.js","apis-and-parameterized-reports_files/jquery-3.6.0/jquery-3.6.0.min.js","apis-and-parameterized-reports_files/jquery-3.6.0/jquery-3.6.0.min.map","apis-and-parameterized-reports_files/popper-2.6.0/popper.min.js","apis-and-parameterized-reports_files/tippy-6.2.7/tippy-bundle.umd.min.js","apis-and-parameterized-reports_files/tippy-6.2.7/tippy-light-border.css","apis-and-parameterized-reports_files/tippy-6.2.7/tippy.css","apis-and-parameterized-reports_files/tippy-6.2.7/tippy.umd.min.js","apis-and-parameterized-reports_files/webcomponents-2.0.0/webcomponents.js","img/use_apis.jpg"]}
+  {"type":"character","attributes":{},"value":["apis-and-parameterized-reports_files/anchor-4.2.2/anchor.min.js","apis-and-parameterized-reports_files/bowser-1.9.3/bowser.min.js","apis-and-parameterized-reports_files/distill-2.2.21/template.v2.js","apis-and-parameterized-reports_files/figure-html5/simfinapi-1.png","apis-and-parameterized-reports_files/figure-html5/simfinapi-2.png","apis-and-parameterized-reports_files/header-attrs-2.11/header-attrs.js","apis-and-parameterized-reports_files/jquery-3.6.0/jquery-3.6.0.js","apis-and-parameterized-reports_files/jquery-3.6.0/jquery-3.6.0.min.js","apis-and-parameterized-reports_files/jquery-3.6.0/jquery-3.6.0.min.map","apis-and-parameterized-reports_files/popper-2.6.0/popper.min.js","apis-and-parameterized-reports_files/tippy-6.2.7/tippy-bundle.umd.min.js","apis-and-parameterized-reports_files/tippy-6.2.7/tippy-light-border.css","apis-and-parameterized-reports_files/tippy-6.2.7/tippy.css","apis-and-parameterized-reports_files/tippy-6.2.7/tippy.umd.min.js","apis-and-parameterized-reports_files/webcomponents-2.0.0/webcomponents.js","img/use_apis.jpg"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2148,7 +2148,921 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 <div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#simfin">SimFin</a></li>
+<li><a href="#fragestellung">Fragestellung</a></li>
+<li><a href="#zusammenfassung">Zusammenfassung</a></li>
+<li><a href="#analyse">Analyse</a>
+<ul>
+<li><a href="#aktienkurse-im-jahresverlauf">Aktienkurse im Jahresverlauf</a></li>
+<li><a href="#rule-of-40">Rule of 40</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<p>API’s (Application Programming Interfaces) are crucial when it comes to applications communicating with each other. Today they are everywhere around us and I guess we cannot imagine a world without them. We are interacting with API’s several times a day e.g. when we are using Google Maps or sending out a tweet.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
+<img src="img/use_apis.jpg" alt="Source: www.pexels.com" width="1948" />
+<p class="caption">
+Figure 1: Source: www.pexels.com
+</p>
+</div>
+</div>
+<p>In the past years many organizations have decided to use an <em>API-first approach</em> for their projects. In this blogpost I want to first show how to access the SimFin API and second how to create your own financial (or any other) report.</p>
+<h2 id="simfin">SimFin</h2>
+<p><a href="https://simfin.com/">SimFin</a> stands for <strong>sim</strong>plifying <strong>fin</strong>ance and is an organization that provides fundamental financial data about public companies for everyone. In order to get an API-key and download data you need to register with a mail account first.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># required libraries</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/matthiasgomolka/simfinapi'>simfinapi</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://httr.r-lib.org/'>httr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://arxiv.org/abs/1403.2805'>jsonlite</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://gt.rstudio.com/'>gt</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/jthomasmock/gtExtras'>gtExtras</a></span><span class='op'>)</span>
+
+<span class='co'># Setting theme</span>
+<span class='fu'>plotutils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/plotutils/man/set_custom_theme.html'>set_custom_theme</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h1 id="fragestellung">Fragestellung</h1>
+<p>Wie haben sich die Aktienkurse verschiedener sozialer Netzwerke im Jahr 2020 entwickelt? Wurden alle Unternehmen gleichermaßen von Corona getroffen? Konnten Digitalunternehmen profitieren?</p>
+<p>Für eine nähere Betrachtung und für eine Bewertung schauen wir auf eine interessante Zielmetrik für Digitalunternehmen. Diese lautet die Rule of 40.</p>
+<h1 id="zusammenfassung">Zusammenfassung</h1>
+<p>Generell hat sich der Aktienkurs der untersuchten Unternehmen nach einem kurzen globalen Einbruch der Weltwirtschaft Mitte März recht schnell wieder erholt. Insbesondere Pinterest konnte im Vergleich stärker anwachsen als die anderen betrachteten Unternehmen. Eine Hypothese ist, dass gerade Pinterest von dem Rückzug in die eigenen vier Wände profitieren konnte. Auf dieser Plattform sind die Themen Gestaltung und Verschönern des Zuhauses, des Gartens etc. beliebt.</p>
+<p>Blablabla…</p>
+<h1 id="analyse">Analyse</h1>
+<p>Hier werfen wir einen näheren Blick auf die Aktienkurse der Unternehmen.</p>
+<h2 id="aktienkurse-im-jahresverlauf">Aktienkurse im Jahresverlauf</h2>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Setting the api key</span>
+<span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_set_api_key.html'>sfa_set_api_key</a></span><span class='op'>(</span>api_key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"api_keys"</span>, <span class='st'>"simfin_api_key.txt"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_set_cache_dir.html'>sfa_set_cache_dir</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"_posts/2021-12-15-apis-and-parameterized-reports"</span>, 
+                       <span class='st'>"simfin_cache"</span><span class='op'>)</span>, create <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='va'>company_infos</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_get_info.html'>sfa_get_info</a></span><span class='op'>(</span>ticker <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>stocks</span><span class='op'>)</span>
+
+<span class='va'>shares</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_get_prices.html'>sfa_get_prices</a></span><span class='op'>(</span>ticker <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>stocks</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>company_infos</span><span class='op'>)</span>
+
+<span class='va'>shares</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/year.html'>year</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>==</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>fiscal_year</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>date</span>, y <span class='op'>=</span> <span class='va'>adj_close</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span><span class='va'>company_name</span>, scales <span class='op'>=</span> <span class='st'>"free_y"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_date.html'>scale_x_date</a></span><span class='op'>(</span>date_breaks <span class='op'>=</span> <span class='st'>"3 months"</span>, date_labels <span class='op'>=</span> <span class='st'>"%b"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='cn'>NULL</span>,
+       y <span class='op'>=</span> <span class='st'>"Kurs in $"</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<img src="apis-and-parameterized-reports_files/figure-html5/simfinapi-1.png" width="576" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>shares</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/year.html'>year</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>==</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>fiscal_year</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>date</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>adj_close</span><span class='op'>)</span>, colour <span class='op'>=</span> <span class='va'>company_name</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>lwd <span class='op'>=</span> <span class='fl'>1.2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>viridis</span><span class='fu'>::</span><span class='fu'><a href='https://sjmgarnier.github.io/viridis/reference/scale_viridis.html'>scale_colour_viridis</a></span><span class='op'>(</span>discrete <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_date.html'>scale_x_date</a></span><span class='op'>(</span>date_breaks <span class='op'>=</span> <span class='st'>"3 months"</span>, date_labels <span class='op'>=</span> <span class='st'>"%b"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>
+       subtitle <span class='op'>=</span> <span class='st'>"Vergleich mit logarithmierter Y-Achse"</span>,
+       x <span class='op'>=</span> <span class='cn'>NULL</span>,
+       y <span class='op'>=</span> <span class='st'>"log($)"</span>,
+       colour <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<p><img src="apis-and-parameterized-reports_files/figure-html5/simfinapi-2.png" width="576" /></p>
+</div>
+<p>Nun blicken wir auf den durchschnittlichen logarithmierten Return und seine Standardabweichung.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mean_log_returns</span> <span class='op'>&lt;-</span> <span class='va'>shares</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/year.html'>year</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>==</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>fiscal_year</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>company_name</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_log_return <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>adj_close</span><span class='op'>)</span><span class='op'>)</span>,
+            sd_log_return <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/sd.html'>sd</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>adj_close</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>mean_log_returns</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://gt.rstudio.com/reference/gt.html'>gt</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://gt.rstudio.com/reference/tab_header.html'>tab_header</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Mean Log Returns"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<div id="unbxedjvtu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#unbxedjvtu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#unbxedjvtu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#unbxedjvtu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#unbxedjvtu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#unbxedjvtu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#unbxedjvtu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#unbxedjvtu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#unbxedjvtu .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#unbxedjvtu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#unbxedjvtu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#unbxedjvtu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#unbxedjvtu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#unbxedjvtu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#unbxedjvtu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#unbxedjvtu .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#unbxedjvtu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#unbxedjvtu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#unbxedjvtu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#unbxedjvtu .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#unbxedjvtu .gt_left {
+  text-align: left;
+}
+
+#unbxedjvtu .gt_center {
+  text-align: center;
+}
+
+#unbxedjvtu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#unbxedjvtu .gt_font_normal {
+  font-weight: normal;
+}
+
+#unbxedjvtu .gt_font_bold {
+  font-weight: bold;
+}
+
+#unbxedjvtu .gt_font_italic {
+  font-style: italic;
+}
+
+#unbxedjvtu .gt_super {
+  font-size: 65%;
+}
+
+#unbxedjvtu .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="3" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Mean Log Returns</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">company_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mean_log_return</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">sd_log_return</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Meta Platforms, Inc.</td>
+<td class="gt_row gt_right">5.44</td>
+<td class="gt_row gt_right">0.175</td></tr>
+    <tr><td class="gt_row gt_left">PINTEREST, INC.</td>
+<td class="gt_row gt_right">3.37</td>
+<td class="gt_row gt_right">0.498</td></tr>
+    <tr><td class="gt_row gt_left">Snap Inc</td>
+<td class="gt_row gt_right">3.11</td>
+<td class="gt_row gt_right">0.429</td></tr>
+    <tr><td class="gt_row gt_left">TWITTER, INC.</td>
+<td class="gt_row gt_right">3.60</td>
+<td class="gt_row gt_right">0.209</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+<h2 id="rule-of-40">Rule of 40</h2>
+<p>Die Rule of 40<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> wird klassischerweise bei Software Firmen angewendet, um deren Entwicklung zu bewerten. Dabei sollen zwei Metriken einfließen. Einerseits das Wachstum des Unternehmens und andererseits der Profit. In den ersten Jahren eines Unternehmens ist es üblich, dass es noch keinen Profit gibt, aber Wert auf Wachstum gelegt wird.</p>
+<p><span class="math display">\[
+Rule\; of\; 40 = Growth + Profit\; Margin
+\]</span></p>
+<p>Diese Metrik kann selbstverständlich auch gewichtet werden, falls eine der beiden Komponenten als relevanter erachtet wird.</p>
+<p>Nun schauen wir uns an wie diese Metrik für die Unternehmen am Ende des Geschäftsjahres 2020 (4. Quartal) aussieht.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>derived_q4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_get_statement.html'>sfa_get_statement</a></span><span class='op'>(</span>ticker <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>stocks</span>,
+                                fyear <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>fiscal_year</span>,
+                                period <span class='op'>=</span> <span class='st'>"q4"</span>,
+                                statement <span class='op'>=</span> <span class='st'>"derived"</span><span class='op'>)</span>
+
+<span class='va'>derived_q3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_get_statement.html'>sfa_get_statement</a></span><span class='op'>(</span>ticker <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>stocks</span>,
+                                fyear <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>fiscal_year</span>,
+                                period <span class='op'>=</span> <span class='st'>"q3"</span>,
+                                statement <span class='op'>=</span> <span class='st'>"derived"</span><span class='op'>)</span>
+
+<span class='va'>profit_loss_q4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_get_statement.html'>sfa_get_statement</a></span><span class='op'>(</span>ticker <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>stocks</span>,
+                                    fyear <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>fiscal_year</span>,
+                                    period <span class='op'>=</span> <span class='st'>"q4"</span>,
+                                    statement <span class='op'>=</span> <span class='st'>"pl"</span><span class='op'>)</span>
+
+<span class='va'>profit_loss_q3</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_get_statement.html'>sfa_get_statement</a></span><span class='op'>(</span>ticker <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>stocks</span>,
+                                    fyear <span class='op'>=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>fiscal_year</span>,
+                                    period <span class='op'>=</span> <span class='st'>"q3"</span>,
+                                    statement <span class='op'>=</span> <span class='st'>"pl"</span><span class='op'>)</span>
+<span class='co'># Define our own Metric</span>
+<span class='va'>rule_40</span> <span class='op'>&lt;-</span> <span class='va'>profit_loss_q4</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>ticker</span>, <span class='va'>fiscal_year</span>, <span class='va'>revenue</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>growth <span class='op'>=</span> <span class='va'>revenue</span><span class='op'>/</span><span class='va'>profit_loss_q3</span><span class='op'>$</span><span class='va'>revenue</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>inner_join</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>derived_q4</span>, <span class='va'>net_profit_margin</span>, <span class='va'>ticker</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>rule_40 <span class='op'>=</span> <span class='va'>growth</span> <span class='op'>+</span> <span class='va'>net_profit_margin</span>,
+         revenue <span class='op'>=</span> <span class='va'>revenue</span><span class='op'>/</span><span class='fl'>1000000</span><span class='op'>)</span>
+
+<span class='va'>rule_40</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://gt.rstudio.com/reference/gt.html'>gt</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://gt.rstudio.com/reference/tab_header.html'>tab_header</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Rule of 40"</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
+  <span class='fu'><a href='https://rdrr.io/pkg/gtExtras/man/gt_color_rows.html'>gt_color_rows</a></span><span class='op'>(</span><span class='va'>rule_40</span>, palette <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#AEEAE3"</span>, <span class='st'>"#2BA193"</span><span class='op'>)</span>, use_paletteer <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</code></pre>
+</div>
+<div id="oagwvjxqhg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#oagwvjxqhg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#oagwvjxqhg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#oagwvjxqhg .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#oagwvjxqhg .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#oagwvjxqhg .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#oagwvjxqhg .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#oagwvjxqhg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#oagwvjxqhg .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#oagwvjxqhg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#oagwvjxqhg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#oagwvjxqhg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#oagwvjxqhg .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#oagwvjxqhg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#oagwvjxqhg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oagwvjxqhg .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#oagwvjxqhg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#oagwvjxqhg .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#oagwvjxqhg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#oagwvjxqhg .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#oagwvjxqhg .gt_left {
+  text-align: left;
+}
+
+#oagwvjxqhg .gt_center {
+  text-align: center;
+}
+
+#oagwvjxqhg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#oagwvjxqhg .gt_font_normal {
+  font-weight: normal;
+}
+
+#oagwvjxqhg .gt_font_bold {
+  font-weight: bold;
+}
+
+#oagwvjxqhg .gt_font_italic {
+  font-style: italic;
+}
+
+#oagwvjxqhg .gt_super {
+  font-size: 65%;
+}
+
+#oagwvjxqhg .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="6" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Rule of 40</th>
+    </tr>
+    
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">ticker</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">fiscal_year</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">revenue</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">growth</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">net_profit_margin</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">rule_40</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">FB</td>
+<td class="gt_row gt_right">2020</td>
+<td class="gt_row gt_right">28071</td>
+<td class="gt_row gt_right">0.307</td>
+<td class="gt_row gt_right">0.400</td>
+<td class="gt_row gt_right" style="background-color: #56B5A8; color: #000000;">0.707</td></tr>
+    <tr><td class="gt_row gt_left">PINS</td>
+<td class="gt_row gt_right">2020</td>
+<td class="gt_row gt_right">706</td>
+<td class="gt_row gt_right">0.594</td>
+<td class="gt_row gt_right">0.295</td>
+<td class="gt_row gt_right" style="background-color: #2BA193; color: #000000;">0.889</td></tr>
+    <tr><td class="gt_row gt_left">SNAP</td>
+<td class="gt_row gt_right">2020</td>
+<td class="gt_row gt_right">911</td>
+<td class="gt_row gt_right">0.343</td>
+<td class="gt_row gt_right">-0.124</td>
+<td class="gt_row gt_right" style="background-color: #AEEAE3; color: #000000;">0.219</td></tr>
+    <tr><td class="gt_row gt_left">TWTR</td>
+<td class="gt_row gt_right">2020</td>
+<td class="gt_row gt_right">1289</td>
+<td class="gt_row gt_right">0.377</td>
+<td class="gt_row gt_right">0.172</td>
+<td class="gt_row gt_right" style="background-color: #74C6BB; color: #000000;">0.549</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="https://kpisense.com/glossary/rule-of-40" class="uri">https://kpisense.com/glossary/rule-of-40</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">
@@ -2169,6 +3083,15 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="d-appendix">
 </div>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
