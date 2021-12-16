@@ -1487,6 +1487,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h3>Contents</h3>
 <ul>
 <li><a href="#simfin">SimFin</a></li>
+<li><a href="#accessing-an-api">Accessing an API</a></li>
 <li><a href="#fragestellung">Fragestellung</a></li>
 <li><a href="#zusammenfassung">Zusammenfassung</a></li>
 <li><a href="#analyse">Analyse</a>
@@ -1506,23 +1507,80 @@ Figure 1: Source: www.pexels.com
 </p>
 </div>
 </div>
-<p>In the past years many organizations have decided to use an <em>API-first approach</em> for their projects. In this blogpost I want to first show how to access the SimFin API and second how to create your own financial (or any other) report.</p>
+<p>In the past years many organizations have decided to use an <a href="https://swagger.io/resources/articles/adopting-an-api-first-approach/#:~:text=An%20API%2Dfirst%20approach%20means,be%20consumed%20by%20client%20applications."><em>API-first approach</em></a> for their projects. In this blogpost I want to first show how to access the SimFin API and second how to create your own financial (or any other) report.</p>
 <h2 id="simfin">SimFin</h2>
-<p><a href="https://simfin.com/">SimFin</a> stands for <strong>sim</strong>plifying <strong>fin</strong>ance and is an organization that provides fundamental financial data about public companies for everyone. In order to get an API-key and download data you need to register with a mail account first.</p>
+<p><a href="https://simfin.com/">SimFin</a> stands for <strong>sim</strong>plifying <strong>fin</strong>ance and is an organization that provides fundamental financial data about public companies for everyone. In order to get an API-key and download data you need to register with a mail account first. It is recommended to store the API-key in an environment variable. <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html">Here</a> is an article that describes how to do that. After having done that you are good to go.</p>
+<h2 id="accessing-an-api">Accessing an API</h2>
+<p>First we’ll load all necessary libraries.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># required libraries</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span> 
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/matthiasgomolka/simfinapi'>simfinapi</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://httr.r-lib.org/'>httr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://arxiv.org/abs/1403.2805'>jsonlite</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://gt.rstudio.com/'>gt</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://httr.r-lib.org/'>httr</a></span><span class='op'>)</span>       <span class='co'># communicating with API's through R</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://arxiv.org/abs/1403.2805'>jsonlite</a></span><span class='op'>)</span>   <span class='co'># Handling JSON files</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>  <span class='co'># Handling dates</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://gt.rstudio.com/'>gt</a></span><span class='op'>)</span>         <span class='co'># Pretty tables</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/jthomasmock/gtExtras'>gtExtras</a></span><span class='op'>)</span>
 
 <span class='co'># Setting theme</span>
 <span class='fu'>plotutils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/plotutils/man/set_custom_theme.html'>set_custom_theme</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>18</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>On the simfin website you will find a link to their <a href="https://simfin.com/api/v2/documentation/">Web API documentation</a>. First we’ll store our API-key in a variable and create our url with which we want to talk to.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>my_apikey</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"SIMFIN_KEY"</span><span class='op'>)</span>
+
+<span class='va'>base_url</span> <span class='op'>&lt;-</span> <span class='st'>"https://simfin.com/api/v2/"</span>
+
+<span class='va'>endpoint</span> <span class='op'>&lt;-</span> <span class='st'>"companies/list"</span>
+
+<span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>base_url</span>, <span class='va'>endpoint</span>, <span class='st'>"?api-key="</span>, <span class='va'>my_apikey</span><span class='op'>)</span>
+
+<span class='va'>get_companies</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span><span class='va'>url</span><span class='op'>)</span>
+
+<span class='co'># Check if it worked</span>
+<span class='va'>get_companies</span><span class='op'>$</span><span class='va'>status_code</span>
+</code></pre>
+</div>
+<pre><code>[1] 200</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>content_raw</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://httr.r-lib.org/reference/content.html'>content</a></span><span class='op'>(</span><span class='va'>get_companies</span>, type <span class='op'>=</span> <span class='st'>"text"</span><span class='op'>)</span>
+
+<span class='va'>content_json</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>fromJSON</a></span><span class='op'>(</span><span class='va'>content_raw</span>, flatten <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> 
+  
+<span class='va'>content_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>simfin_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>content_json</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>,
+                     ticker <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>content_json</span><span class='op'>$</span><span class='va'>data</span><span class='op'>[</span>, <span class='fl'>2</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+
+
+<span class='co'># Define ticker. Wir wollen uns z.B. den Aktienkurs von Apple anschauen.</span>
+<span class='va'>ticker</span> <span class='op'>&lt;-</span> <span class='st'>"AAPL"</span>
+
+<span class='co'># the statement to retrieve. </span>
+<span class='va'>statement</span> <span class='op'>&lt;-</span> <span class='st'>"pl"</span>
+
+<span class='co'># the period &amp; financial year to retrieve</span>
+<span class='va'>period</span> <span class='op'>&lt;-</span> <span class='st'>"q2"</span>
+<span class='va'>fyear</span> <span class='op'>&lt;-</span> <span class='fl'>2021</span>
+
+<span class='co'># create url</span>
+<span class='va'>url</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>base_url</span>, <span class='st'>"companies/statements?api-key="</span>, <span class='va'>my_apikey</span>, <span class='st'>"&amp;ticker="</span>, <span class='va'>ticker</span>, 
+              <span class='st'>"&amp;statement="</span>, <span class='va'>statement</span>, <span class='st'>"&amp;period="</span>, <span class='va'>period</span>,<span class='st'>"&amp;fyear="</span>, <span class='va'>fyear</span><span class='op'>)</span>
+
+<span class='co'># make request</span>
+<span class='va'>get_data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://httr.r-lib.org/reference/GET.html'>GET</a></span><span class='op'>(</span><span class='va'>url</span><span class='op'>)</span>
+
+<span class='co'># convert JSON</span>
+<span class='va'>data_json</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/jsonlite/man/fromJSON.html'>fromJSON</a></span><span class='op'>(</span><span class='fu'><a href='https://httr.r-lib.org/reference/content.html'>content</a></span><span class='op'>(</span><span class='va'>get_data</span>, <span class='st'>"text"</span><span class='op'>)</span>, flatten <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> 
+
+<span class='va'>apple_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>variable <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>data_json</span><span class='op'>$</span><span class='va'>columns</span><span class='op'>)</span>,
+                   value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='va'>data_json</span><span class='op'>$</span><span class='va'>data</span><span class='op'>)</span><span class='op'>)</span>
+
+
+<span class='co'># All das können wir uns erleichtern, weil jmd anderes ein Paket gebaut hat</span>
 </code></pre>
 </div>
 </div>
@@ -1538,7 +1596,7 @@ Figure 1: Source: www.pexels.com
 <div class="layout-chunk" data-layout="l-body-outset">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Setting the api key</span>
-<span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_set_api_key.html'>sfa_set_api_key</a></span><span class='op'>(</span>api_key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"api_keys"</span>, <span class='st'>"simfin_api_key.txt"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_set_api_key.html'>sfa_set_api_key</a></span><span class='op'>(</span>api_key <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"SIMFIN_KEY"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/simfinapi/man/sfa_set_cache_dir.html'>sfa_set_cache_dir</a></span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"_posts/2021-12-15-apis-and-parameterized-reports"</span>, 
                        <span class='st'>"simfin_cache"</span><span class='op'>)</span>, create <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
@@ -1564,7 +1622,7 @@ Figure 1: Source: www.pexels.com
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/year.html'>year</a></span><span class='op'>(</span><span class='va'>date</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span> 
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>year</span> <span class='op'>==</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>fiscal_year</span><span class='op'>)</span> <span class='op'><a href='https://gt.rstudio.com/reference/pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>date</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>adj_close</span><span class='op'>)</span>, colour <span class='op'>=</span> <span class='va'>company_name</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>lwd <span class='op'>=</span> <span class='fl'>1.2</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>lwd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>viridis</span><span class='fu'>::</span><span class='fu'><a href='https://sjmgarnier.github.io/viridis/reference/scale_viridis.html'>scale_colour_viridis</a></span><span class='op'>(</span>discrete <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_date.html'>scale_x_date</a></span><span class='op'>(</span>date_breaks <span class='op'>=</span> <span class='st'>"3 months"</span>, date_labels <span class='op'>=</span> <span class='st'>"%b"</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>
@@ -1591,12 +1649,12 @@ Figure 1: Source: www.pexels.com
   <span class='fu'><a href='https://gt.rstudio.com/reference/tab_header.html'>tab_header</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Mean Log Returns"</span><span class='op'>)</span>
 </code></pre>
 </div>
-<div id="unbxedjvtu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="qtycxetwox" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#unbxedjvtu .gt_table {
+#qtycxetwox .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1621,7 +1679,7 @@ Figure 1: Source: www.pexels.com
   border-left-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_heading {
+#qtycxetwox .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1633,7 +1691,7 @@ Figure 1: Source: www.pexels.com
   border-right-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_title {
+#qtycxetwox .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1643,7 +1701,7 @@ Figure 1: Source: www.pexels.com
   border-bottom-width: 0;
 }
 
-#unbxedjvtu .gt_subtitle {
+#qtycxetwox .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1653,13 +1711,13 @@ Figure 1: Source: www.pexels.com
   border-top-width: 0;
 }
 
-#unbxedjvtu .gt_bottom_border {
+#qtycxetwox .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_col_headings {
+#qtycxetwox .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1674,7 +1732,7 @@ Figure 1: Source: www.pexels.com
   border-right-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_col_heading {
+#qtycxetwox .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1694,7 +1752,7 @@ Figure 1: Source: www.pexels.com
   overflow-x: hidden;
 }
 
-#unbxedjvtu .gt_column_spanner_outer {
+#qtycxetwox .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1706,15 +1764,15 @@ Figure 1: Source: www.pexels.com
   padding-right: 4px;
 }
 
-#unbxedjvtu .gt_column_spanner_outer:first-child {
+#qtycxetwox .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#unbxedjvtu .gt_column_spanner_outer:last-child {
+#qtycxetwox .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#unbxedjvtu .gt_column_spanner {
+#qtycxetwox .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1726,7 +1784,7 @@ Figure 1: Source: www.pexels.com
   width: 100%;
 }
 
-#unbxedjvtu .gt_group_heading {
+#qtycxetwox .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1748,7 +1806,7 @@ Figure 1: Source: www.pexels.com
   vertical-align: middle;
 }
 
-#unbxedjvtu .gt_empty_group_heading {
+#qtycxetwox .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1763,15 +1821,15 @@ Figure 1: Source: www.pexels.com
   vertical-align: middle;
 }
 
-#unbxedjvtu .gt_from_md > :first-child {
+#qtycxetwox .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#unbxedjvtu .gt_from_md > :last-child {
+#qtycxetwox .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#unbxedjvtu .gt_row {
+#qtycxetwox .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1790,7 +1848,7 @@ Figure 1: Source: www.pexels.com
   overflow-x: hidden;
 }
 
-#unbxedjvtu .gt_stub {
+#qtycxetwox .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1802,7 +1860,7 @@ Figure 1: Source: www.pexels.com
   padding-left: 12px;
 }
 
-#unbxedjvtu .gt_summary_row {
+#qtycxetwox .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1812,7 +1870,7 @@ Figure 1: Source: www.pexels.com
   padding-right: 5px;
 }
 
-#unbxedjvtu .gt_first_summary_row {
+#qtycxetwox .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1822,7 +1880,7 @@ Figure 1: Source: www.pexels.com
   border-top-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_grand_summary_row {
+#qtycxetwox .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1832,7 +1890,7 @@ Figure 1: Source: www.pexels.com
   padding-right: 5px;
 }
 
-#unbxedjvtu .gt_first_grand_summary_row {
+#qtycxetwox .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1842,11 +1900,11 @@ Figure 1: Source: www.pexels.com
   border-top-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_striped {
+#qtycxetwox .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#unbxedjvtu .gt_table_body {
+#qtycxetwox .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1855,7 +1913,7 @@ Figure 1: Source: www.pexels.com
   border-bottom-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_footnotes {
+#qtycxetwox .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1869,13 +1927,13 @@ Figure 1: Source: www.pexels.com
   border-right-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_footnote {
+#qtycxetwox .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#unbxedjvtu .gt_sourcenotes {
+#qtycxetwox .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1889,41 +1947,41 @@ Figure 1: Source: www.pexels.com
   border-right-color: #D3D3D3;
 }
 
-#unbxedjvtu .gt_sourcenote {
+#qtycxetwox .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#unbxedjvtu .gt_left {
+#qtycxetwox .gt_left {
   text-align: left;
 }
 
-#unbxedjvtu .gt_center {
+#qtycxetwox .gt_center {
   text-align: center;
 }
 
-#unbxedjvtu .gt_right {
+#qtycxetwox .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#unbxedjvtu .gt_font_normal {
+#qtycxetwox .gt_font_normal {
   font-weight: normal;
 }
 
-#unbxedjvtu .gt_font_bold {
+#qtycxetwox .gt_font_bold {
   font-weight: bold;
 }
 
-#unbxedjvtu .gt_font_italic {
+#qtycxetwox .gt_font_italic {
   font-style: italic;
 }
 
-#unbxedjvtu .gt_super {
+#qtycxetwox .gt_super {
   font-size: 65%;
 }
 
-#unbxedjvtu .gt_footnote_marks {
+#qtycxetwox .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -2004,12 +2062,12 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   <span class='fu'><a href='https://rdrr.io/pkg/gtExtras/man/gt_color_rows.html'>gt_color_rows</a></span><span class='op'>(</span><span class='va'>rule_40</span>, palette <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"#AEEAE3"</span>, <span class='st'>"#2BA193"</span><span class='op'>)</span>, use_paletteer <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 </code></pre>
 </div>
-<div id="oagwvjxqhg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="fbsacglcxf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#oagwvjxqhg .gt_table {
+#fbsacglcxf .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2034,7 +2092,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-left-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_heading {
+#fbsacglcxf .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2046,7 +2104,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_title {
+#fbsacglcxf .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2056,7 +2114,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-bottom-width: 0;
 }
 
-#oagwvjxqhg .gt_subtitle {
+#fbsacglcxf .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2066,13 +2124,13 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-width: 0;
 }
 
-#oagwvjxqhg .gt_bottom_border {
+#fbsacglcxf .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_col_headings {
+#fbsacglcxf .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2087,7 +2145,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_col_heading {
+#fbsacglcxf .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2107,7 +2165,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   overflow-x: hidden;
 }
 
-#oagwvjxqhg .gt_column_spanner_outer {
+#fbsacglcxf .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2119,15 +2177,15 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 4px;
 }
 
-#oagwvjxqhg .gt_column_spanner_outer:first-child {
+#fbsacglcxf .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#oagwvjxqhg .gt_column_spanner_outer:last-child {
+#fbsacglcxf .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#oagwvjxqhg .gt_column_spanner {
+#fbsacglcxf .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2139,7 +2197,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   width: 100%;
 }
 
-#oagwvjxqhg .gt_group_heading {
+#fbsacglcxf .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2161,7 +2219,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   vertical-align: middle;
 }
 
-#oagwvjxqhg .gt_empty_group_heading {
+#fbsacglcxf .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2176,15 +2234,15 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   vertical-align: middle;
 }
 
-#oagwvjxqhg .gt_from_md > :first-child {
+#fbsacglcxf .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#oagwvjxqhg .gt_from_md > :last-child {
+#fbsacglcxf .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#oagwvjxqhg .gt_row {
+#fbsacglcxf .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2203,7 +2261,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   overflow-x: hidden;
 }
 
-#oagwvjxqhg .gt_stub {
+#fbsacglcxf .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2215,7 +2273,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-left: 12px;
 }
 
-#oagwvjxqhg .gt_summary_row {
+#fbsacglcxf .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2225,7 +2283,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 5px;
 }
 
-#oagwvjxqhg .gt_first_summary_row {
+#fbsacglcxf .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2235,7 +2293,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_grand_summary_row {
+#fbsacglcxf .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2245,7 +2303,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 5px;
 }
 
-#oagwvjxqhg .gt_first_grand_summary_row {
+#fbsacglcxf .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2255,11 +2313,11 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_striped {
+#fbsacglcxf .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#oagwvjxqhg .gt_table_body {
+#fbsacglcxf .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2268,7 +2326,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-bottom-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_footnotes {
+#fbsacglcxf .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2282,13 +2340,13 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_footnote {
+#fbsacglcxf .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#oagwvjxqhg .gt_sourcenotes {
+#fbsacglcxf .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2302,41 +2360,41 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#oagwvjxqhg .gt_sourcenote {
+#fbsacglcxf .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#oagwvjxqhg .gt_left {
+#fbsacglcxf .gt_left {
   text-align: left;
 }
 
-#oagwvjxqhg .gt_center {
+#fbsacglcxf .gt_center {
   text-align: center;
 }
 
-#oagwvjxqhg .gt_right {
+#fbsacglcxf .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#oagwvjxqhg .gt_font_normal {
+#fbsacglcxf .gt_font_normal {
   font-weight: normal;
 }
 
-#oagwvjxqhg .gt_font_bold {
+#fbsacglcxf .gt_font_bold {
   font-weight: bold;
 }
 
-#oagwvjxqhg .gt_font_italic {
+#fbsacglcxf .gt_font_italic {
   font-style: italic;
 }
 
-#oagwvjxqhg .gt_super {
+#fbsacglcxf .gt_super {
   font-size: 65%;
 }
 
-#oagwvjxqhg .gt_footnote_marks {
+#fbsacglcxf .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -2390,7 +2448,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
 </table>
 </div>
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section class="footnotes" role="doc-endnotes">
 <hr />
 <ol>

@@ -20,9 +20,6 @@
 # RStudio files
 .Rproj.user/
 
-# Api keys
-api_keys/
-
 # Simfin cache
 **/simfin_cache/
 

@@ -30,7 +30,8 @@ knitr::include_graphics(here::here("_posts/2021-12-15-apis-and-parameterized-rep
 ```
 
 
-In the past years many organizations have decided to use an *API-first approach* 
+In the past years many organizations have decided to use an 
+[*API-first approach*](https://swagger.io/resources/articles/adopting-an-api-first-approach/#:~:text=An%20API%2Dfirst%20approach%20means,be%20consumed%20by%20client%20applications.)
 for their projects. In this blogpost I want to first show how to access the SimFin API
 and second how to create your own financial (or any other) report.
 
@@ -39,11 +40,9 @@ and second how to create your own financial (or any other) report.
 [SimFin](https://simfin.com/) stands for **sim**plifying **fin**ance and is an organization that
 provides fundamental financial data about public companies for everyone.
 In order to get an API-key and download data you need to register with a mail account first.
-
-
-
-
-
+It is recommended to store the API-key in an environment variable. 
+[Here](https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html)
+is an article that describes how to do that. After having done that you are good to go.
 
 ```{r setup, include = FALSE}
 library(knitr)
@@ -53,46 +52,67 @@ opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 
 ```
 
+## Accessing an API
 
+First we'll load all necessary libraries.
 
 ```{r libraries}
 # required libraries
-library(tidyverse)
+library(tidyverse) 
 library(here)
 library(simfinapi)
-library(httr)
-library(jsonlite)
-library(lubridate)
-library(gt)
+library(httr)       # communicating with API's through R
+library(jsonlite)   # Handling JSON files
+library(lubridate)  # Handling dates
+library(gt)         # Pretty tables
 library(gtExtras)
+library(httr2)    
 
 # Setting theme
 plotutils::set_custom_theme(base_size = 18)
 ```
 
+On the simfin website you will find a link to their 
+[Web API documentation](https://simfin.com/api/v2/documentation/).
+We start with an easy example of communicating with the API where we'll
+request a list of available companies and their SimFinId.
 
+First we'll store our API-key in a variable and create our url (web-address) with which 
+we want to talk to. This information is available in the documentation.
 
-```{r webapi, eval=FALSE, include = FALSE}
-
-my_apikey <- readLines(here("api_keys", "simfin_api_key.txt"))
+```{r}
+my_apikey <- Sys.getenv("SIMFIN_KEY")
 
 base_url <- "https://simfin.com/api/v2/"
 
 endpoint <- "companies/list"
 
+# Create url
 url <- paste0(base_url, endpoint, "?api-key=", my_apikey)
+```
 
-get_companies <- GET(url)
+Now we could just copy paste this url in our browser and see the result:
+
+```{r echo=FALSE}
+#| fig.cap = "Inserting our url in the browser"
+knitr::include_graphics(here::here("_posts/2021-12-15-apis-and-parameterized-reports/img", 
+                                   "get_request_browser.PNG"))
+```
+
+The `{httr2}` package
+
+```{r}
+# create the request
+req <- request(url) |> 
+  req_perform()
 
 # Check if it worked
-get_companies$status_code
+resp_status(req)
 
-content_raw <- content(get_companies, type = "text")
+content_json <- resp_body_json(req)
 
-content_json <- fromJSON(content_raw, flatten = TRUE) 
-  
-content_df <- tibble(simfin_id = unlist(content_json$data[, 1]),
-                     ticker = unlist(content_json$data[, 2]))
+content_df <- tibble(simfin_id = map_dbl(content_json$data, 1),
+                     ticker = map_chr(content_json$data, 2))
 
 
 # Define ticker. Wir wollen uns z.B. den Aktienkurs von Apple anschauen.
@@ -154,7 +174,7 @@ Hier werfen wir einen näheren Blick auf die Aktienkurse der Unternehmen.
 
 ```{r simfinapi, fig.height=4, fig.width=6, layout="l-body-outset"}
 # Setting the api key
-sfa_set_api_key(api_key = readLines(here("api_keys", "simfin_api_key.txt")))
+sfa_set_api_key(api_key = Sys.getenv("SIMFIN_KEY"))
 sfa_set_cache_dir(here("_posts/2021-12-15-apis-and-parameterized-reports", 
                        "simfin_cache"), create = TRUE)
 
@@ -253,7 +273,7 @@ rule_40 <- profit_loss_q4 %>%
   mutate(growth = revenue/profit_loss_q3$revenue - 1) %>% 
   inner_join(select(derived_q4, net_profit_margin, ticker)) %>% 
   mutate(rule_40 = growth + net_profit_margin,
-         revenue = revenue/1000000)
+         revenue = revenue/1e6)
 
 rule_40 %>% 
   gt() %>% 
