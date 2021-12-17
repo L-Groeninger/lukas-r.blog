@@ -203,7 +203,7 @@ packages like {knitr}, {distill} etc. To learn more, I recommend the
 Yihui Xie, Christophe Dervieux and Emily Riederer.
 
 For our small example report we want to focus on a specific set of companies.
-Let's say we want to know how the stock prices of different social networks 
+Let's say we want to know how the stock prices of different social media networks 
 performed in 2020. Were all companies equally affected by the Corona Virus?
 What we want also is to be able to change the set of companies as well as the 
 year of interest programmatically when rendering the report. RMarkdown lets you
@@ -362,7 +362,10 @@ rmarkdown::render(my_report.Rmd,
 
 There are countless possibilities to create specific reporting templates and functions
 for your own use cases.
-
+A really minimal example of how such a report might look like can be found 
+[here](https://github.com/L-Groeninger/lukas-r.blog/tree/main/_posts/2021-12-15-apis-and-parameterized-reports)
+in the Github repo of this blogpost. The output format is of course not
+limited to html, but can be PDF as well.
 
 
 
