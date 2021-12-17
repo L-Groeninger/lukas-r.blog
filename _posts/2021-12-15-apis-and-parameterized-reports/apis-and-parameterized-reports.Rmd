@@ -10,6 +10,7 @@ date: 2021-12-15
 output:
   distill::distill_article:
     toc: true
+    toc_depth: 3
     self_contained: false
 params:
   stocks: ["FB", "TWTR", "SNAP", "PINS"]
@@ -61,7 +62,7 @@ library(gt)         # Pretty tables
 library(gtExtras)
 
 # Setting theme
-plotutils::set_custom_theme(base_size = 18)
+plotutils::set_custom_theme(base_size = 30)
 ```
 
 On the simfin website you will find a link to their 
@@ -195,7 +196,7 @@ company_infos <- sfa_get_info(ticker = "AAPL")
 
 ## Reporting with R
 
-One of the biggest strengths of R is its ability to produce beautiful reports and articles.
+One of the biggest strengths of R is its ability to produce beautiful reproducible reports and articles.
 This is done with [{RMarkdown}](https://rmarkdown.rstudio.com/) and additional
 packages like {knitr}, {distill} etc. To learn more, I recommend the 
 [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/) by 
@@ -204,10 +205,11 @@ Yihui Xie, Christophe Dervieux and Emily Riederer.
 For our small example report we want to focus on a specific set of companies.
 Let's say we want to know how the stock prices of different social networks 
 performed in 2020? Were all companies equally affected by the Corona Virus?
-What we want as well is to be able to change the set of companies as well as the 
-year if interest programmatically when rendering the report. 
+What we want also is to be able to change the set of companies as well as the 
+year of interest programmatically when rendering the report. RMarkdown lets you
+define specific parameters at the top that you can access then inside your R code chunks.
 
-To include parameters in our report we have to define them first in the 
+To include these parameters in our report we have to define them first in the 
 YAML header of our document. In our case this may look like this:
 
 ```{r eval = FALSE}
@@ -216,114 +218,97 @@ params:
   fiscal_year: 2020
 ```
 
+Here we provide a list of stocks and the fiscal year as variables.
+We can access for example the list of stocks in our script 
+with `params$stocks`.
 
-# Fragestellung
+### Stock prices over the year
 
-Wie haben sich die Aktienkurse verschiedener sozialer Netzwerke im Jahr 
-`r params$fiscal_year` entwickelt? Wurden alle Unternehmen gleichermaßen von 
-Corona getroffen? Konnten Digitalunternehmen profitieren?
+In this manner we can now use our parameters as arguments for the {simfinapi} functions.
 
-Für eine nähere Betrachtung und für eine Bewertung schauen wir auf eine 
-interessante Zielmetrik für Digitalunternehmen. Diese lautet die Rule of 40. 
-
-# Zusammenfassung
-
-Generell hat sich der Aktienkurs der untersuchten Unternehmen nach einem
-kurzen globalen Einbruch der Weltwirtschaft Mitte März recht schnell wieder
-erholt. Insbesondere Pinterest konnte im Vergleich stärker anwachsen als die 
-anderen betrachteten Unternehmen. Eine Hypothese ist, dass gerade Pinterest
-von dem Rückzug in die eigenen vier Wände profitieren konnte. Auf dieser 
-Plattform sind die Themen Gestaltung und Verschönern des Zuhauses, des Gartens
-etc. beliebt.
-
-Blablabla...
-
-
-
-
-
-# Analyse
-
-Hier werfen wir einen näheren Blick auf die Aktienkurse der Unternehmen.
-
-## Aktienkurse im Jahresverlauf
-
-```{r simfinapi, fig.height=4, fig.width=6, layout="l-body-outset"}
-# Setting the api key
-sfa_set_api_key(api_key = Sys.getenv("SIMFIN_KEY"))
-sfa_set_cache_dir(here("_posts/2021-12-15-apis-and-parameterized-reports", 
-                       "simfin_cache"), create = TRUE)
-
+```{r}
+# Get company infos
 company_infos <- sfa_get_info(ticker = params$stocks)
 
-shares <- sfa_get_prices(ticker = params$stocks) %>% 
+# Get stock prices of companies of interest
+shares <- sfa_get_prices(ticker = params$stocks) |> 
   left_join(company_infos)
+```
 
-shares %>% 
-  mutate(year = year(date)) %>% 
-  filter(year == params$fiscal_year) %>%
+Now we can generate an outpot comparing the stock price development over the
+year we specified before.
+
+```{r fig.height=6, fig.width=8, layout="l-body-outset"}
+shares |> 
+  mutate(year = year(date)) |> 
+  # Filter only prices for our year of interest
+  filter(year == params$fiscal_year) |> 
   ggplot(aes(x = date, y = adj_close)) +
   geom_line() +
+  scale_y_continuous(labels = scales::dollar_format()) +
   facet_wrap(~company_name, scales = "free_y") +
   scale_x_date(date_breaks = "3 months", date_labels = "%b") +
-  labs(x = NULL,
-       y = "Kurs in $") 
+  labs(title = glue::glue("Stock prices over the year {params$fiscal_year}"),
+       x = NULL,
+       y = NULL)
+```
 
-shares %>% 
-  mutate(year = year(date)) %>% 
-  filter(year == params$fiscal_year) %>%
-  ggplot(aes(x = date, y = log(adj_close), colour = company_name)) +
+We can not only filter by our parameters but also using it to dynamically 
+change the title of the plot. With different scales it is hard to compare 
+the development between the selected companies. That's why we'll produce a 
+plot with a logarithmized y axis.
+
+
+```{r fig.height=6, fig.width=8, layout="l-body-outset"}
+shares |>  
+  mutate(year = year(date)) |>  
+  filter(year == params$fiscal_year) |> 
+  ggplot(aes(x = date, y = adj_close, colour = company_name)) +
   geom_line(lwd = 1) +
+  scale_y_continuous(trans = "log10", labels = scales::dollar_format()) +
   viridis::scale_colour_viridis(discrete = TRUE) +
   scale_x_date(date_breaks = "3 months", date_labels = "%b") +
-  labs(
-       subtitle = "Vergleich mit logarithmierter Y-Achse",
+  labs(title = "Comparison with logarithmized y axis",
        x = NULL,
-       y = "log($)",
+       y = NULL,
        colour = NULL) 
-
 ```
 
+Here we can see directly the comparison between companies and specifically the 
+"Corona effect" in the middle of march. By now I guess many have seen 
+logarithmized scales as they were quite popular to illustrate exponential 
+growth of Corona Virus cases. The difference between 10\$ and 100\$ is the
+same as the difference between 30\$ and 300\$. The social network whose share 
+price has risen the most is Pinterest. One hypothesis is that Pinterest in 
+particular could benefit from the retreat into the own four walls. 
+On this platform, the topics of designing and decorating the home, garden etc. are popular.
 
-Nun blicken wir auf den durchschnittlichen logarithmierten Return und seine
-Standardabweichung.
+### Creating your own metric
 
-```{r log returns}
-mean_log_returns <- shares %>% 
-  mutate(year = year(date)) %>% 
-  filter(year == params$fiscal_year) %>% 
-  group_by(company_name) %>% 
-  summarize(mean_log_return = mean(log(adj_close)),
-            sd_log_return = sd(log(adj_close)))
-
-mean_log_returns %>% 
-  gt() %>% 
-  tab_header(title = "Mean Log Returns")
-```
-
-
-## Rule of 40
-
-Die Rule of 40^[https://kpisense.com/glossary/rule-of-40] wird klassischerweise 
-bei Software Firmen angewendet, um 
-deren Entwicklung zu bewerten. Dabei sollen zwei Metriken
-einfließen. Einerseits das Wachstum des Unternehmens und andererseits der
-Profit. In den ersten Jahren eines Unternehmens ist es üblich, dass 
-es noch keinen Profit gibt, aber Wert auf Wachstum gelegt wird. 
+Now we don't want to only compare the development of the stock prices, but
+have a deeper look at some characteristics of these companies.
+The SimFin API offers a variety of variables and information.
+We can access them through the {simfinapi} function `sfa_get_statement()`.
+For now, we want to calculate our own metric to compare our four companies.
+This metric will be the *Rule of 40*^[https://kpisense.com/glossary/rule-of-40]
+which is typically applied to SaaS (Software as a Service) companies to evaluate 
+their development. Two metrics will be combined here. 
+One is the growth of the company and the other is profit. 
+In the first years of a company, it is common that there is no profit yet, 
+but an emphasis on growth. As a rule of thumb the sum of growth and profit 
+should equal to at least 40. For example 50% Growth and -10% Profti Margin
+would still satisfy this condition.
 
 $$
 Rule\; of\; 40 = Growth + Profit\; Margin
 $$
 
-Diese Metrik kann selbstverständlich auch gewichtet werden, falls eine der 
-beiden Komponenten als relevanter erachtet wird. 
+This simple metric can, of course, also be weighted if one of the two components 
+is considered more relevant. Now let's examine what this metric looks like 
+for companies at the end of the fiscal year.
 
-Nun schauen wir uns an wie diese Metrik für die Unternehmen am Ende des
-Geschäftsjahres `r params$fiscal_year` (4. Quartal) aussieht. 
-
-
-```{r rule_40}
-
+```{r}
+# The net profit margin information is found in the "derived" statement
 derived_q4 <- sfa_get_statement(ticker = params$stocks,
                                 fyear = params$fiscal_year,
                                 period = "q4",
@@ -334,6 +319,7 @@ derived_q3 <- sfa_get_statement(ticker = params$stocks,
                                 period = "q3",
                                 statement = "derived")
 
+# The revenue information can be found in the pl (profit/loss) statement
 profit_loss_q4 <- sfa_get_statement(ticker = params$stocks,
                                     fyear = params$fiscal_year,
                                     period = "q4",
@@ -344,16 +330,20 @@ profit_loss_q3 <- sfa_get_statement(ticker = params$stocks,
                                     period = "q3",
                                     statement = "pl")
 # Define our own Metric
-rule_40 <- profit_loss_q4 %>% 
-  select(ticker, fiscal_year, revenue) %>%
-  mutate(growth = revenue/profit_loss_q3$revenue - 1) %>% 
-  inner_join(select(derived_q4, net_profit_margin, ticker)) %>% 
+rule_40 <- profit_loss_q4 |> 
+  select(ticker, fiscal_year, revenue) |> 
+  mutate(growth = revenue/profit_loss_q3$revenue - 1) |> 
+  inner_join(select(derived_q4, net_profit_margin, ticker)) |> 
   mutate(rule_40 = growth + net_profit_margin,
          revenue = revenue/1e6)
+```
 
-rule_40 %>% 
-  gt() %>% 
-  tab_header(title = "Rule of 40") %>% 
+
+
+```{r}
+rule_40 |> 
+  gt() |> 
+  tab_header(title = "Rule of 40") |> 
   gt_color_rows(rule_40, palette = c("#AEEAE3", "#2BA193"), use_paletteer = FALSE)
 ```
 
