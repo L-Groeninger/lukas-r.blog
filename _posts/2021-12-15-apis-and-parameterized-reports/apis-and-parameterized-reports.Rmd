@@ -156,18 +156,21 @@ Now we can inspect some information for Apple's last quarter.
 
 ```{r echo = FALSE}
 apple_df |> 
-  slice(2,5,6,11,19, 21, 25) |> 
+  slice(2, 5, 6, 11, 19, 21, 25) |> 
   gt() |> 
   tab_header(title = "Apple's 4. Quarter 2021")
 ```
+
+### The {simfinapi} package
 
 Accessing the API in this way is somewhat cumbersome for more complex matters. 
 But thankfully someone has written an R package for this as well.
 
 Thanks to [Matthias Gomolka](https://github.com/matthiasgomolka) for maintaining
-the `{simfinapi}` [R package](https://github.com/matthiasgomolka/simfinapi).
+the {simfinapi} [R package](https://github.com/matthiasgomolka/simfinapi).
 This package wraps the SimFin API and allows us an easier access.
 
+First we set our API-key and a cache directory for our requests.
 
 ```{r}
 # Setting the api key
@@ -184,12 +187,34 @@ Our first request can be rewritten in one line as this:
 available_companies <- sfa_get_entities()
 ```
 
-If we want to look at some information for a company like Apple, we would write:
+If we want to look at some basic information for a company like Apple, we would write:
 
 ```{r}
 company_infos <- sfa_get_info(ticker = "AAPL")
 ```
 
+## Reporting with R
+
+One of the biggest strengths of R is its ability to produce beautiful reports and articles.
+This is done with [{RMarkdown}](https://rmarkdown.rstudio.com/) and additional
+packages like {knitr}, {distill} etc. To learn more, I recommend the 
+[RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/) by 
+Yihui Xie, Christophe Dervieux and Emily Riederer.
+
+For our small example report we want to focus on a specific set of companies.
+Let's say we want to know how the stock prices of different social networks 
+performed in 2020? Were all companies equally affected by the Corona Virus?
+What we want as well is to be able to change the set of companies as well as the 
+year if interest programmatically when rendering the report. 
+
+To include parameters in our report we have to define them first in the 
+YAML header of our document. In our case this may look like this:
+
+```{r eval = FALSE}
+params:
+  stocks: ["FB", "TWTR", "SNAP", "PINS"]
+  fiscal_year: 2020
+```
 
 
 # Fragestellung
@@ -214,11 +239,7 @@ etc. beliebt.
 Blablabla...
 
 
-```{r eval = FALSE}
-params:
-  stocks: ["FB", "TWTR", "SNAP", "PINS"]
-  fiscal_year: 2020
-```
+
 
 
 # Analyse
