@@ -20,6 +20,9 @@
 # RStudio files
 .Rproj.user/
 
+# Simfin cache
+**/simfin_cache/
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
