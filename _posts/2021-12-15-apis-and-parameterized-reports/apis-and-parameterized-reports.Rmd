@@ -204,7 +204,7 @@ Yihui Xie, Christophe Dervieux and Emily Riederer.
 
 For our small example report we want to focus on a specific set of companies.
 Let's say we want to know how the stock prices of different social networks 
-performed in 2020? Were all companies equally affected by the Corona Virus?
+performed in 2020. Were all companies equally affected by the Corona Virus?
 What we want also is to be able to change the set of companies as well as the 
 year of interest programmatically when rendering the report. RMarkdown lets you
 define specific parameters at the top that you can access then inside your R code chunks.
@@ -296,7 +296,7 @@ their development. Two metrics will be combined here.
 One is the growth of the company and the other is profit. 
 In the first years of a company, it is common that there is no profit yet, 
 but an emphasis on growth. As a rule of thumb the sum of growth and profit 
-should equal to at least 40. For example 50% Growth and -10% Profti Margin
+should equal to at least 40. For example 50% Growth and -10% Profit Margin
 would still satisfy this condition.
 
 $$
@@ -346,6 +346,29 @@ rule_40 |>
   tab_header(title = "Rule of 40") |> 
   gt_color_rows(rule_40, palette = c("#AEEAE3", "#2BA193"), use_paletteer = FALSE)
 ```
+
+Pinterest reached with almost 60% the highest growth relative to the previous quarter.
+Facebook - or Meta as it's now being called - had the highest profitability.
+Added together only Snap was not able to satisfy the Rule of 40 metric.
+
+In such a way, reports can now be created programmatically. If we want to 
+e.g. exchange Snapchat with Google (Ticker is GOOG), we would render our report
+as follows:
+
+```{r eval = FALSE}
+rmarkdown::render(my_report.Rmd, 
+                  params = list(stocks = c("FB", "TWTR", "GOOG", "PINS")))
+```
+
+There are countless possibilities to create specific reporting templates and functions
+for your own use cases.
+
+
+
+
+
+
+
 
 
 
