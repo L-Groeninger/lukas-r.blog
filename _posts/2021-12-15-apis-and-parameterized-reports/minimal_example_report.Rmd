@@ -1,0 +1,153 @@
+---
+title: "Stock Price comparison"
+description: | 
+  A minimal working example for comparing stock prices.
+draft: true
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
+    toc_float: false
+params:
+  stocks: ["FB", "TWTR", "SNAP", "PINS"]
+  fiscal_year: 2020
+---
+
+
+
+```{r setup, include = FALSE}
+library(knitr)
+library(kableExtra)
+options(scipen = 1, digits = 3)
+opts_chunk$set(comment=NA, warning = FALSE, message = FALSE, echo = FALSE)
+
+```
+
+
+```{r}
+# required libraries
+library(tidyverse) 
+library(here)
+library(simfinapi)
+library(httr2)      # communicating with API's through R
+library(lubridate)  # Handling dates
+library(gt)         # Pretty tables
+library(gtExtras)
+
+# Setting theme
+plotutils::set_custom_theme(base_size = 30)
+
+# Setting the api key
+sfa_set_api_key(api_key = Sys.getenv("SIMFIN_KEY"))
+# Setting up cache directory
+sfa_set_cache_dir(here("_posts/2021-12-15-apis-and-parameterized-reports", 
+                       "simfin_cache"), create = TRUE)
+```
+
+# Management Summary
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+```{r}
+# Get company infos
+company_infos <- sfa_get_info(ticker = params$stocks)
+
+# Get stock prices of companies of interest
+shares <- sfa_get_prices(ticker = params$stocks) |> 
+  left_join(company_infos)
+```
+
+# Research Question
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lacus sed turpis tincidunt id aliquet risus. Nibh praesent tristique magna sit amet purus. Pellentesque nec nam aliquam sem et tortor consequat id porta. Id interdum velit laoreet id donec. Sit amet nisl purus in mollis nunc sed id. Sed blandit libero volutpat sed cras ornare arcu dui vivamus. Erat pellentesque adipiscing commodo elit at imperdiet dui accumsan. Nisl tincidunt eget nullam non. Rhoncus urna neque viverra justo nec ultrices dui sapien. Tincidunt arcu non sodales neque sodales ut etiam.
+
+# Analysis
+
+```{r fig.height=6, fig.width=8, layout="l-body-outset"}
+shares |> 
+  mutate(year = year(date)) |> 
+  # Filter only prices for our year of interest
+  filter(year == params$fiscal_year) |> 
+  ggplot(aes(x = date, y = adj_close)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  facet_wrap(~company_name, scales = "free_y") +
+  scale_x_date(date_breaks = "3 months", date_labels = "%b") +
+  labs(title = glue::glue("Stock prices over the year {params$fiscal_year}"),
+       x = NULL,
+       y = NULL)
+```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Parturient montes nascetur ridiculus mus mauris vitae ultricies leo integer. 
+
+
+```{r fig.height=6, fig.width=8, layout="l-body-outset"}
+shares |>  
+  mutate(year = year(date)) |>  
+  filter(year == params$fiscal_year) |> 
+  ggplot(aes(x = date, y = adj_close, colour = company_name)) +
+  geom_line(lwd = 1) +
+  scale_y_continuous(trans = "log10", labels = scales::dollar_format()) +
+  viridis::scale_colour_viridis(discrete = TRUE) +
+  scale_x_date(date_breaks = "3 months", date_labels = "%b") +
+  labs(title = "Comparison with logarithmized y axis",
+       x = NULL,
+       y = NULL,
+       colour = NULL) 
+```
+
+Etiam erat velit scelerisque in dictum non. Diam vulputate ut pharetra sit. Urna et pharetra pharetra massa massa. Egestas integer eget aliquet nibh praesent. Accumsan tortor posuere ac ut consequat semper viverra. Suspendisse potenti nullam ac tortor. Amet dictum sit amet justo donec. Id volutpat lacus laoreet non curabitur gravida arcu.
+
+
+$$
+Rule\; of\; 40 = Growth + Profit\; Margin
+$$
+
+
+```{r}
+# The net profit margin information is found in the "derived" statement
+derived_q4 <- sfa_get_statement(ticker = params$stocks,
+                                fyear = params$fiscal_year,
+                                period = "q4",
+                                statement = "derived")
+
+derived_q3 <- sfa_get_statement(ticker = params$stocks,
+                                fyear = params$fiscal_year,
+                                period = "q3",
+                                statement = "derived")
+
+# The revenue information can be found in the pl (profit/loss) statement
+profit_loss_q4 <- sfa_get_statement(ticker = params$stocks,
+                                    fyear = params$fiscal_year,
+                                    period = "q4",
+                                    statement = "pl")
+
+profit_loss_q3 <- sfa_get_statement(ticker = params$stocks,
+                                    fyear = params$fiscal_year,
+                                    period = "q3",
+                                    statement = "pl")
+# Define our own Metric
+rule_40 <- profit_loss_q4 |> 
+  select(ticker, fiscal_year, revenue) |> 
+  mutate(growth = revenue/profit_loss_q3$revenue - 1) |> 
+  inner_join(select(derived_q4, net_profit_margin, ticker)) |> 
+  mutate(rule_40 = growth + net_profit_margin,
+         revenue = revenue/1e6)
+```
+
+Viverra nam libero justo laoreet sit. Nunc vel risus commodo viverra maecenas accumsan. Aliquet bibendum enim facilisis gravida neque convallis a cras semper. 
+
+```{r}
+rule_40 |> 
+  gt() |> 
+  tab_header(title = "Rule of 40") |> 
+  gt_color_rows(rule_40, palette = c("#AEEAE3", "#2BA193"), use_paletteer = FALSE)
+```
+
+# Conclusion
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc faucibus a pellentesque sit amet. Viverra nam libero justo laoreet sit. Nunc vel risus commodo viverra maecenas accumsan. Aliquet bibendum enim facilisis gravida neque convallis a cras semper. Aliquet eget sit amet tellus cras adipiscing. Egestas congue quisque egestas diam in arcu. Eu ultrices vitae auctor eu augue ut lectus. Eros in cursus turpis massa tincidunt. Vitae tempus quam pellentesque nec nam aliquam. Duis convallis convallis tellus id interdum. Nibh tellus molestie nunc non blandit massa.
+
+
+
+
