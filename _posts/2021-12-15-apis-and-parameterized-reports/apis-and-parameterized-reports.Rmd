@@ -340,7 +340,7 @@ rule_40 <- profit_loss_q4 |>
 
 
 
-```{r}
+```{r echo=FALSE}
 rule_40 |> 
   gt() |> 
   tab_header(title = "Rule of 40") |> 
