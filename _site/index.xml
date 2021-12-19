@@ -7,21 +7,1497 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 15 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 Dec 2021 00:00:00 +0000</lastBuildDate>
     <item>
       <title>API's and parameterized reports</title>
       <dc:creator>Lukas Gröninger</dc:creator>
       <link>https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports</link>
-      <description>How to access the SimFin API for financial reporting.</description>
+      <description>
+
+
+&lt;p&gt;API’s (Application Programming Interfaces) are crucial when it comes to applications communicating with each other. Today they are everywhere around us and I guess we cannot imagine a world without them. We are interacting with API’s several times a day e.g. when we are using Google Maps or sending out a tweet.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reportsimg/use_apis.jpg" alt="" /&gt;
+&lt;p class="caption"&gt;Source: www.pexels.com&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;In the past years many organizations have decided to use an &lt;a href="https://swagger.io/resources/articles/adopting-an-api-first-approach/#:~:text=An%20API%2Dfirst%20approach%20means,be%20consumed%20by%20client%20applications."&gt;&lt;em&gt;API-first approach&lt;/em&gt;&lt;/a&gt; for their projects. In this blogpost I want to first show how to access the SimFin API and second how to create your own financial (or any other) report.&lt;/p&gt;
+&lt;h2 id="simfin"&gt;SimFin&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://simfin.com/"&gt;SimFin&lt;/a&gt; stands for &lt;strong&gt;sim&lt;/strong&gt;plifying &lt;strong&gt;fin&lt;/strong&gt;ance and is an organization that provides fundamental financial data about public companies for everyone. In order to get an API-key and download data you need to register with a mail account first. It is recommended to store the API-key in an environment variable. &lt;a href="https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html"&gt;Here&lt;/a&gt; is an article that describes how to do that. After having done that you are good to go.&lt;/p&gt;
+&lt;h2 id="accessing-an-api"&gt;Accessing an API&lt;/h2&gt;
+&lt;p&gt;First we’ll load all necessary libraries.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# required libraries
+library(tidyverse) 
+library(here)
+library(simfinapi)
+library(httr2)      # communicating with API&amp;#39;s through R
+library(lubridate)  # Handling dates
+library(gt)         # Pretty tables
+library(gtExtras)
+
+# Setting theme
+plotutils::set_custom_theme(base_size = 30)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;On the simfin website you will find a link to their &lt;a href="https://simfin.com/api/v2/documentation/"&gt;Web API documentation&lt;/a&gt;. We start with an easy example of communicating with the API where we’ll request a list of available companies and their SimFinId.&lt;/p&gt;
+&lt;p&gt;First we’ll store our API-key in a variable and create our url (web-address) with which we want to talk to. This information is available in the documentation.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;my_apikey &amp;lt;- Sys.getenv(&amp;quot;SIMFIN_KEY&amp;quot;)
+
+base_url &amp;lt;- &amp;quot;https://simfin.com/api/v2/&amp;quot;
+
+endpoint &amp;lt;- &amp;quot;companies/list&amp;quot;
+
+# Create url
+url &amp;lt;- paste0(base_url, endpoint, &amp;quot;?api-key=&amp;quot;, my_apikey)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we could just copy paste this url in our browser and see the result:&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reportsimg/get_request_browser.PNG" alt="" /&gt;
+&lt;p class="caption"&gt;Inserting our url in the browser&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;But fortunately there is a more elegant R package for communicating with API’s. The &lt;code&gt;{httr2}&lt;/code&gt; package is an advancement of the &lt;code&gt;{httr}&lt;/code&gt; package developed by &lt;a href="https://httr2.r-lib.org/"&gt;Hadley Wickham&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# create the request
+req &amp;lt;- request(url) |&amp;gt; 
+  req_perform()
+
+# Check if it worked
+resp_status(req)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 200&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Glad to see that the request worked. Now we want to parse it’s raw output. In our case this is done via the &lt;code&gt;resp_bod_json()&lt;/code&gt; function (as we are dealing with json data - see the browser output). Then we are converting it to a dataframe/tibble.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;content_json &amp;lt;- resp_body_json(req) 
+
+content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
+                     ticker = map_chr(content_json$data, 2))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s have a look at the first few rows of our dataframe of available companies:&lt;/p&gt;
+&lt;div id="wwcbicstxd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#wwcbicstxd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wwcbicstxd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wwcbicstxd .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wwcbicstxd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wwcbicstxd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wwcbicstxd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wwcbicstxd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wwcbicstxd .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wwcbicstxd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wwcbicstxd .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#wwcbicstxd .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#wwcbicstxd .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wwcbicstxd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#wwcbicstxd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wwcbicstxd .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wwcbicstxd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wwcbicstxd .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#wwcbicstxd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wwcbicstxd .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#wwcbicstxd .gt_left {
+  text-align: left;
+}
+
+#wwcbicstxd .gt_center {
+  text-align: center;
+}
+
+#wwcbicstxd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wwcbicstxd .gt_font_normal {
+  font-weight: normal;
+}
+
+#wwcbicstxd .gt_font_bold {
+  font-weight: bold;
+}
+
+#wwcbicstxd .gt_font_italic {
+  font-style: italic;
+}
+
+#wwcbicstxd .gt_super {
+  font-size: 65%;
+}
+
+#wwcbicstxd .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class="gt_table"&gt;
+  &lt;thead class="gt_header"&gt;
+    &lt;tr&gt;
+      &lt;th colspan="2" class="gt_heading gt_title gt_font_normal gt_bottom_border" style&gt;Available companies&lt;/th&gt;
+    &lt;/tr&gt;
+    
+  &lt;/thead&gt;
+  &lt;thead class="gt_col_headings"&gt;
+    &lt;tr&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"&gt;simfin_id&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"&gt;ticker&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class="gt_table_body"&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_right"&gt;854465&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;1COV.DE&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_right"&gt;45846&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;A&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_right"&gt;1253413&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;A18&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_right"&gt;1205636&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;A20&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_right"&gt;367153&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;AA&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_right"&gt;939324&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;AAC_delist&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_right"&gt;68568&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;AAL&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;After scrolling through the first entries we recognize the AAPL ticker belonging to Apple. Now we’ll have a closer look at this company and extend our request with more fields.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Define ticker. We want to have a look at Apple
+ticker &amp;lt;- &amp;quot;AAPL&amp;quot;
+
+# the statement to retrieve. (profit/loss)
+statement &amp;lt;- &amp;quot;pl&amp;quot;
+
+# the period &amp;amp; financial year to retrieve
+period &amp;lt;- &amp;quot;q4&amp;quot;
+fyear &amp;lt;- 2021
+
+# create url
+url &amp;lt;- paste0(base_url, &amp;quot;companies/statements?api-key=&amp;quot;, my_apikey, &amp;quot;&amp;amp;ticker=&amp;quot;, ticker, 
+              &amp;quot;&amp;amp;statement=&amp;quot;, statement, &amp;quot;&amp;amp;period=&amp;quot;, period,&amp;quot;&amp;amp;fyear=&amp;quot;, fyear)
+
+# make request
+apple_req &amp;lt;- request(url) |&amp;gt; 
+  req_perform()
+
+# convert JSON
+apple_json &amp;lt;- resp_body_json(apple_req)[[1]]
+
+apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
+                   value = map_chr(apple_json$data[[1]], 1, .null = NA_character_))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can inspect some information for Apple’s last quarter.&lt;/p&gt;
+&lt;div id="mfoofwgghe" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#mfoofwgghe .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mfoofwgghe .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mfoofwgghe .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mfoofwgghe .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mfoofwgghe .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mfoofwgghe .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mfoofwgghe .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mfoofwgghe .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mfoofwgghe .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mfoofwgghe .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#mfoofwgghe .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#mfoofwgghe .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mfoofwgghe .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#mfoofwgghe .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mfoofwgghe .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mfoofwgghe .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mfoofwgghe .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mfoofwgghe .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mfoofwgghe .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#mfoofwgghe .gt_left {
+  text-align: left;
+}
+
+#mfoofwgghe .gt_center {
+  text-align: center;
+}
+
+#mfoofwgghe .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mfoofwgghe .gt_font_normal {
+  font-weight: normal;
+}
+
+#mfoofwgghe .gt_font_bold {
+  font-weight: bold;
+}
+
+#mfoofwgghe .gt_font_italic {
+  font-style: italic;
+}
+
+#mfoofwgghe .gt_super {
+  font-size: 65%;
+}
+
+#mfoofwgghe .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class="gt_table"&gt;
+  &lt;thead class="gt_header"&gt;
+    &lt;tr&gt;
+      &lt;th colspan="2" class="gt_heading gt_title gt_font_normal gt_bottom_border" style&gt;Apple's 4. Quarter 2021&lt;/th&gt;
+    &lt;/tr&gt;
+    
+  &lt;/thead&gt;
+  &lt;thead class="gt_col_headings"&gt;
+    &lt;tr&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"&gt;variable&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"&gt;value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class="gt_table_body"&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;Ticker&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;AAPL&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;Report Date&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;2021-09-30&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;Publish Date&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;2021-10-29&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;Revenue&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;83360000000.000000&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;Gross Profit&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;35174000000.000000&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;Operating Expenses&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;-11388000000.000000&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;Research &amp;amp; Development&lt;/td&gt;
+&lt;td class="gt_row gt_left"&gt;-5772000000.000000&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;h3 id="the-simfinapi-package"&gt;The {simfinapi} package&lt;/h3&gt;
+&lt;p&gt;Accessing the API in this way is somewhat cumbersome for more complex matters. But thankfully someone has written an R package for this as well.&lt;/p&gt;
+&lt;p&gt;Thanks to &lt;a href="https://github.com/matthiasgomolka"&gt;Matthias Gomolka&lt;/a&gt; for maintaining the {simfinapi} &lt;a href="https://github.com/matthiasgomolka/simfinapi"&gt;R package&lt;/a&gt;. This package wraps the SimFin API and allows us an easier access.&lt;/p&gt;
+&lt;p&gt;First we set our API-key and a cache directory for our requests.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Setting the api key
+sfa_set_api_key(api_key = Sys.getenv(&amp;quot;SIMFIN_KEY&amp;quot;))
+# Setting up cache directory
+sfa_set_cache_dir(here(&amp;quot;_posts/2021-12-15-apis-and-parameterized-reports&amp;quot;, 
+                       &amp;quot;simfin_cache&amp;quot;), create = TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can use a set of functions to retrieve the information of interest. Our first request can be rewritten in one line as this:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;available_companies &amp;lt;- sfa_get_entities()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If we want to look at some basic information for a company like Apple, we would write:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;company_infos &amp;lt;- sfa_get_info(ticker = &amp;quot;AAPL&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id="reporting-with-r"&gt;Reporting with R&lt;/h2&gt;
+&lt;p&gt;One of the biggest strengths of R is its ability to produce beautiful reproducible reports and articles. This is done with &lt;a href="https://rmarkdown.rstudio.com/"&gt;{RMarkdown}&lt;/a&gt; and additional packages like {knitr}, {distill} etc. To learn more, I recommend the &lt;a href="https://bookdown.org/yihui/rmarkdown-cookbook/"&gt;RMarkdown Cookbook&lt;/a&gt; by Yihui Xie, Christophe Dervieux and Emily Riederer.&lt;/p&gt;
+&lt;p&gt;For our small example report we want to focus on a specific set of companies. Let’s say we want to know how the stock prices of different social media networks performed in 2020. Were all companies equally affected by the Corona Virus? What we want also is to be able to change the set of companies as well as the year of interest programmatically when rendering the report. RMarkdown lets you define specific parameters at the top that you can access then inside your R code chunks.&lt;/p&gt;
+&lt;p&gt;To include these parameters in our report we have to define them first in the YAML header of our document. In our case this may look like this:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;params:
+  stocks: [&amp;quot;FB&amp;quot;, &amp;quot;TWTR&amp;quot;, &amp;quot;SNAP&amp;quot;, &amp;quot;PINS&amp;quot;]
+  fiscal_year: 2020&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here we provide a list of stocks and the fiscal year as variables. We can access for example the list of stocks in our script with &lt;code&gt;params$stocks&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id="stock-prices-over-the-year"&gt;Stock prices over the year&lt;/h3&gt;
+&lt;p&gt;In this manner we can now use our parameters as arguments for the {simfinapi} functions.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Get company infos
+company_infos &amp;lt;- sfa_get_info(ticker = params$stocks)
+
+# Get stock prices of companies of interest
+shares &amp;lt;- sfa_get_prices(ticker = params$stocks) |&amp;gt; 
+  left_join(company_infos)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can generate an outpot comparing the stock price development over the year we specified before.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;shares |&amp;gt; 
+  mutate(year = year(date)) |&amp;gt; 
+  # Filter only prices for our year of interest
+  filter(year == params$fiscal_year) |&amp;gt; 
+  ggplot(aes(x = date, y = adj_close)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::dollar_format()) +
+  facet_wrap(~company_name, scales = &amp;quot;free_y&amp;quot;) +
+  scale_x_date(date_breaks = &amp;quot;3 months&amp;quot;, date_labels = &amp;quot;%b&amp;quot;) +
+  labs(title = glue::glue(&amp;quot;Stock prices over the year {params$fiscal_year}&amp;quot;),
+       x = NULL,
+       y = NULL)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file335881732f7_files/figure-html/unnamed-chunk-12-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;We can not only filter by our parameters but also using it to dynamically change the title of the plot. With different scales it is hard to compare the development between the selected companies. That’s why we’ll produce a plot with a logarithmized y axis.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;shares |&amp;gt;  
+  mutate(year = year(date)) |&amp;gt;  
+  filter(year == params$fiscal_year) |&amp;gt; 
+  ggplot(aes(x = date, y = adj_close, colour = company_name)) +
+  geom_line(lwd = 1) +
+  scale_y_continuous(trans = &amp;quot;log10&amp;quot;, labels = scales::dollar_format()) +
+  viridis::scale_colour_viridis(discrete = TRUE) +
+  scale_x_date(date_breaks = &amp;quot;3 months&amp;quot;, date_labels = &amp;quot;%b&amp;quot;) +
+  labs(title = &amp;quot;Comparison with logarithmized y axis&amp;quot;,
+       x = NULL,
+       y = NULL,
+       colour = NULL) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file335881732f7_files/figure-html/unnamed-chunk-13-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;Here we can see directly the comparison between companies and specifically the “Corona effect” in the middle of march. By now I guess many have seen logarithmized scales as they were quite popular to illustrate exponential growth of Corona Virus cases. The difference between 10$ and 100$ is the same as the difference between 30$ and 300$. The social network whose share price has risen the most is Pinterest. One hypothesis is that Pinterest in particular could benefit from the retreat into the own four walls. On this platform, the topics of designing and decorating the home, garden etc. are popular.&lt;/p&gt;
+&lt;h3 id="creating-your-own-metric"&gt;Creating your own metric&lt;/h3&gt;
+&lt;p&gt;Now we don’t want to only compare the development of the stock prices, but have a deeper look at some characteristics of these companies. The SimFin API offers a variety of variables and information. We can access them through the {simfinapi} function &lt;code&gt;sfa_get_statement()&lt;/code&gt;. For now, we want to calculate our own metric to compare our four companies. This metric will be the &lt;em&gt;Rule of 40&lt;/em&gt;&lt;a href="#fn1" class="footnote-ref" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; which is typically applied to SaaS (Software as a Service) companies to evaluate their development. Two metrics will be combined here. One is the growth of the company and the other is profit. In the first years of a company, it is common that there is no profit yet, but an emphasis on growth. As a rule of thumb the sum of growth and profit should equal to at least 40. For example 50% Growth and -10% Profit Margin would still satisfy this condition.&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[
+Rule\; of\; 40 = Growth + Profit\; Margin
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This simple metric can, of course, also be weighted if one of the two components is considered more relevant. Now let’s examine what this metric looks like for companies at the end of the fiscal year.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# The net profit margin information is found in the &amp;quot;derived&amp;quot; statement
+derived_q4 &amp;lt;- sfa_get_statement(ticker = params$stocks,
+                                fyear = params$fiscal_year,
+                                period = &amp;quot;q4&amp;quot;,
+                                statement = &amp;quot;derived&amp;quot;)
+
+derived_q3 &amp;lt;- sfa_get_statement(ticker = params$stocks,
+                                fyear = params$fiscal_year,
+                                period = &amp;quot;q3&amp;quot;,
+                                statement = &amp;quot;derived&amp;quot;)
+
+# The revenue information can be found in the pl (profit/loss) statement
+profit_loss_q4 &amp;lt;- sfa_get_statement(ticker = params$stocks,
+                                    fyear = params$fiscal_year,
+                                    period = &amp;quot;q4&amp;quot;,
+                                    statement = &amp;quot;pl&amp;quot;)
+
+profit_loss_q3 &amp;lt;- sfa_get_statement(ticker = params$stocks,
+                                    fyear = params$fiscal_year,
+                                    period = &amp;quot;q3&amp;quot;,
+                                    statement = &amp;quot;pl&amp;quot;)
+# Define our own Metric
+rule_40 &amp;lt;- profit_loss_q4 |&amp;gt; 
+  select(ticker, fiscal_year, revenue) |&amp;gt; 
+  mutate(growth = revenue/profit_loss_q3$revenue - 1) |&amp;gt; 
+  inner_join(select(derived_q4, net_profit_margin, ticker)) |&amp;gt; 
+  mutate(rule_40 = growth + net_profit_margin,
+         revenue = revenue/1e6)&lt;/code&gt;&lt;/pre&gt;
+&lt;div id="nexeqjjiaf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;style&gt;html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#nexeqjjiaf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#nexeqjjiaf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#nexeqjjiaf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#nexeqjjiaf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#nexeqjjiaf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#nexeqjjiaf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#nexeqjjiaf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#nexeqjjiaf .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nexeqjjiaf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nexeqjjiaf .gt_from_md &gt; :first-child {
+  margin-top: 0;
+}
+
+#nexeqjjiaf .gt_from_md &gt; :last-child {
+  margin-bottom: 0;
+}
+
+#nexeqjjiaf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#nexeqjjiaf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#nexeqjjiaf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nexeqjjiaf .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nexeqjjiaf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#nexeqjjiaf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#nexeqjjiaf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nexeqjjiaf .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#nexeqjjiaf .gt_left {
+  text-align: left;
+}
+
+#nexeqjjiaf .gt_center {
+  text-align: center;
+}
+
+#nexeqjjiaf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#nexeqjjiaf .gt_font_normal {
+  font-weight: normal;
+}
+
+#nexeqjjiaf .gt_font_bold {
+  font-weight: bold;
+}
+
+#nexeqjjiaf .gt_font_italic {
+  font-style: italic;
+}
+
+#nexeqjjiaf .gt_super {
+  font-size: 65%;
+}
+
+#nexeqjjiaf .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+&lt;/style&gt;
+&lt;table class="gt_table"&gt;
+  &lt;thead class="gt_header"&gt;
+    &lt;tr&gt;
+      &lt;th colspan="6" class="gt_heading gt_title gt_font_normal gt_bottom_border" style&gt;Rule of 40&lt;/th&gt;
+    &lt;/tr&gt;
+    
+  &lt;/thead&gt;
+  &lt;thead class="gt_col_headings"&gt;
+    &lt;tr&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"&gt;ticker&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"&gt;fiscal_year&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"&gt;revenue&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"&gt;growth&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"&gt;net_profit_margin&lt;/th&gt;
+      &lt;th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1"&gt;rule_40&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody class="gt_table_body"&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;FB&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;2020&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;28071&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;0.307&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;0.400&lt;/td&gt;
+&lt;td class="gt_row gt_right" style="background-color: #56B5A8; color: #000000;"&gt;0.707&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;PINS&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;2020&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;706&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;0.594&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;0.295&lt;/td&gt;
+&lt;td class="gt_row gt_right" style="background-color: #2BA193; color: #000000;"&gt;0.889&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;SNAP&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;2020&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;911&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;0.343&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;-0.124&lt;/td&gt;
+&lt;td class="gt_row gt_right" style="background-color: #AEEAE3; color: #000000;"&gt;0.219&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class="gt_row gt_left"&gt;TWTR&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;2020&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;1289&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;0.377&lt;/td&gt;
+&lt;td class="gt_row gt_right"&gt;0.172&lt;/td&gt;
+&lt;td class="gt_row gt_right" style="background-color: #74C6BB; color: #000000;"&gt;0.549&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+  
+  
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;p&gt;Pinterest reached with almost 60% the highest growth relative to the previous quarter. Facebook - or Meta as it’s now being called - had the highest profitability. Added together only Snap was not able to satisfy the Rule of 40 metric.&lt;/p&gt;
+&lt;p&gt;In such a way, reports can now be created programmatically. If we want to e.g. exchange Snapchat with Google (Ticker is GOOG), we would render our report as follows:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;rmarkdown::render(my_report.Rmd, 
+                  params = list(stocks = c(&amp;quot;FB&amp;quot;, &amp;quot;TWTR&amp;quot;, &amp;quot;GOOG&amp;quot;, &amp;quot;PINS&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are countless possibilities to create specific reporting templates and functions for your own use cases. A really minimal example of how such a report might look like can be found &lt;a href="https://github.com/L-Groeninger/lukas-r.blog/tree/main/_posts/2021-12-15-apis-and-parameterized-reports"&gt;here&lt;/a&gt; in the Github repo of this blogpost. The output format is of course not limited to html, but can be PDF as well.&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="footnotes"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn1"&gt;&lt;p&gt;&lt;a href="https://kpisense.com/glossary/rule-of-40" class="uri"&gt;https://kpisense.com/glossary/rule-of-40&lt;/a&gt;&lt;a href="#fnref1" class="footnote-back"&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</description>
+      <distill:md5>520c42a79470016a2eede2e2c93ae27a</distill:md5>
       <guid>https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports</guid>
-      <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/img/use_apis.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
       <title>Looping over the bridge</title>
       <dc:creator>Lukas Gröninger</dc:creator>
       <link>https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge</link>
-      <description>Comparing loops by simulating a Squid Game scene</description>
+      <description>
+
+
+&lt;p&gt;A few weeks ago I did an introductory R workshop where one of the students asked about loops and the difference of &lt;em&gt;for&lt;/em&gt; vs &lt;em&gt;while&lt;/em&gt; loops. This blogpost is about illustrating these two types of loops using a simulation example.&lt;/p&gt;
+&lt;h1 id="let-the-game-begin"&gt;Let the Game begin&lt;/h1&gt;
+&lt;p&gt;I think the majority knows the Netflix show “Squid Game”. In this series the contestants have to survive several deadly games. Here I want to focus on the 5. game of the show. There are 16 players who have to pass a bridge of 18 * 2 glass plates. At each step they have to decide on which plate they step. With a 50% chance they jump on the harder glass which is able to hold their body, the other 50% will mean their death. As I was watching the show I thought that this would be a perfect example to answer a statistical question by using loops and simulation.&lt;/p&gt;
+&lt;p&gt;The question I wanted to answer was:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;How many players do we expect to survive the game?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="figure"&gt;
+&lt;img src="C:/Users/lukas/Desktop/Kram/lukas-r.blog/_posts/2021-12-05-looping-over-the-bridge/img/squid_game_bridge.jpg" alt="Source: https://www.distractify.com/p/games-played-in-squid-game" width="600" /&gt;
+&lt;p class="caption"&gt;
+(#fig:unnamed-chunk-1)Source: &lt;a href="https://www.distractify.com/p/games-played-in-squid-game" class="uri"&gt;https://www.distractify.com/p/games-played-in-squid-game&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Remark:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;After opening twitter, I came across a tweet discussing John Helveston’s &lt;a href="https://www.jhelvy.com/posts/2021-10-19-monte-carlo-bridge-game/"&gt;blogpost&lt;/a&gt; where he basically explained exactly what I wanted to do. I highly recommend his &lt;a href="https://www.jhelvy.com/blog.html"&gt;blog&lt;/a&gt;. I adapted his &lt;code&gt;run_game&lt;/code&gt; function and where he used &lt;code&gt;data.table&lt;/code&gt; I went with the &lt;em&gt;tidy&lt;/em&gt; alternative.&lt;/p&gt;
+&lt;h2 id="monte-carlo-solution"&gt;Monte Carlo Solution&lt;/h2&gt;
+&lt;p&gt;We can solve the question about the number of survivors to expect by simulating the game. When using random simulation to answer statistical problems, this is called Monte Carlo Simulation.&lt;/p&gt;
+&lt;p&gt;First we load the necessary library and set a custom theme for our plots.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)
+library(microbenchmark)
+
+plotutils::set_custom_theme(base_size = 32)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we create a dataframe as an input for the game. In this dataframe the &lt;code&gt;alive&lt;/code&gt; column is set to 1 as in the beginning obviously every player is alive.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Define number of players
+num_players &amp;lt;- 16
+players &amp;lt;- tibble(player = seq(num_players), 
+                  alive = 1)
+
+# Let&amp;#39;s have a look at the dataframe
+players&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;# A tibble: 16 x 2
+   player alive
+    &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt;
+ 1      1     1
+ 2      2     1
+ 3      3     1
+ 4      4     1
+ 5      5     1
+ 6      6     1
+ 7      7     1
+ 8      8     1
+ 9      9     1
+10     10     1
+11     11     1
+12     12     1
+13     13     1
+14     14     1
+15     15     1
+16     16     1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we are going to create the function for our game. This is a great example to look at the differences between for and while loops.&lt;/p&gt;
+&lt;p&gt;We start by creating a function using a for loop:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Define a function for simulating one game using a for loop
+run_game_for &amp;lt;- function(players, num_steps) {
+  lead_player &amp;lt;- 1
+  for (step in seq(num_steps)) {
+    # 50% chance that the glass is safe
+    if (sample(c(TRUE, FALSE), 1)) {
+      # It is safe, now the player can try the next one!
+      next
+    } else {
+      # The glass broke...
+      # Before continuing, check if any players are still alive
+      if (sum(players$alive) == 0) { return(0) }
+      # The lead player died
+      players$alive[lead_player] &amp;lt;- 0
+      lead_player &amp;lt;- lead_player + 1
+    }
+  }
+  return(sum(players$alive))
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then we create a function using a while loop. The setup is quite similar to the previously used &lt;code&gt;run_game_for&lt;/code&gt; function.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Define a function for simulating one game using a while loop
+run_game_while &amp;lt;- function(players, num_steps) {
+  # Initialize starting values
+  lead_player &amp;lt;- 1
+  current_step &amp;lt;- 0
+  game_running &amp;lt;- TRUE
+  
+  while (game_running) {
+    # Let&amp;#39;s see if the glass holds...
+    if (sample(c(TRUE, FALSE), 1)) {
+      # The glass holds and the player can go one step further
+      current_step &amp;lt;- current_step + 1
+    } else {
+      # Check if there are still players alive, if not end the game
+      if (sum(players$alive) == 0) { return(0)}
+      # Apparently the glass didnt hold and the current lead player dies
+      players$alive[lead_player] &amp;lt;- 0
+      lead_player &amp;lt;- lead_player + 1
+      # Anyway the player can go one step further 
+      current_step &amp;lt;- current_step + 1
+    }
+    if (current_step == num_steps) {
+      # If they got to the last step, they did it and the game stops
+      game_running &amp;lt;- FALSE
+    }
+  }
+  # Return the number of remaining players
+  return(sum(players$alive))
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let’s give it a try and see how many survive in our game.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;set.seed(001)
+
+# Run one iteration of the game
+single_game &amp;lt;- run_game_while(players, num_steps = 18)
+single_game&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 9&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We were interested in the expected value of the outcome. One iteration is not enough, but this is no problem at all. We can simply simulate our game multiple times.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Set seed value to keep reproducibility and to give a hint who wins the game
+set.seed(456)
+
+# Define number of runs or games we want to play
+n_runs &amp;lt;- 10000
+
+# Create dataframe with outcome of each game
+sims &amp;lt;- tibble(trial = seq(n_runs)) |&amp;gt; 
+  rowwise() |&amp;gt; 
+  mutate(while_loop = run_game_while(players, num_steps = 18),
+         for_loop = run_game_for(players, num_steps = 18)) |&amp;gt; 
+  pivot_longer(-trial, names_to = &amp;quot;loop&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Have a look at the descriptive statistics:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;summary(sims$value)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   0.00    6.00    7.00    6.98    8.00   15.00 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There were games where zero players survived the game and there were games where almost all players managed to survive.&lt;/p&gt;
+&lt;p&gt;Of course we can also visualize our distribution:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Visualizing the resulting distribution
+sims |&amp;gt; 
+  ggplot(aes(x = value, fill = loop)) +
+  geom_bar(position = position_dodge()) +
+  scale_x_continuous(breaks = seq(0, num_players)) +
+  labs(title = &amp;quot;Distribution of numbers of surviving players&amp;quot;,
+       x = &amp;quot;N surviving players&amp;quot;,
+       fill = NULL)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file335828c0268c_files/figure-html/unnamed-chunk-9-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;The two different colours indicate which function was used to calculate the result. From this graph we directly see almost the exact same result from the two functions.&lt;/p&gt;
+&lt;p&gt;To answer our previously posed question: We would expect 7 players to survive the game.&lt;/p&gt;
+&lt;h2 id="benchmarking-for-vs-while-loop"&gt;Benchmarking for vs while loop&lt;/h2&gt;
+&lt;p&gt;Now we can also test the performance of the different functions against each other.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;set.seed(001)
+
+test &amp;lt;- microbenchmark(
+  run_game_for(players, num_steps = 18),
+  run_game_while(players, num_steps = 18)
+)
+
+autoplot(test)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file335828c0268c_files/figure-html/unnamed-chunk-10-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;Again there is not really a difference…&lt;/p&gt;
+&lt;h2 id="mathematical-solution"&gt;Mathematical Solution&lt;/h2&gt;
+&lt;p&gt;Of course we can not only simulate the game to get to our solution.&lt;/p&gt;
+&lt;p&gt;Here is the mathematical formula for n players:&lt;/p&gt;
+&lt;p&gt;&lt;span class="math display"&gt;\[
+\sum_{i = 0}^{n-1} \binom{18}{i} * 0.5^i * 0.5^{18-i} * (n-i)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We can convert it to R Code and calculate the result.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;n &amp;lt;- 16
+
+expected_fun &amp;lt;- function(i) choose(18, i) * 0.5^i * 0.5^(18-i) * (n - i)
+
+map_dbl(0:(n-1), expected_fun) |&amp;gt; sum()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Et voilà! The result from the Monte Carlo simulation was confirmed.&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>931ec4f7a283d4e0ee2c0ee0ed9c00ab</distill:md5>
       <guid>https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge</guid>
       <pubDate>Sun, 05 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/img/squid_game_bridge.jpg" medium="image" type="image/jpeg"/>
