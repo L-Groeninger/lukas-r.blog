@@ -3,6 +3,7 @@ title: "Lukas R Blog"
 description: |
   Lukas R Blog
 base_url: https://lukas-r.blog
+creative_commons: CC BY
 collections:
   posts:
     share: [twitter, linkedin]
