@@ -24,3 +24,4 @@ output:
       in_header: giscus.html
 rss:
   full_content: true
+google_analytics: "G-VJKXRJPYQX"
