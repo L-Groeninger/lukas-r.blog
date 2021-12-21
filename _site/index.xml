@@ -7,7 +7,7 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 14 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 Dec 2021 00:00:00 +0000</lastBuildDate>
     <item>
       <title>API's and parameterized reports</title>
       <dc:creator>Lukas Gröninger</dc:creator>
@@ -65,12 +65,12 @@ resp_status(req)&lt;/code&gt;&lt;/pre&gt;
 content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
                      ticker = map_chr(content_json$data, 2))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Let’s have a look at the first few rows of our dataframe of available companies:&lt;/p&gt;
-&lt;div id="wwcbicstxd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="eazpadmrnm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#wwcbicstxd .gt_table {
+#eazpadmrnm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -95,7 +95,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-left-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_heading {
+#eazpadmrnm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -107,7 +107,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_title {
+#eazpadmrnm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -117,7 +117,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-bottom-width: 0;
 }
 
-#wwcbicstxd .gt_subtitle {
+#eazpadmrnm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -127,13 +127,13 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-width: 0;
 }
 
-#wwcbicstxd .gt_bottom_border {
+#eazpadmrnm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_col_headings {
+#eazpadmrnm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -148,7 +148,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_col_heading {
+#eazpadmrnm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -168,7 +168,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   overflow-x: hidden;
 }
 
-#wwcbicstxd .gt_column_spanner_outer {
+#eazpadmrnm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -180,15 +180,15 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 4px;
 }
 
-#wwcbicstxd .gt_column_spanner_outer:first-child {
+#eazpadmrnm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wwcbicstxd .gt_column_spanner_outer:last-child {
+#eazpadmrnm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wwcbicstxd .gt_column_spanner {
+#eazpadmrnm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -200,7 +200,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   width: 100%;
 }
 
-#wwcbicstxd .gt_group_heading {
+#eazpadmrnm .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -222,7 +222,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   vertical-align: middle;
 }
 
-#wwcbicstxd .gt_empty_group_heading {
+#eazpadmrnm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -237,15 +237,15 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   vertical-align: middle;
 }
 
-#wwcbicstxd .gt_from_md &gt; :first-child {
+#eazpadmrnm .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#wwcbicstxd .gt_from_md &gt; :last-child {
+#eazpadmrnm .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#wwcbicstxd .gt_row {
+#eazpadmrnm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -264,7 +264,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   overflow-x: hidden;
 }
 
-#wwcbicstxd .gt_stub {
+#eazpadmrnm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -276,7 +276,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-left: 12px;
 }
 
-#wwcbicstxd .gt_summary_row {
+#eazpadmrnm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -286,7 +286,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 5px;
 }
 
-#wwcbicstxd .gt_first_summary_row {
+#eazpadmrnm .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -296,7 +296,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_grand_summary_row {
+#eazpadmrnm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -306,7 +306,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 5px;
 }
 
-#wwcbicstxd .gt_first_grand_summary_row {
+#eazpadmrnm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -316,11 +316,11 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_striped {
+#eazpadmrnm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wwcbicstxd .gt_table_body {
+#eazpadmrnm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -329,7 +329,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-bottom-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_footnotes {
+#eazpadmrnm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -343,13 +343,13 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_footnote {
+#eazpadmrnm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#wwcbicstxd .gt_sourcenotes {
+#eazpadmrnm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -363,41 +363,41 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#wwcbicstxd .gt_sourcenote {
+#eazpadmrnm .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#wwcbicstxd .gt_left {
+#eazpadmrnm .gt_left {
   text-align: left;
 }
 
-#wwcbicstxd .gt_center {
+#eazpadmrnm .gt_center {
   text-align: center;
 }
 
-#wwcbicstxd .gt_right {
+#eazpadmrnm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wwcbicstxd .gt_font_normal {
+#eazpadmrnm .gt_font_normal {
   font-weight: normal;
 }
 
-#wwcbicstxd .gt_font_bold {
+#eazpadmrnm .gt_font_bold {
   font-weight: bold;
 }
 
-#wwcbicstxd .gt_font_italic {
+#eazpadmrnm .gt_font_italic {
   font-style: italic;
 }
 
-#wwcbicstxd .gt_super {
+#eazpadmrnm .gt_super {
   font-size: 65%;
 }
 
-#wwcbicstxd .gt_footnote_marks {
+#eazpadmrnm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -461,12 +461,12 @@ apple_json &amp;lt;- resp_body_json(apple_req)[[1]]
 apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
                    value = map_chr(apple_json$data[[1]], 1, .null = NA_character_))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now we can inspect some information for Apple’s last quarter.&lt;/p&gt;
-&lt;div id="mfoofwgghe" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="zivinvnmsn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#mfoofwgghe .gt_table {
+#zivinvnmsn .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -491,7 +491,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-left-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_heading {
+#zivinvnmsn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -503,7 +503,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_title {
+#zivinvnmsn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -513,7 +513,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-bottom-width: 0;
 }
 
-#mfoofwgghe .gt_subtitle {
+#zivinvnmsn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -523,13 +523,13 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-width: 0;
 }
 
-#mfoofwgghe .gt_bottom_border {
+#zivinvnmsn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_col_headings {
+#zivinvnmsn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -544,7 +544,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_col_heading {
+#zivinvnmsn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -564,7 +564,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   overflow-x: hidden;
 }
 
-#mfoofwgghe .gt_column_spanner_outer {
+#zivinvnmsn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -576,15 +576,15 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 4px;
 }
 
-#mfoofwgghe .gt_column_spanner_outer:first-child {
+#zivinvnmsn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mfoofwgghe .gt_column_spanner_outer:last-child {
+#zivinvnmsn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mfoofwgghe .gt_column_spanner {
+#zivinvnmsn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -596,7 +596,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   width: 100%;
 }
 
-#mfoofwgghe .gt_group_heading {
+#zivinvnmsn .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -618,7 +618,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   vertical-align: middle;
 }
 
-#mfoofwgghe .gt_empty_group_heading {
+#zivinvnmsn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -633,15 +633,15 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   vertical-align: middle;
 }
 
-#mfoofwgghe .gt_from_md &gt; :first-child {
+#zivinvnmsn .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#mfoofwgghe .gt_from_md &gt; :last-child {
+#zivinvnmsn .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#mfoofwgghe .gt_row {
+#zivinvnmsn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -660,7 +660,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   overflow-x: hidden;
 }
 
-#mfoofwgghe .gt_stub {
+#zivinvnmsn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -672,7 +672,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-left: 12px;
 }
 
-#mfoofwgghe .gt_summary_row {
+#zivinvnmsn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -682,7 +682,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 5px;
 }
 
-#mfoofwgghe .gt_first_summary_row {
+#zivinvnmsn .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -692,7 +692,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_grand_summary_row {
+#zivinvnmsn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -702,7 +702,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 5px;
 }
 
-#mfoofwgghe .gt_first_grand_summary_row {
+#zivinvnmsn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -712,11 +712,11 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_striped {
+#zivinvnmsn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mfoofwgghe .gt_table_body {
+#zivinvnmsn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -725,7 +725,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-bottom-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_footnotes {
+#zivinvnmsn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -739,13 +739,13 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_footnote {
+#zivinvnmsn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#mfoofwgghe .gt_sourcenotes {
+#zivinvnmsn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -759,41 +759,41 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#mfoofwgghe .gt_sourcenote {
+#zivinvnmsn .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#mfoofwgghe .gt_left {
+#zivinvnmsn .gt_left {
   text-align: left;
 }
 
-#mfoofwgghe .gt_center {
+#zivinvnmsn .gt_center {
   text-align: center;
 }
 
-#mfoofwgghe .gt_right {
+#zivinvnmsn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mfoofwgghe .gt_font_normal {
+#zivinvnmsn .gt_font_normal {
   font-weight: normal;
 }
 
-#mfoofwgghe .gt_font_bold {
+#zivinvnmsn .gt_font_bold {
   font-weight: bold;
 }
 
-#mfoofwgghe .gt_font_italic {
+#zivinvnmsn .gt_font_italic {
   font-style: italic;
 }
 
-#mfoofwgghe .gt_super {
+#zivinvnmsn .gt_super {
   font-size: 65%;
 }
 
-#mfoofwgghe .gt_footnote_marks {
+#zivinvnmsn .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -874,7 +874,7 @@ shares &amp;lt;- sfa_get_prices(ticker = params$stocks) |&amp;gt;
   labs(title = glue::glue(&amp;quot;Stock prices over the year {params$fiscal_year}&amp;quot;),
        x = NULL,
        y = NULL)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file335881732f7_files/figure-html/unnamed-chunk-12-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file20c44cf47896_files/figure-html/unnamed-chunk-12-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;We can not only filter by our parameters but also using it to dynamically change the title of the plot. With different scales it is hard to compare the development between the selected companies. That’s why we’ll produce a plot with a logarithmized y axis.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;shares |&amp;gt;  
   mutate(year = year(date)) |&amp;gt;  
@@ -888,7 +888,7 @@ shares &amp;lt;- sfa_get_prices(ticker = params$stocks) |&amp;gt;
        x = NULL,
        y = NULL,
        colour = NULL) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file335881732f7_files/figure-html/unnamed-chunk-13-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file20c44cf47896_files/figure-html/unnamed-chunk-13-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;Here we can see directly the comparison between companies and specifically the “Corona effect” in the middle of march. By now I guess many have seen logarithmized scales as they were quite popular to illustrate exponential growth of Corona Virus cases. The difference between 10$ and 100$ is the same as the difference between 30$ and 300$. The social network whose share price has risen the most is Pinterest. One hypothesis is that Pinterest in particular could benefit from the retreat into the own four walls. On this platform, the topics of designing and decorating the home, garden etc. are popular.&lt;/p&gt;
 &lt;h3 id="creating-your-own-metric"&gt;Creating your own metric&lt;/h3&gt;
 &lt;p&gt;Now we don’t want to only compare the development of the stock prices, but have a deeper look at some characteristics of these companies. The SimFin API offers a variety of variables and information. We can access them through the {simfinapi} function &lt;code&gt;sfa_get_statement()&lt;/code&gt;. For now, we want to calculate our own metric to compare our four companies. This metric will be the &lt;em&gt;Rule of 40&lt;/em&gt;&lt;a href="#fn1" class="footnote-ref" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; which is typically applied to SaaS (Software as a Service) companies to evaluate their development. Two metrics will be combined here. One is the growth of the company and the other is profit. In the first years of a company, it is common that there is no profit yet, but an emphasis on growth. As a rule of thumb the sum of growth and profit should equal to at least 40. For example 50% Growth and -10% Profit Margin would still satisfy this condition.&lt;/p&gt;
@@ -924,12 +924,12 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   inner_join(select(derived_q4, net_profit_margin, ticker)) |&amp;gt; 
   mutate(rule_40 = growth + net_profit_margin,
          revenue = revenue/1e6)&lt;/code&gt;&lt;/pre&gt;
-&lt;div id="nexeqjjiaf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="uegecfvohp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#nexeqjjiaf .gt_table {
+#uegecfvohp .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -954,7 +954,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-left-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_heading {
+#uegecfvohp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -966,7 +966,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_title {
+#uegecfvohp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -976,7 +976,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-bottom-width: 0;
 }
 
-#nexeqjjiaf .gt_subtitle {
+#uegecfvohp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -986,13 +986,13 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-width: 0;
 }
 
-#nexeqjjiaf .gt_bottom_border {
+#uegecfvohp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_col_headings {
+#uegecfvohp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1007,7 +1007,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_col_heading {
+#uegecfvohp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1027,7 +1027,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   overflow-x: hidden;
 }
 
-#nexeqjjiaf .gt_column_spanner_outer {
+#uegecfvohp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1039,15 +1039,15 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 4px;
 }
 
-#nexeqjjiaf .gt_column_spanner_outer:first-child {
+#uegecfvohp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nexeqjjiaf .gt_column_spanner_outer:last-child {
+#uegecfvohp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nexeqjjiaf .gt_column_spanner {
+#uegecfvohp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1059,7 +1059,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   width: 100%;
 }
 
-#nexeqjjiaf .gt_group_heading {
+#uegecfvohp .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1081,7 +1081,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   vertical-align: middle;
 }
 
-#nexeqjjiaf .gt_empty_group_heading {
+#uegecfvohp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1096,15 +1096,15 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   vertical-align: middle;
 }
 
-#nexeqjjiaf .gt_from_md &gt; :first-child {
+#uegecfvohp .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#nexeqjjiaf .gt_from_md &gt; :last-child {
+#uegecfvohp .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#nexeqjjiaf .gt_row {
+#uegecfvohp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1123,7 +1123,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   overflow-x: hidden;
 }
 
-#nexeqjjiaf .gt_stub {
+#uegecfvohp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1135,7 +1135,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-left: 12px;
 }
 
-#nexeqjjiaf .gt_summary_row {
+#uegecfvohp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1145,7 +1145,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 5px;
 }
 
-#nexeqjjiaf .gt_first_summary_row {
+#uegecfvohp .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1155,7 +1155,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_grand_summary_row {
+#uegecfvohp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1165,7 +1165,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 5px;
 }
 
-#nexeqjjiaf .gt_first_grand_summary_row {
+#uegecfvohp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1175,11 +1175,11 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_striped {
+#uegecfvohp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nexeqjjiaf .gt_table_body {
+#uegecfvohp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1188,7 +1188,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-bottom-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_footnotes {
+#uegecfvohp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1202,13 +1202,13 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_footnote {
+#uegecfvohp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#nexeqjjiaf .gt_sourcenotes {
+#uegecfvohp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1222,41 +1222,41 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#nexeqjjiaf .gt_sourcenote {
+#uegecfvohp .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#nexeqjjiaf .gt_left {
+#uegecfvohp .gt_left {
   text-align: left;
 }
 
-#nexeqjjiaf .gt_center {
+#uegecfvohp .gt_center {
   text-align: center;
 }
 
-#nexeqjjiaf .gt_right {
+#uegecfvohp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nexeqjjiaf .gt_font_normal {
+#uegecfvohp .gt_font_normal {
   font-weight: normal;
 }
 
-#nexeqjjiaf .gt_font_bold {
+#uegecfvohp .gt_font_bold {
   font-weight: bold;
 }
 
-#nexeqjjiaf .gt_font_italic {
+#uegecfvohp .gt_font_italic {
   font-style: italic;
 }
 
-#nexeqjjiaf .gt_super {
+#uegecfvohp .gt_super {
   font-size: 65%;
 }
 
-#nexeqjjiaf .gt_footnote_marks {
+#uegecfvohp .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1322,8 +1322,11 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
 &lt;/ol&gt;
 &lt;/div&gt;</description>
       <distill:md5>520c42a79470016a2eede2e2c93ae27a</distill:md5>
+      <category>R</category>
+      <category>API</category>
+      <category>reporting</category>
       <guid>https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports</guid>
-      <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/img/use_apis.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -1467,7 +1470,7 @@ sims |&amp;gt;
   labs(title = &amp;quot;Distribution of numbers of surviving players&amp;quot;,
        x = &amp;quot;N surviving players&amp;quot;,
        fill = NULL)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file335828c0268c_files/figure-html/unnamed-chunk-9-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file20c44d61d9c_files/figure-html/unnamed-chunk-9-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;The two different colours indicate which function was used to calculate the result. From this graph we directly see almost the exact same result from the two functions.&lt;/p&gt;
 &lt;p&gt;To answer our previously posed question: We would expect 7 players to survive the game.&lt;/p&gt;
 &lt;h2 id="benchmarking-for-vs-while-loop"&gt;Benchmarking for vs while loop&lt;/h2&gt;
@@ -1480,7 +1483,7 @@ test &amp;lt;- microbenchmark(
 )
 
 autoplot(test)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file335828c0268c_files/figure-html/unnamed-chunk-10-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file20c44d61d9c_files/figure-html/unnamed-chunk-10-1.png" width="960" /&gt;&lt;/p&gt;
 &lt;p&gt;Again there is not really a difference…&lt;/p&gt;
 &lt;h2 id="mathematical-solution"&gt;Mathematical Solution&lt;/h2&gt;
 &lt;p&gt;Of course we can not only simulate the game to get to our solution.&lt;/p&gt;
@@ -1498,8 +1501,10 @@ map_dbl(0:(n-1), expected_fun) |&amp;gt; sum()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Et voilà! The result from the Monte Carlo simulation was confirmed.&lt;/p&gt;
 &lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
       <distill:md5>931ec4f7a283d4e0ee2c0ee0ed9c00ab</distill:md5>
+      <category>R</category>
+      <category>simulation</category>
       <guid>https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge</guid>
-      <pubDate>Sun, 05 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 04 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://lukas-r.blog/posts/2021-12-05-looping-over-the-bridge/img/squid_game_bridge.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>

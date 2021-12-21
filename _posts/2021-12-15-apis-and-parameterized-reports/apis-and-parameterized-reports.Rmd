@@ -7,6 +7,10 @@ preview: img/use_apis.jpg
 author:
   - name: Lukas Gröninger
 date: 2021-12-15
+categories:
+  - R
+  - API
+  - reporting
 output:
   distill::distill_article:
     toc: true

@@ -7,6 +7,9 @@ preview: img/squid_game_bridge.jpg
 author:
   - name: Lukas Gröninger
 date: 12-05-2021
+categories:
+  - R
+  - simulation
 output:
   distill::distill_article:
     toc: true
