@@ -126,7 +126,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","repository_url","preview","author","date","output","params","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["API's and parameterized reports"]},{"type":"character","attributes":{},"value":["How to access the SimFin API for financial reporting."]},{"type":"character","attributes":{},"value":["https://github.com/L-Groeninger/lukas-r.blog"]},{"type":"character","attributes":{},"value":["img/use_apis.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["2021-12-15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["stocks","fiscal_year"]}},"value":[{"type":"character","attributes":{},"value":["FB","TWTR","SNAP","PINS"]},{"type":"integer","attributes":{},"value":[2020]}]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","repository_url","preview","author","date","categories","output","params","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["API's and parameterized reports"]},{"type":"character","attributes":{},"value":["How to access the SimFin API for financial reporting."]},{"type":"character","attributes":{},"value":["https://github.com/L-Groeninger/lukas-r.blog"]},{"type":"character","attributes":{},"value":["img/use_apis.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["2021-12-15"]},{"type":"character","attributes":{},"value":["R","API","reporting"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["stocks","fiscal_year"]}},"value":[{"type":"character","attributes":{},"value":["FB","TWTR","SNAP","PINS"]},{"type":"integer","attributes":{},"value":[2020]}]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2101,6 +2101,13 @@ document.addEventListener('DOMContentLoaded', function() {
      observer.observe(document.body, { childList: true });
    });
  </script>
+<script type="text/javascript" cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-VJKXRJPYQX"></script>
+<script type="text/javascript" cookie-consent="tracking">
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-VJKXRJPYQX');
+</script>
 <!--/radix_placeholder_site_in_header-->
 
 
@@ -2140,6 +2147,11 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="d-title">
 <h1>API’s and parameterized reports</h1>
 <!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:R" class="dt-tag">R</a>
+  <a href="../../index.html#category:API" class="dt-tag">API</a>
+  <a href="../../index.html#category:reporting" class="dt-tag">reporting</a>
+</div>
 <!--/radix_placeholder_categories-->
 <p><p>How to access the SimFin API for financial reporting.</p></p>
 </div>
@@ -2237,12 +2249,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p>Let’s have a look at the first few rows of our dataframe of available companies:</p>
 <div class="layout-chunk" data-layout="l-body">
-<div id="ppliubvoqg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ccneyylgie" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ppliubvoqg .gt_table {
+#ccneyylgie .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2267,7 +2279,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-left-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_heading {
+#ccneyylgie .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2279,7 +2291,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-right-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_title {
+#ccneyylgie .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2289,7 +2301,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-bottom-width: 0;
 }
 
-#ppliubvoqg .gt_subtitle {
+#ccneyylgie .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2299,13 +2311,13 @@ document.addEventListener('DOMContentLoaded', function() {
   border-top-width: 0;
 }
 
-#ppliubvoqg .gt_bottom_border {
+#ccneyylgie .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_col_headings {
+#ccneyylgie .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2320,7 +2332,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-right-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_col_heading {
+#ccneyylgie .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2340,7 +2352,7 @@ document.addEventListener('DOMContentLoaded', function() {
   overflow-x: hidden;
 }
 
-#ppliubvoqg .gt_column_spanner_outer {
+#ccneyylgie .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2352,15 +2364,15 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-right: 4px;
 }
 
-#ppliubvoqg .gt_column_spanner_outer:first-child {
+#ccneyylgie .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ppliubvoqg .gt_column_spanner_outer:last-child {
+#ccneyylgie .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ppliubvoqg .gt_column_spanner {
+#ccneyylgie .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2372,7 +2384,7 @@ document.addEventListener('DOMContentLoaded', function() {
   width: 100%;
 }
 
-#ppliubvoqg .gt_group_heading {
+#ccneyylgie .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2394,7 +2406,7 @@ document.addEventListener('DOMContentLoaded', function() {
   vertical-align: middle;
 }
 
-#ppliubvoqg .gt_empty_group_heading {
+#ccneyylgie .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2409,15 +2421,15 @@ document.addEventListener('DOMContentLoaded', function() {
   vertical-align: middle;
 }
 
-#ppliubvoqg .gt_from_md > :first-child {
+#ccneyylgie .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ppliubvoqg .gt_from_md > :last-child {
+#ccneyylgie .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ppliubvoqg .gt_row {
+#ccneyylgie .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2436,7 +2448,7 @@ document.addEventListener('DOMContentLoaded', function() {
   overflow-x: hidden;
 }
 
-#ppliubvoqg .gt_stub {
+#ccneyylgie .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2448,7 +2460,7 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-left: 12px;
 }
 
-#ppliubvoqg .gt_summary_row {
+#ccneyylgie .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2458,7 +2470,7 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-right: 5px;
 }
 
-#ppliubvoqg .gt_first_summary_row {
+#ccneyylgie .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2468,7 +2480,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-top-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_grand_summary_row {
+#ccneyylgie .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2478,7 +2490,7 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-right: 5px;
 }
 
-#ppliubvoqg .gt_first_grand_summary_row {
+#ccneyylgie .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2488,11 +2500,11 @@ document.addEventListener('DOMContentLoaded', function() {
   border-top-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_striped {
+#ccneyylgie .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ppliubvoqg .gt_table_body {
+#ccneyylgie .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2501,7 +2513,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-bottom-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_footnotes {
+#ccneyylgie .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2515,13 +2527,13 @@ document.addEventListener('DOMContentLoaded', function() {
   border-right-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_footnote {
+#ccneyylgie .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#ppliubvoqg .gt_sourcenotes {
+#ccneyylgie .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2535,41 +2547,41 @@ document.addEventListener('DOMContentLoaded', function() {
   border-right-color: #D3D3D3;
 }
 
-#ppliubvoqg .gt_sourcenote {
+#ccneyylgie .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#ppliubvoqg .gt_left {
+#ccneyylgie .gt_left {
   text-align: left;
 }
 
-#ppliubvoqg .gt_center {
+#ccneyylgie .gt_center {
   text-align: center;
 }
 
-#ppliubvoqg .gt_right {
+#ccneyylgie .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ppliubvoqg .gt_font_normal {
+#ccneyylgie .gt_font_normal {
   font-weight: normal;
 }
 
-#ppliubvoqg .gt_font_bold {
+#ccneyylgie .gt_font_bold {
   font-weight: bold;
 }
 
-#ppliubvoqg .gt_font_italic {
+#ccneyylgie .gt_font_italic {
   font-style: italic;
 }
 
-#ppliubvoqg .gt_super {
+#ccneyylgie .gt_super {
   font-size: 65%;
 }
 
-#ppliubvoqg .gt_footnote_marks {
+#ccneyylgie .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -2640,12 +2652,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 <p>Now we can inspect some information for Apple’s last quarter.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div id="uzssxdccbx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="wawisoiphq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#uzssxdccbx .gt_table {
+#wawisoiphq .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2670,7 +2682,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-left-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_heading {
+#wawisoiphq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2682,7 +2694,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-right-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_title {
+#wawisoiphq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2692,7 +2704,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-bottom-width: 0;
 }
 
-#uzssxdccbx .gt_subtitle {
+#wawisoiphq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2702,13 +2714,13 @@ document.addEventListener('DOMContentLoaded', function() {
   border-top-width: 0;
 }
 
-#uzssxdccbx .gt_bottom_border {
+#wawisoiphq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_col_headings {
+#wawisoiphq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2723,7 +2735,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-right-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_col_heading {
+#wawisoiphq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2743,7 +2755,7 @@ document.addEventListener('DOMContentLoaded', function() {
   overflow-x: hidden;
 }
 
-#uzssxdccbx .gt_column_spanner_outer {
+#wawisoiphq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2755,15 +2767,15 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-right: 4px;
 }
 
-#uzssxdccbx .gt_column_spanner_outer:first-child {
+#wawisoiphq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uzssxdccbx .gt_column_spanner_outer:last-child {
+#wawisoiphq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uzssxdccbx .gt_column_spanner {
+#wawisoiphq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2775,7 +2787,7 @@ document.addEventListener('DOMContentLoaded', function() {
   width: 100%;
 }
 
-#uzssxdccbx .gt_group_heading {
+#wawisoiphq .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2797,7 +2809,7 @@ document.addEventListener('DOMContentLoaded', function() {
   vertical-align: middle;
 }
 
-#uzssxdccbx .gt_empty_group_heading {
+#wawisoiphq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2812,15 +2824,15 @@ document.addEventListener('DOMContentLoaded', function() {
   vertical-align: middle;
 }
 
-#uzssxdccbx .gt_from_md > :first-child {
+#wawisoiphq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uzssxdccbx .gt_from_md > :last-child {
+#wawisoiphq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uzssxdccbx .gt_row {
+#wawisoiphq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2839,7 +2851,7 @@ document.addEventListener('DOMContentLoaded', function() {
   overflow-x: hidden;
 }
 
-#uzssxdccbx .gt_stub {
+#wawisoiphq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2851,7 +2863,7 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-left: 12px;
 }
 
-#uzssxdccbx .gt_summary_row {
+#wawisoiphq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2861,7 +2873,7 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-right: 5px;
 }
 
-#uzssxdccbx .gt_first_summary_row {
+#wawisoiphq .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2871,7 +2883,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-top-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_grand_summary_row {
+#wawisoiphq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2881,7 +2893,7 @@ document.addEventListener('DOMContentLoaded', function() {
   padding-right: 5px;
 }
 
-#uzssxdccbx .gt_first_grand_summary_row {
+#wawisoiphq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2891,11 +2903,11 @@ document.addEventListener('DOMContentLoaded', function() {
   border-top-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_striped {
+#wawisoiphq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uzssxdccbx .gt_table_body {
+#wawisoiphq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2904,7 +2916,7 @@ document.addEventListener('DOMContentLoaded', function() {
   border-bottom-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_footnotes {
+#wawisoiphq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2918,13 +2930,13 @@ document.addEventListener('DOMContentLoaded', function() {
   border-right-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_footnote {
+#wawisoiphq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#uzssxdccbx .gt_sourcenotes {
+#wawisoiphq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2938,41 +2950,41 @@ document.addEventListener('DOMContentLoaded', function() {
   border-right-color: #D3D3D3;
 }
 
-#uzssxdccbx .gt_sourcenote {
+#wawisoiphq .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#uzssxdccbx .gt_left {
+#wawisoiphq .gt_left {
   text-align: left;
 }
 
-#uzssxdccbx .gt_center {
+#wawisoiphq .gt_center {
   text-align: center;
 }
 
-#uzssxdccbx .gt_right {
+#wawisoiphq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uzssxdccbx .gt_font_normal {
+#wawisoiphq .gt_font_normal {
   font-weight: normal;
 }
 
-#uzssxdccbx .gt_font_bold {
+#wawisoiphq .gt_font_bold {
   font-weight: bold;
 }
 
-#uzssxdccbx .gt_font_italic {
+#wawisoiphq .gt_font_italic {
   font-style: italic;
 }
 
-#uzssxdccbx .gt_super {
+#wawisoiphq .gt_super {
   font-size: 65%;
 }
 
-#uzssxdccbx .gt_footnote_marks {
+#wawisoiphq .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -3142,12 +3154,12 @@ Rule\; of\; 40 = Growth + Profit\; Margin
 </div>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div id="axhdewptor" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="hclpggfpij" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#axhdewptor .gt_table {
+#hclpggfpij .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -3172,7 +3184,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-left-color: #D3D3D3;
 }
 
-#axhdewptor .gt_heading {
+#hclpggfpij .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3184,7 +3196,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#axhdewptor .gt_title {
+#hclpggfpij .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3194,7 +3206,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-bottom-width: 0;
 }
 
-#axhdewptor .gt_subtitle {
+#hclpggfpij .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3204,13 +3216,13 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-width: 0;
 }
 
-#axhdewptor .gt_bottom_border {
+#hclpggfpij .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#axhdewptor .gt_col_headings {
+#hclpggfpij .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3225,7 +3237,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#axhdewptor .gt_col_heading {
+#hclpggfpij .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3245,7 +3257,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   overflow-x: hidden;
 }
 
-#axhdewptor .gt_column_spanner_outer {
+#hclpggfpij .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3257,15 +3269,15 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 4px;
 }
 
-#axhdewptor .gt_column_spanner_outer:first-child {
+#hclpggfpij .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#axhdewptor .gt_column_spanner_outer:last-child {
+#hclpggfpij .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#axhdewptor .gt_column_spanner {
+#hclpggfpij .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3277,7 +3289,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   width: 100%;
 }
 
-#axhdewptor .gt_group_heading {
+#hclpggfpij .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3299,7 +3311,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   vertical-align: middle;
 }
 
-#axhdewptor .gt_empty_group_heading {
+#hclpggfpij .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3314,15 +3326,15 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   vertical-align: middle;
 }
 
-#axhdewptor .gt_from_md > :first-child {
+#hclpggfpij .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#axhdewptor .gt_from_md > :last-child {
+#hclpggfpij .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#axhdewptor .gt_row {
+#hclpggfpij .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3341,7 +3353,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   overflow-x: hidden;
 }
 
-#axhdewptor .gt_stub {
+#hclpggfpij .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3353,7 +3365,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-left: 12px;
 }
 
-#axhdewptor .gt_summary_row {
+#hclpggfpij .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3363,7 +3375,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 5px;
 }
 
-#axhdewptor .gt_first_summary_row {
+#hclpggfpij .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3373,7 +3385,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-color: #D3D3D3;
 }
 
-#axhdewptor .gt_grand_summary_row {
+#hclpggfpij .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3383,7 +3395,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 5px;
 }
 
-#axhdewptor .gt_first_grand_summary_row {
+#hclpggfpij .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3393,11 +3405,11 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-color: #D3D3D3;
 }
 
-#axhdewptor .gt_striped {
+#hclpggfpij .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#axhdewptor .gt_table_body {
+#hclpggfpij .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3406,7 +3418,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-bottom-color: #D3D3D3;
 }
 
-#axhdewptor .gt_footnotes {
+#hclpggfpij .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3420,13 +3432,13 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#axhdewptor .gt_footnote {
+#hclpggfpij .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#axhdewptor .gt_sourcenotes {
+#hclpggfpij .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3440,41 +3452,41 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#axhdewptor .gt_sourcenote {
+#hclpggfpij .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#axhdewptor .gt_left {
+#hclpggfpij .gt_left {
   text-align: left;
 }
 
-#axhdewptor .gt_center {
+#hclpggfpij .gt_center {
   text-align: center;
 }
 
-#axhdewptor .gt_right {
+#hclpggfpij .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#axhdewptor .gt_font_normal {
+#hclpggfpij .gt_font_normal {
   font-weight: normal;
 }
 
-#axhdewptor .gt_font_bold {
+#hclpggfpij .gt_font_bold {
   font-weight: bold;
 }
 
-#axhdewptor .gt_font_italic {
+#hclpggfpij .gt_font_italic {
   font-style: italic;
 }
 
-#axhdewptor .gt_super {
+#hclpggfpij .gt_super {
   font-size: 65%;
 }
 
-#axhdewptor .gt_footnote_marks {
+#hclpggfpij .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
