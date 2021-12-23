@@ -21,8 +21,9 @@ params:
   fiscal_year: 2020
 ---
 
+## API's 
 
-API's (Application Programming Interfaces) are crucial when it comes to applications 
+API's (Application Programming Interfaces) are crucial when it comes to applications or systems
 communicating with each other. Today they are everywhere around us and I guess 
 we cannot imagine a world without them. We are interacting with API's several times 
 a day e.g. when we are using Google Maps or sending out a tweet.
@@ -31,8 +32,14 @@ a day e.g. when we are using Google Maps or sending out a tweet.
 
 In the past years many organizations have decided to use an 
 [*API-first approach*](https://swagger.io/resources/articles/adopting-an-api-first-approach/#:~:text=An%20API%2Dfirst%20approach%20means,be%20consumed%20by%20client%20applications.)
-for their projects. In this blogpost I want to first show how to access the SimFin API
-and second how to create your own financial (or any other) report.
+for their projects. I will not go into detail about what exactly an 
+API is or how it works. There are many resources explaining it
+([here](https://www.redhat.com/en/topics/api/what-are-application-programming-interfaces)
+for example).
+
+In this blogpost I want to first show how to access the SimFin API and
+therefore gain access to financial information of more than 3000 public companies.
+Second I will demonstrate how to create your own financial (or any other) report.
 
 ## SimFin
 
@@ -364,12 +371,22 @@ rmarkdown::render(my_report.Rmd,
                   params = list(stocks = c("FB", "TWTR", "GOOG", "PINS")))
 ```
 
+## Conclusion
+
 There are countless possibilities to create specific reporting templates and functions
-for your own use cases.
+for your own use cases. Maybe you need to report regularly on companies or industries?
+This post should give you the tools to do that by accessing the SimFin API.
 A really minimal example of how such a report might look like can be found 
 [here](https://github.com/L-Groeninger/lukas-r.blog/tree/main/_posts/2021-12-15-apis-and-parameterized-reports)
 in the Github repo of this blogpost. The output format is of course not
-limited to html, but can be PDF as well.
+limited to html, but can be PDF as well. 
+
+Another use case could be creating a report to regularly display
+Social Media statistics or the number of people who visited your website.
+For the latter purpose you could access the Google Analytics API e.g.
+via the {googleAnalyticsR} package. 
+However, the setup would be similar to the one presented here.
+
 
 
 
