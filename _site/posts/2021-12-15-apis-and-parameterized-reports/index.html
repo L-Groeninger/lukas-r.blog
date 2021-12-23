@@ -2167,6 +2167,7 @@ gtag('config', 'G-VJKXRJPYQX');
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
+<li><a href="#apis">API’s</a></li>
 <li><a href="#simfin">SimFin</a></li>
 <li><a href="#accessing-an-api">Accessing an API</a>
 <ul>
@@ -2177,14 +2178,17 @@ gtag('config', 'G-VJKXRJPYQX');
 <li><a href="#stock-prices-over-the-year">Stock prices over the year</a></li>
 <li><a href="#creating-your-own-metric">Creating your own metric</a></li>
 </ul></li>
+<li><a href="#conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </div>
-<p>API’s (Application Programming Interfaces) are crucial when it comes to applications communicating with each other. Today they are everywhere around us and I guess we cannot imagine a world without them. We are interacting with API’s several times a day e.g. when we are using Google Maps or sending out a tweet.</p>
+<h2 id="apis">API’s</h2>
+<p>API’s (Application Programming Interfaces) are crucial when it comes to applications or systems communicating with each other. Today they are everywhere around us and I guess we cannot imagine a world without them. We are interacting with API’s several times a day e.g. when we are using Google Maps or sending out a tweet.</p>
 <figure>
 <img src="img/use_apis.jpg" alt="Source: www.pexels.com" /><figcaption aria-hidden="true">Source: www.pexels.com</figcaption>
 </figure>
-<p>In the past years many organizations have decided to use an <a href="https://swagger.io/resources/articles/adopting-an-api-first-approach/#:~:text=An%20API%2Dfirst%20approach%20means,be%20consumed%20by%20client%20applications."><em>API-first approach</em></a> for their projects. In this blogpost I want to first show how to access the SimFin API and second how to create your own financial (or any other) report.</p>
+<p>In the past years many organizations have decided to use an <a href="https://swagger.io/resources/articles/adopting-an-api-first-approach/#:~:text=An%20API%2Dfirst%20approach%20means,be%20consumed%20by%20client%20applications."><em>API-first approach</em></a> for their projects. I will not go into detail about what exactly an API is or how it works. There are many resources explaining it (<a href="https://www.redhat.com/en/topics/api/what-are-application-programming-interfaces">here</a> for example).</p>
+<p>In this blogpost I want to first show how to access the SimFin API and therefore gain access to financial information of more than 3000 public companies. Second I will demonstrate how to create your own financial (or any other) report.</p>
 <h2 id="simfin">SimFin</h2>
 <p><a href="https://simfin.com/">SimFin</a> stands for <strong>sim</strong>plifying <strong>fin</strong>ance and is an organization that provides fundamental financial data about public companies for everyone. In order to get an API-key and download data you need to register with a mail account first. It is recommended to store the API-key in an environment variable. <a href="https://daattali.gitbooks.io/stat545-ubc-github-io/content/bit003_api-key-env-var.html">Here</a> is an article that describes how to do that. After having done that you are good to go.</p>
 <h2 id="accessing-an-api">Accessing an API</h2>
@@ -2249,12 +2253,12 @@ gtag('config', 'G-VJKXRJPYQX');
 </div>
 <p>Let’s have a look at the first few rows of our dataframe of available companies:</p>
 <div class="layout-chunk" data-layout="l-body">
-<div id="ccneyylgie" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="vksvehytnt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ccneyylgie .gt_table {
+#vksvehytnt .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2279,7 +2283,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-left-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_heading {
+#vksvehytnt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2291,7 +2295,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-right-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_title {
+#vksvehytnt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2301,7 +2305,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-bottom-width: 0;
 }
 
-#ccneyylgie .gt_subtitle {
+#vksvehytnt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2311,13 +2315,13 @@ gtag('config', 'G-VJKXRJPYQX');
   border-top-width: 0;
 }
 
-#ccneyylgie .gt_bottom_border {
+#vksvehytnt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_col_headings {
+#vksvehytnt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2332,7 +2336,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-right-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_col_heading {
+#vksvehytnt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2352,7 +2356,7 @@ gtag('config', 'G-VJKXRJPYQX');
   overflow-x: hidden;
 }
 
-#ccneyylgie .gt_column_spanner_outer {
+#vksvehytnt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2364,15 +2368,15 @@ gtag('config', 'G-VJKXRJPYQX');
   padding-right: 4px;
 }
 
-#ccneyylgie .gt_column_spanner_outer:first-child {
+#vksvehytnt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ccneyylgie .gt_column_spanner_outer:last-child {
+#vksvehytnt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ccneyylgie .gt_column_spanner {
+#vksvehytnt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2384,7 +2388,7 @@ gtag('config', 'G-VJKXRJPYQX');
   width: 100%;
 }
 
-#ccneyylgie .gt_group_heading {
+#vksvehytnt .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2406,7 +2410,7 @@ gtag('config', 'G-VJKXRJPYQX');
   vertical-align: middle;
 }
 
-#ccneyylgie .gt_empty_group_heading {
+#vksvehytnt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2421,15 +2425,15 @@ gtag('config', 'G-VJKXRJPYQX');
   vertical-align: middle;
 }
 
-#ccneyylgie .gt_from_md > :first-child {
+#vksvehytnt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ccneyylgie .gt_from_md > :last-child {
+#vksvehytnt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ccneyylgie .gt_row {
+#vksvehytnt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2448,7 +2452,7 @@ gtag('config', 'G-VJKXRJPYQX');
   overflow-x: hidden;
 }
 
-#ccneyylgie .gt_stub {
+#vksvehytnt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2460,7 +2464,7 @@ gtag('config', 'G-VJKXRJPYQX');
   padding-left: 12px;
 }
 
-#ccneyylgie .gt_summary_row {
+#vksvehytnt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2470,7 +2474,7 @@ gtag('config', 'G-VJKXRJPYQX');
   padding-right: 5px;
 }
 
-#ccneyylgie .gt_first_summary_row {
+#vksvehytnt .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2480,7 +2484,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-top-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_grand_summary_row {
+#vksvehytnt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2490,7 +2494,7 @@ gtag('config', 'G-VJKXRJPYQX');
   padding-right: 5px;
 }
 
-#ccneyylgie .gt_first_grand_summary_row {
+#vksvehytnt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2500,11 +2504,11 @@ gtag('config', 'G-VJKXRJPYQX');
   border-top-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_striped {
+#vksvehytnt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ccneyylgie .gt_table_body {
+#vksvehytnt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2513,7 +2517,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-bottom-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_footnotes {
+#vksvehytnt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2527,13 +2531,13 @@ gtag('config', 'G-VJKXRJPYQX');
   border-right-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_footnote {
+#vksvehytnt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#ccneyylgie .gt_sourcenotes {
+#vksvehytnt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2547,41 +2551,41 @@ gtag('config', 'G-VJKXRJPYQX');
   border-right-color: #D3D3D3;
 }
 
-#ccneyylgie .gt_sourcenote {
+#vksvehytnt .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#ccneyylgie .gt_left {
+#vksvehytnt .gt_left {
   text-align: left;
 }
 
-#ccneyylgie .gt_center {
+#vksvehytnt .gt_center {
   text-align: center;
 }
 
-#ccneyylgie .gt_right {
+#vksvehytnt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ccneyylgie .gt_font_normal {
+#vksvehytnt .gt_font_normal {
   font-weight: normal;
 }
 
-#ccneyylgie .gt_font_bold {
+#vksvehytnt .gt_font_bold {
   font-weight: bold;
 }
 
-#ccneyylgie .gt_font_italic {
+#vksvehytnt .gt_font_italic {
   font-style: italic;
 }
 
-#ccneyylgie .gt_super {
+#vksvehytnt .gt_super {
   font-size: 65%;
 }
 
-#ccneyylgie .gt_footnote_marks {
+#vksvehytnt .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -2652,12 +2656,12 @@ gtag('config', 'G-VJKXRJPYQX');
 </div>
 <p>Now we can inspect some information for Apple’s last quarter.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div id="wawisoiphq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="hieiepgvox" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#wawisoiphq .gt_table {
+#hieiepgvox .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2682,7 +2686,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-left-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_heading {
+#hieiepgvox .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2694,7 +2698,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-right-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_title {
+#hieiepgvox .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2704,7 +2708,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-bottom-width: 0;
 }
 
-#wawisoiphq .gt_subtitle {
+#hieiepgvox .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2714,13 +2718,13 @@ gtag('config', 'G-VJKXRJPYQX');
   border-top-width: 0;
 }
 
-#wawisoiphq .gt_bottom_border {
+#hieiepgvox .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_col_headings {
+#hieiepgvox .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2735,7 +2739,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-right-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_col_heading {
+#hieiepgvox .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2755,7 +2759,7 @@ gtag('config', 'G-VJKXRJPYQX');
   overflow-x: hidden;
 }
 
-#wawisoiphq .gt_column_spanner_outer {
+#hieiepgvox .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2767,15 +2771,15 @@ gtag('config', 'G-VJKXRJPYQX');
   padding-right: 4px;
 }
 
-#wawisoiphq .gt_column_spanner_outer:first-child {
+#hieiepgvox .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wawisoiphq .gt_column_spanner_outer:last-child {
+#hieiepgvox .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wawisoiphq .gt_column_spanner {
+#hieiepgvox .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2787,7 +2791,7 @@ gtag('config', 'G-VJKXRJPYQX');
   width: 100%;
 }
 
-#wawisoiphq .gt_group_heading {
+#hieiepgvox .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2809,7 +2813,7 @@ gtag('config', 'G-VJKXRJPYQX');
   vertical-align: middle;
 }
 
-#wawisoiphq .gt_empty_group_heading {
+#hieiepgvox .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2824,15 +2828,15 @@ gtag('config', 'G-VJKXRJPYQX');
   vertical-align: middle;
 }
 
-#wawisoiphq .gt_from_md > :first-child {
+#hieiepgvox .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wawisoiphq .gt_from_md > :last-child {
+#hieiepgvox .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wawisoiphq .gt_row {
+#hieiepgvox .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2851,7 +2855,7 @@ gtag('config', 'G-VJKXRJPYQX');
   overflow-x: hidden;
 }
 
-#wawisoiphq .gt_stub {
+#hieiepgvox .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2863,7 +2867,7 @@ gtag('config', 'G-VJKXRJPYQX');
   padding-left: 12px;
 }
 
-#wawisoiphq .gt_summary_row {
+#hieiepgvox .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2873,7 +2877,7 @@ gtag('config', 'G-VJKXRJPYQX');
   padding-right: 5px;
 }
 
-#wawisoiphq .gt_first_summary_row {
+#hieiepgvox .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2883,7 +2887,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-top-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_grand_summary_row {
+#hieiepgvox .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2893,7 +2897,7 @@ gtag('config', 'G-VJKXRJPYQX');
   padding-right: 5px;
 }
 
-#wawisoiphq .gt_first_grand_summary_row {
+#hieiepgvox .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2903,11 +2907,11 @@ gtag('config', 'G-VJKXRJPYQX');
   border-top-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_striped {
+#hieiepgvox .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wawisoiphq .gt_table_body {
+#hieiepgvox .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2916,7 +2920,7 @@ gtag('config', 'G-VJKXRJPYQX');
   border-bottom-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_footnotes {
+#hieiepgvox .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2930,13 +2934,13 @@ gtag('config', 'G-VJKXRJPYQX');
   border-right-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_footnote {
+#hieiepgvox .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#wawisoiphq .gt_sourcenotes {
+#hieiepgvox .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2950,41 +2954,41 @@ gtag('config', 'G-VJKXRJPYQX');
   border-right-color: #D3D3D3;
 }
 
-#wawisoiphq .gt_sourcenote {
+#hieiepgvox .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#wawisoiphq .gt_left {
+#hieiepgvox .gt_left {
   text-align: left;
 }
 
-#wawisoiphq .gt_center {
+#hieiepgvox .gt_center {
   text-align: center;
 }
 
-#wawisoiphq .gt_right {
+#hieiepgvox .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wawisoiphq .gt_font_normal {
+#hieiepgvox .gt_font_normal {
   font-weight: normal;
 }
 
-#wawisoiphq .gt_font_bold {
+#hieiepgvox .gt_font_bold {
   font-weight: bold;
 }
 
-#wawisoiphq .gt_font_italic {
+#hieiepgvox .gt_font_italic {
   font-style: italic;
 }
 
-#wawisoiphq .gt_super {
+#hieiepgvox .gt_super {
   font-size: 65%;
 }
 
-#wawisoiphq .gt_footnote_marks {
+#hieiepgvox .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -3154,12 +3158,12 @@ Rule\; of\; 40 = Growth + Profit\; Margin
 </div>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div id="hclpggfpij" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="iyvdjarwlm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#hclpggfpij .gt_table {
+#iyvdjarwlm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -3184,7 +3188,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-left-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_heading {
+#iyvdjarwlm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -3196,7 +3200,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_title {
+#iyvdjarwlm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3206,7 +3210,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-bottom-width: 0;
 }
 
-#hclpggfpij .gt_subtitle {
+#iyvdjarwlm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3216,13 +3220,13 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-width: 0;
 }
 
-#hclpggfpij .gt_bottom_border {
+#iyvdjarwlm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_col_headings {
+#iyvdjarwlm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3237,7 +3241,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_col_heading {
+#iyvdjarwlm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3257,7 +3261,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   overflow-x: hidden;
 }
 
-#hclpggfpij .gt_column_spanner_outer {
+#iyvdjarwlm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3269,15 +3273,15 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 4px;
 }
 
-#hclpggfpij .gt_column_spanner_outer:first-child {
+#iyvdjarwlm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hclpggfpij .gt_column_spanner_outer:last-child {
+#iyvdjarwlm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hclpggfpij .gt_column_spanner {
+#iyvdjarwlm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3289,7 +3293,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   width: 100%;
 }
 
-#hclpggfpij .gt_group_heading {
+#iyvdjarwlm .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3311,7 +3315,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   vertical-align: middle;
 }
 
-#hclpggfpij .gt_empty_group_heading {
+#iyvdjarwlm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3326,15 +3330,15 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   vertical-align: middle;
 }
 
-#hclpggfpij .gt_from_md > :first-child {
+#iyvdjarwlm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hclpggfpij .gt_from_md > :last-child {
+#iyvdjarwlm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hclpggfpij .gt_row {
+#iyvdjarwlm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3353,7 +3357,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   overflow-x: hidden;
 }
 
-#hclpggfpij .gt_stub {
+#iyvdjarwlm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3365,7 +3369,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-left: 12px;
 }
 
-#hclpggfpij .gt_summary_row {
+#iyvdjarwlm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3375,7 +3379,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 5px;
 }
 
-#hclpggfpij .gt_first_summary_row {
+#iyvdjarwlm .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3385,7 +3389,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_grand_summary_row {
+#iyvdjarwlm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3395,7 +3399,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   padding-right: 5px;
 }
 
-#hclpggfpij .gt_first_grand_summary_row {
+#iyvdjarwlm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3405,11 +3409,11 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-top-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_striped {
+#iyvdjarwlm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hclpggfpij .gt_table_body {
+#iyvdjarwlm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3418,7 +3422,7 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-bottom-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_footnotes {
+#iyvdjarwlm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3432,13 +3436,13 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_footnote {
+#iyvdjarwlm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#hclpggfpij .gt_sourcenotes {
+#iyvdjarwlm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3452,41 +3456,41 @@ Rule\; of\; 40 = Growth + Profit\; Margin
   border-right-color: #D3D3D3;
 }
 
-#hclpggfpij .gt_sourcenote {
+#iyvdjarwlm .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#hclpggfpij .gt_left {
+#iyvdjarwlm .gt_left {
   text-align: left;
 }
 
-#hclpggfpij .gt_center {
+#iyvdjarwlm .gt_center {
   text-align: center;
 }
 
-#hclpggfpij .gt_right {
+#iyvdjarwlm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hclpggfpij .gt_font_normal {
+#iyvdjarwlm .gt_font_normal {
   font-weight: normal;
 }
 
-#hclpggfpij .gt_font_bold {
+#iyvdjarwlm .gt_font_bold {
   font-weight: bold;
 }
 
-#hclpggfpij .gt_font_italic {
+#iyvdjarwlm .gt_font_italic {
   font-style: italic;
 }
 
-#hclpggfpij .gt_super {
+#iyvdjarwlm .gt_super {
   font-size: 65%;
 }
 
-#hclpggfpij .gt_footnote_marks {
+#iyvdjarwlm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -3549,7 +3553,9 @@ Rule\; of\; 40 = Growth + Profit\; Margin
 </code></pre>
 </div>
 </div>
-<p>There are countless possibilities to create specific reporting templates and functions for your own use cases. A really minimal example of how such a report might look like can be found <a href="https://github.com/L-Groeninger/lukas-r.blog/tree/main/_posts/2021-12-15-apis-and-parameterized-reports">here</a> in the Github repo of this blogpost. The output format is of course not limited to html, but can be PDF as well.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>There are countless possibilities to create specific reporting templates and functions for your own use cases. Maybe you need to report regularly on companies or industries? This post should give you the tools to do that by accessing the SimFin API. A really minimal example of how such a report might look like can be found <a href="https://github.com/L-Groeninger/lukas-r.blog/tree/main/_posts/2021-12-15-apis-and-parameterized-reports">here</a> in the Github repo of this blogpost. The output format is of course not limited to html, but can be PDF as well.</p>
+<p>Another use case could be creating a report to regularly display Social Media statistics or the number of people who visited your website. For the latter purpose you could access the Google Analytics API e.g. via the {googleAnalyticsR} package. However, the setup would be similar to the one presented here.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section class="footnotes" role="doc-endnotes">
 <hr />

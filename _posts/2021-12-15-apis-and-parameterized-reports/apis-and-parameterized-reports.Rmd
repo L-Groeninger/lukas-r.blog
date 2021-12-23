@@ -374,13 +374,19 @@ rmarkdown::render(my_report.Rmd,
 ## Conclusion
 
 There are countless possibilities to create specific reporting templates and functions
-for your own use cases. Maybe you want to create a report to display
-Social Media numbers of people who visited your website
-
+for your own use cases. Maybe you need to report regularly on companies or industries?
+This post should give you the tools to do that by accessing the SimFin API.
 A really minimal example of how such a report might look like can be found 
 [here](https://github.com/L-Groeninger/lukas-r.blog/tree/main/_posts/2021-12-15-apis-and-parameterized-reports)
 in the Github repo of this blogpost. The output format is of course not
 limited to html, but can be PDF as well. 
+
+Another use case could be creating a report to regularly display
+Social Media statistics or the number of people who visited your website.
+For the latter purpose you could access the Google Analytics API e.g.
+via the {googleAnalyticsR} package. 
+However, the setup would be similar to the one presented here.
+
 
 
 
