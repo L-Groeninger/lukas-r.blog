@@ -1,0 +1,32 @@
+---
+title: "Scraping used boats"
+description: |
+  Webscraping tutorial about used sailing boats.
+repository_url: https://github.com/L-Groeninger/lukas-r.blog
+preview: img/used_boats.jpg
+author:
+  - name: Lukas Gröninger
+date: 2021-12-27
+categories:
+  - R
+draft: true
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r}
+# https://www.pexels.com/photo/brown-boat-on-ground-2076759/
+```
+
+
+ 
+
