@@ -22,6 +22,7 @@ output:
 ```{r setup, include = FALSE}
 library(knitr)
 library(kableExtra)
+library(rmarkdown)
 options(scipen = 1, digits = 3)
 opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 
@@ -74,6 +75,10 @@ library(tidyverse)  # Main data wrangling
 library(rvest)      # Web scraping library
 library(xml2)       # XML Parsing 
 library(lubridate)  # Handling dates
+library(sf)
+
+# Setting theme
+plotutils::set_custom_theme(base_size = 30)
 ```
 
 We start by scrolling through the boats and click on a link in order to see a 
@@ -139,18 +144,34 @@ The process looks like this:
 
 - Start with the landing page and find the list of boat links.
 - Access each of these pages and extract relevant information.
-- Go to the next page (increase the `page_num` by 20)
+- Go to the next page (increase the `page_num` by 20) and repeat.
+
+I will break it down in several steps.
 
 ```{r eval = FALSE}
-
 # Start while loop with page_num = Number of Boats displayed at the top left                
 while (page_num < 3280) {
   
   website <- read_html(url)
   # Extract boatlist of website
   boat_list <- website  |>  
-    html_nodes(xpath = "/html/body/main/section[2]/div/ul/li") 
-  # Loop through the 20 boats on the list
+    html_nodes(xpath = "/html/body/main/section[2]/div/ul/li")
+```
+
+We'll use the `read_html()` function from the {rvest} package to extract all
+of the html. with `html_nodes()` we can specify which segment we want to read.
+We are interested in the links of the detail pages of the boats.
+With the help of the developer tool view we can select the element of interest and
+copy the xpath. In the case of the *specs* table this was "//*[@id='specs']".
+For the ID, the price or the number of views, these are different xpaths which
+can be found by inspecting the elements of the site.
+
+In order to extract the relevant information we need to use some regular 
+expressions (regex). To extract the condition of the boat we use for example a 
+lookahead *"[^\n]+(?=Condition?)"*.
+
+```{r eval = FALSE}
+# Loop through the 20 boats on the list
   for (i in seq_along(boat_list)) {
     
     boat_link <- xml_attrs(xml_child(boat_list[[i]], 1))[2]  
@@ -182,7 +203,7 @@ while (page_num < 3280) {
         boat_link_site, 
         xpath = "//*[@id='location']/p/strong") |>  
         html_text() 
-      
+
       condition <- str_extract(specs_table, "[^\n]+(?=Condition?)")
       manufacturer <- str_extract(specs_table, "[^\n]+(?=Manufacturer?)")
       model <- str_extract(specs_table, "[^\n]+(?=Model?)")
@@ -218,9 +239,14 @@ while (page_num < 3280) {
       no_favs <- html_nodes(
         boat_link_site, 
         xpath = "//*[@id='sticky-header-trigger']/div/div/aside/section[2]/ul[1]/li[4]/strong") |>  
-        html_text() 
-      
-      # Bind variables to dataframe. Select only the first element, if empty --> NA
+        html_text()
+```
+
+After having stored all information in variables we fill them in a dataframe/tibble.
+For some boats there were missing variables which had to be coded as `NA`.
+
+```{r eval = FALSE}
+# Bind variables to dataframe. Select only the first element, if empty --> NA
       df <- tibble(id = if (is_empty(id)) NA else id[[1]],
                    type = if (is_empty(type)) NA else type[[1]],
                    price = if (is_empty(price)) NA else price[[1]],
@@ -258,27 +284,50 @@ while (page_num < 3280) {
     boat_df <- bind_rows(boat_df, df)
     
   }
-  # Jump to the next page in steps of 20 (boats per page)
+```
+
+Afterwards the dataframe is appended to our previously created one.
+Then we have to increase the `page_num` counter and go to the next page.
+
+
+```{r eval = FALSE}
+# Jump to the next page in steps of 20 (boats per page)
   page_num <- page_num + 20
   url <- paste0("https://www.boat24.com/en/sailboats/?page=", 
                 as.character(page_num), "&sort=datdesc")
-    
 }
-  
+```
 
-# Write dataset
-# write_csv(boat_df, file = "Boats/Data/sailboats3.csv")
-df <- read_csv("Boats/Data/sailboats3.csv", col_types = cols(.default = "c"))
+In the end we can save our final dataframe as a csv or any other file format.
+Now we'll look at the first entries of our data:
+
+```{r include=FALSE}
+boat_df <- read_csv(here::here("_posts/2021-12-27-scraping-used-boats/data", 
+                               "sailboats3.csv"), 
+               col_types = cols(.default = "c"))
 
 ```
 
 
+```{r layout="l-body-outset"}
+boat_df |> 
+  head(3) |> 
+  paged_table()
+```
+
+For simplicity the variables are all encoded as character. 
+The next step is to clean the data.
 
 # Data Cleaning
 
-```{r eval = FALSE}
+The main function to clean the data is the `readr::parse_number()` function.
+With `across()` we can apply this function to several variables.
+Another aspect is the fact that the prices are not displayed in a consistent format.
+That's why I had to extract the currency and convert all prices in Euro.
 
-cleaned_df <- df |>  
+
+```{r eval = FALSE}
+cleaned_df <- boat_df |>  
   drop_na(id) |> 
   distinct(id, .keep_all = TRUE) |> 
   separate(col = engine_perf, into = c("no_eng", "hp_eng"), sep = "x") |>  
@@ -309,36 +358,43 @@ cleaned_df <- df |>
 
 ```
 
+# Further steps
+
+Now we can do some analysis, picking our favorite boat etc. We could calculate 
+statistics of which boats get the most views or are getting marked as 
+favorites most often. We could try to answer questions like -
+*Does the country where I sell my boat has an impact on the price?* and so on.
+
+
+# Geographical Representation
+
+
+
+```{r include=FALSE}
+df_e <- readRDS(here::here("_posts/2021-12-27-scraping-used-boats/data", 
+                               "df_e.RDS")) |> 
+  select(id, country, geom, iso_a2) |> 
+  group_by(country) |> 
+  summarize(n_listings = n(),
+            geom = geom) |> 
+  distinct(country, .keep_all = T) |> 
+  filter(!st_is_empty(geom)) |>  
+  st_as_sf(sf_column_name = "geom")
+```
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-What are the most interesting boats?
-
-The ones with a high favorites/no. views ratio.
-
-
-```{r eval = FALSE}
-boat_df |> 
-  filter(year > 1995 & 
-         base_type == "Sailboat" & 
-         between(length, 8, 12) &
-         between(price, 30000, 80000)) |> view()
-
-df_e |> select(no_views, no_favs) |> arrange(no_favs) |> view()
+```{r fig.height=7, fig.width=7, layout="l-body-outset"}
+ggplot() +
+  geom_sf(data = df_e, aes(fill = n_listings)) +
+  coord_sf(xlim = c(-15, 45), ylim = c(32, 70), expand = FALSE) +
+  scale_fill_viridis_c(direction = -1) +
+  labs(fill = "Number of listings") +
+  guides(fill = guide_colorbar(title.position = "top", 
+                                title.hjust = .5, 
+                                barwidth = 10, 
+                                barheight = 1))
 ```
 
 
