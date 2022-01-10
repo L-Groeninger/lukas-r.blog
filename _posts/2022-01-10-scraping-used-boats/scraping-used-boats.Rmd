@@ -6,11 +6,10 @@ repository_url: https://github.com/L-Groeninger/lukas-r.blog
 preview: img/used_boats.jpg
 author:
   - name: Lukas Gröninger
-date: 2021-12-27
+date: 2022-01-10
 categories:
   - R
   - Webscraping
-draft: true
 output:
   distill::distill_article:
     toc: true
