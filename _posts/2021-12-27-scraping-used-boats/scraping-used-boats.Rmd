@@ -29,12 +29,6 @@ opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 ```
 
 
-```{r echo=FALSE}
-# https://www.pexels.com/photo/brown-boat-on-ground-2076759/
-```
-
-# Boat24.com
-
 In the last post I described how to use an API to download financial data.
 In this post I want to talk about accessing data from the web when we don't have
 the luxury of using an API. Maybe there is an interface, but it is not publicly 
@@ -42,10 +36,17 @@ available. Or there is none and we still want to extract data.
 The concept we will use here is called Web Scraping. 
 It is about collecting structured web data in an automated way. 
 The example to demonstrate this process will be the website 
-[www.boat24.com](https://www.boat24.com/en/). It is a european two sided marketplace 
-to purchace or sell used sail or motorboats. I've worked on ships for some
+[www.boat24.com](https://www.boat24.com/en/). 
+
+![](https://media.giphy.com/media/26xBExKCnvZLb0PzG/giphy.gif)
+
+It is a european two sided marketplace 
+to purchace or sell used sailing or motorboats. I've worked on ships for some
 years and enjoy going sailing during vacation. And so sometimes I end up looking at
-used sailboats on the Internet... Let's have a look at their website:
+used sailboats on the Internet... Today the goal is to scrape information 
+from this site.
+
+Let's have a look:
 
 ![Source: www.boat24.com/en/sailboats/](img/main_page.png)
 
@@ -78,7 +79,7 @@ library(lubridate)  # Handling dates
 library(sf)
 
 # Setting theme
-plotutils::set_custom_theme(base_size = 30)
+plotutils::set_custom_theme(base_size = 26)
 ```
 
 We start by scrolling through the boats and click on a link in order to see a 
@@ -89,6 +90,7 @@ see the section is called *"specs"*.
 ![Specs Tag](img/specs_html.png)
 
 We are definitely interested in extracting this information.
+To identify this table we can right click and copy the xpath.
 But first we will set up our R script. We see that on every page there are  
 20 boats listed. The starting url from where we'll navigate this site will
 therefore be *https://www.boat24.com/en/sailboats/?page=0&sort=datdesc*.
@@ -103,7 +105,7 @@ page_num <- 0
 ```
 
 Afterwards we'll initialize our dataframe with all the variables of interest
-which we want to extract.
+that we want to extract.
 
 ```{r eval = FALSE}
 # Initialize Dataframe (for the moment only char-variables, will be cleaned later)
@@ -146,7 +148,7 @@ The process looks like this:
 - Access each of these pages and extract relevant information.
 - Go to the next page (increase the `page_num` by 20) and repeat.
 
-I will break it down in several steps.
+I will break it down into several steps.
 
 ```{r eval = FALSE}
 # Start while loop with page_num = Number of Boats displayed at the top left                
@@ -161,9 +163,9 @@ while (page_num < 3280) {
 We'll use the `read_html()` function from the {rvest} package to extract all
 of the html. with `html_nodes()` we can specify which segment we want to read.
 We are interested in the links of the detail pages of the boats.
-With the help of the developer tool view we can select the element of interest and
+With the help of the developer tool view we can select the element of interest, right click and
 copy the xpath. In the case of the *specs* table this was "//*[@id='specs']".
-For the ID, the price or the number of views, these are different xpaths which
+For the ID, the price or the number of views, there are different xpaths which
 can be found by inspecting the elements of the site.
 
 In order to extract the relevant information we need to use some regular 
@@ -302,7 +304,7 @@ In the end we can save our final dataframe as a csv or any other file format.
 Now we'll look at the first entries of our data:
 
 ```{r include=FALSE}
-boat_df <- read_csv(here::here("_posts/2021-12-27-scraping-used-boats/data", 
+boat_df <- read_csv(here::here("_posts/2022-01-10-scraping-used-boats/data", 
                                "sailboats3.csv"), 
                col_types = cols(.default = "c"))
 
@@ -360,7 +362,7 @@ cleaned_df <- boat_df |>
 
 # Further steps
 
-Now we can do some analysis, picking our favorite boat etc. We could calculate 
+Now we could do some analysis, picking our favorite boat etc. We could calculate 
 statistics of which boats get the most views or are getting marked as 
 favorites most often. We could try to answer questions like -
 *Does the country where I sell my boat has an impact on the price?* and so on.
@@ -368,7 +370,13 @@ favorites most often. We could try to answer questions like -
 
 # Geographical Representation
 
-
+At last I will give a geographical view on how many boats are listed in different
+european countries. Here I use a dataframe where I scraped information from not only sailing
+but motorboats as well. To plot it on a map, there are packages like 
+`rnaturalearth` or `spData` which offer datasets for spatial analysis.
+There are lots of great [tutorials](https://r-spatial.org/r/2018/10/25/ggplot2-sf-3.html) 
+which show how to do that. I work with [*simple Features (sf)*](https://r-spatial.github.io/sf/) 
+objects and {ggplot2}.
 
 ```{r include=FALSE}
 df_e <- readRDS(here::here("_posts/2021-12-27-scraping-used-boats/data", 
@@ -383,8 +391,6 @@ df_e <- readRDS(here::here("_posts/2021-12-27-scraping-used-boats/data",
 ```
 
 
-
-
 ```{r fig.height=7, fig.width=7, layout="l-body-outset"}
 ggplot() +
   geom_sf(data = df_e, aes(fill = n_listings)) +
@@ -397,8 +403,18 @@ ggplot() +
                                 barheight = 1))
 ```
 
+We can directly see that this marketplace focuses mainly on the german/swiss market.
+The portfolio of boats outside of Central/Western Europe is negligible.
 
+# Conclusion
 
+In this post I wanted to show how to scrape information from a webpage.
+It is a useful skill to be able to analyze the structure of websites
+and see how they are built. I went with the Boat24.com example as I am interested
+in sailing yachts but the use cases are quite diverse.
+The Internet offers the largest source of data and with Webscraping it can be accessed.
+You could use it to compare prices of products on different websites, monitor competitors or
+just for general research tasks.
 
 
 
