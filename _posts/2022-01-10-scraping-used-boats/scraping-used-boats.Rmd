@@ -378,7 +378,7 @@ which show how to do that. I work with [*simple Features (sf)*](https://r-spatia
 objects and {ggplot2}.
 
 ```{r include=FALSE}
-df_e <- readRDS(here::here("_posts/2021-12-27-scraping-used-boats/data", 
+df_e <- readRDS(here::here("_posts/2022-01-10-scraping-used-boats/data", 
                                "df_e.RDS")) |> 
   select(id, country, geom, iso_a2) |> 
   group_by(country) |> 

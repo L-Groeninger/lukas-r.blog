@@ -7,7 +7,278 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 14 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 09 Jan 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Scraping used boats</title>
+      <dc:creator>Lukas Gröninger</dc:creator>
+      <link>https://lukas-r.blog/posts/2022-01-10-scraping-used-boats</link>
+      <description>
+
+
+&lt;p&gt;In the last post I described how to use an API to download financial data. In this post I want to talk about accessing data from the web when we don’t have the luxury of using an API. Maybe there is an interface, but it is not publicly available. Or there is none and we still want to extract data. The concept we will use here is called Web Scraping. It is about collecting structured web data in an automated way. The example to demonstrate this process will be the website &lt;a href="https://www.boat24.com/en/"&gt;www.boat24.com&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://media.giphy.com/media/26xBExKCnvZLb0PzG/giphy.gif" /&gt;&lt;/p&gt;
+&lt;p&gt;It is a european two sided marketplace to purchace or sell used sailing or motorboats. I’ve worked on ships for some years and enjoy going sailing during vacation. And so sometimes I end up looking at used sailboats on the Internet… Today the goal is to scrape information from this site.&lt;/p&gt;
+&lt;p&gt;Let’s have a look:&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://lukas-r.blog/posts/2022-01-10-scraping-used-boatsimg/main_page.png" alt="" /&gt;
+&lt;p class="caption"&gt;Source: www.boat24.com/en/sailboats/&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;We filtered for sailboats and see a list of boats and additional information. The total number of listings is 3296 boats. The general setup of the page is already quite good for our task.&lt;/p&gt;
+&lt;h1 id="web-scraping"&gt;Web Scraping&lt;/h1&gt;
+&lt;p&gt;Now I want to access information about the inventory of this marketplace. We can do this by investigating the structure of the website of interest.&lt;/p&gt;
+&lt;aside&gt;
+Make sure that it’s okay to scrape the site by looking at their &lt;a href="https://developers.google.com/search/docs/advanced/robots/intro"&gt;robots.txt file&lt;/a&gt;.
+&lt;/aside&gt;
+&lt;p&gt;This means answering questions like - &lt;em&gt;How is the content and the information loaded and displayed and what other requests are made in the background?&lt;/em&gt; We do this by having a look at the Developer Tools Panel (if you are using a Chrome Browser). On Windows this opens up after typing &lt;em&gt;Control+Shift+C&lt;/em&gt;. We will use it to inspect the different elements and extract and parse the relevant html/xml.&lt;/p&gt;
+&lt;p&gt;The libraries we’ll need to perform the process of extracting information from a web page are the following:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;library(tidyverse)  # Main data wrangling
+library(rvest)      # Web scraping library
+library(xml2)       # XML Parsing 
+library(lubridate)  # Handling dates
+library(sf)
+
+# Setting theme
+plotutils::set_custom_theme(base_size = 26)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We start by scrolling through the boats and click on a link in order to see a more detailed view of the specific boat listing. We see pictures of the boat and further information in a table below. When hovering over this table we see the section is called &lt;em&gt;“specs”&lt;/em&gt;.&lt;/p&gt;
+&lt;div class="figure"&gt;
+&lt;img src="https://lukas-r.blog/posts/2022-01-10-scraping-used-boatsimg/specs_html.png" alt="" /&gt;
+&lt;p class="caption"&gt;Specs Tag&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;We are definitely interested in extracting this information. To identify this table we can right click and copy the xpath. But first we will set up our R script. We see that on every page there are&lt;br /&gt;
+20 boats listed. The starting url from where we’ll navigate this site will therefore be &lt;em&gt;&lt;a href="https://www.boat24.com/en/sailboats/?page=0&amp;amp;sort=datdesc" class="uri"&gt;https://www.boat24.com/en/sailboats/?page=0&amp;amp;sort=datdesc&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Starting url
+url &amp;lt;- &amp;quot;https://www.boat24.com/en/sailboats/?page=0&amp;amp;sort=datdesc&amp;quot;
+
+# Starting page number
+page_num &amp;lt;- 0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Afterwards we’ll initialize our dataframe with all the variables of interest that we want to extract.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Initialize Dataframe (for the moment only char-variables, will be cleaned later)
+boat_df &amp;lt;- tibble(id = character(),
+                  type = character(),
+                  price = character(),
+                  condition = character(),
+                  manufacturer = character(),
+                  model = character(),
+                  region = character(),
+                  location = character(),
+                  year = character(),
+                  length_width = character(),
+                  draft = character(),
+                  displacement = character(),
+                  material = character(),
+                  steering = character(),
+                  keel_type = character(),
+                  ballast = character(),
+                  no_persons = character(),
+                  headroom = character(),
+                  no_cabins = character(),
+                  no_beds = character(),
+                  propulsion = character(),
+                  engine_perf = character(),
+                  fuel_type = character(),
+                  fuel_cap = character(),
+                  engine_hours = character(),
+                  mainsail = character(),
+                  genoa = character(),
+                  spinnaker = character(),
+                  ad_date = character(),
+                  no_views = character(),
+                  no_favs = character())&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The process looks like this:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Start with the landing page and find the list of boat links.&lt;/li&gt;
+&lt;li&gt;Access each of these pages and extract relevant information.&lt;/li&gt;
+&lt;li&gt;Go to the next page (increase the &lt;code&gt;page_num&lt;/code&gt; by 20) and repeat.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I will break it down into several steps.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Start while loop with page_num = Number of Boats displayed at the top left                
+while (page_num &amp;lt; 3280) {
+  
+  website &amp;lt;- read_html(url)
+  # Extract boatlist of website
+  boat_list &amp;lt;- website  |&amp;gt;  
+    html_nodes(xpath = &amp;quot;/html/body/main/section[2]/div/ul/li&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We’ll use the &lt;code&gt;read_html()&lt;/code&gt; function from the {rvest} package to extract all of the html. with &lt;code&gt;html_nodes()&lt;/code&gt; we can specify which segment we want to read. We are interested in the links of the detail pages of the boats. With the help of the developer tool view we can select the element of interest, right click and copy the xpath. In the case of the &lt;em&gt;specs&lt;/em&gt; table this was “//*&lt;span class="citation"&gt;[@id='specs']&lt;/span&gt;“. For the ID, the price or the number of views, there are different xpaths which can be found by inspecting the elements of the site.&lt;/p&gt;
+&lt;p&gt;In order to extract the relevant information we need to use some regular expressions (regex). To extract the condition of the boat we use for example a lookahead &lt;em&gt;“[^\n]+(?=Condition?)”&lt;/em&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Loop through the 20 boats on the list
+  for (i in seq_along(boat_list)) {
+    
+    boat_link &amp;lt;- xml_attrs(xml_child(boat_list[[i]], 1))[2]  
+    # There are some google ads which have to be filtered by this if statement
+    if (str_sub(boat_link, start = 1L, end = 22L) == &amp;quot;https://www.boat24.com&amp;quot;) {
+      
+      boat_link_site &amp;lt;- read_html(boat_link)
+      # Read out the variables of interest with xpath or classes
+      specs_table &amp;lt;- html_nodes(boat_link_site, 
+                                xpath = &amp;quot;//*[@id=&amp;#39;specs&amp;#39;]&amp;quot;) %&amp;gt;% html_text()
+      
+      id &amp;lt;- html_nodes(
+        boat_link_site, 
+        xpath = &amp;quot;//*[@id=&amp;#39;sticky-header-trigger&amp;#39;]/div/div/aside/section[2]/ul[1]/li[1]/strong&amp;quot;)  |&amp;gt;  
+        html_text() 
+      type &amp;lt;- html_nodes(
+        boat_link_site, 
+        xpath = &amp;quot;//*[@id=&amp;#39;specs&amp;#39;]/header/p[1]/a[1]&amp;quot;) |&amp;gt;  
+        html_text() 
+      price &amp;lt;- html_nodes(
+        boat_link_site, 
+        xpath = &amp;quot;//*[@id=&amp;#39;contact&amp;#39;]/div[1]/p[1]/strong&amp;quot;)  |&amp;gt;  
+        html_text()  
+      region &amp;lt;- html_nodes(
+        boat_link_site, 
+        xpath = &amp;quot;//*[@id=&amp;#39;location&amp;#39;]/p/text()&amp;quot;) |&amp;gt;  
+        html_text() 
+      location &amp;lt;- html_nodes(
+        boat_link_site, 
+        xpath = &amp;quot;//*[@id=&amp;#39;location&amp;#39;]/p/strong&amp;quot;) |&amp;gt;  
+        html_text() 
+
+      condition &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Condition?)&amp;quot;)
+      manufacturer &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Manufacturer?)&amp;quot;)
+      model &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Model?)&amp;quot;)
+      year &amp;lt;- str_extract(specs_table, &amp;quot;\\d+(?=Year Built?)&amp;quot;)
+      length_width &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Length x Width?)&amp;quot;)
+      draft &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Draft?)&amp;quot;)
+      displacement &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Displacement?)&amp;quot;)
+      material &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Material?)&amp;quot;) 
+      steering &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Steering?)&amp;quot;)
+      keel_type &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Keel Type?)&amp;quot;)
+      ballast &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Ballast?)&amp;quot;)
+      no_persons &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Certified No. of Persons?)&amp;quot;)
+      headroom &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Headroom?)&amp;quot;)
+      no_cabins &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=No. of Cabins?)&amp;quot;)
+      no_beds &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=No. of Beds?)&amp;quot;)
+      propulsion &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Propulsion?)&amp;quot;)
+      engine_perf &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Engine Performance?)&amp;quot;)
+      fuel_type &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Fuel Type?)&amp;quot;)
+      fuel_cap &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Fuel Capacity?)&amp;quot;)
+      engine_hours &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Engine Hours?)&amp;quot;)
+      mainsail &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Mainsail?)&amp;quot;)
+      genoa &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Genoa?)&amp;quot;)
+      spinnaker &amp;lt;- str_extract(specs_table, &amp;quot;[^\n]+(?=Spinnaker?)&amp;quot;)
+      
+      ad_date &amp;lt;- html_nodes(
+        boat_link_site, 
+        xpath = &amp;quot;//*[@id=&amp;#39;sticky-header-trigger&amp;#39;]/div/div/aside/section[2]/ul[1]/li[2]/strong&amp;quot;) |&amp;gt;  
+        html_text() 
+      no_views &amp;lt;- html_nodes(
+        boat_link_site, 
+        xpath = &amp;quot;//*[@id=&amp;#39;sticky-header-trigger&amp;#39;]/div/div/aside/section[2]/ul[1]/li[3]/strong&amp;quot;) |&amp;gt;  
+        html_text() 
+      no_favs &amp;lt;- html_nodes(
+        boat_link_site, 
+        xpath = &amp;quot;//*[@id=&amp;#39;sticky-header-trigger&amp;#39;]/div/div/aside/section[2]/ul[1]/li[4]/strong&amp;quot;) |&amp;gt;  
+        html_text()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After having stored all information in variables we fill them in a dataframe/tibble. For some boats there were missing variables which had to be coded as &lt;code&gt;NA&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Bind variables to dataframe. Select only the first element, if empty --&amp;gt; NA
+      df &amp;lt;- tibble(id = if (is_empty(id)) NA else id[[1]],
+                   type = if (is_empty(type)) NA else type[[1]],
+                   price = if (is_empty(price)) NA else price[[1]],
+                   condition = if (is_empty(condition)) NA else condition[[1]],
+                   manufacturer = if (is_empty(manufacturer)) NA else manufacturer[[1]],
+                   model = if (is_empty(model)) NA else model[[1]],
+                   region = if (is_empty(region)) NA else region[[1]],
+                   location = if (is_empty(location)) NA else location[[1]],
+                   year = if (is_empty(year)) NA else year[[1]],
+                   length_width = if (is_empty(length_width)) NA else length_width[[1]],
+                   draft = if (is_empty(draft)) NA else draft[[1]],
+                   displacement = if (is_empty(displacement)) NA else displacement[[1]],
+                   material = if (is_empty(material)) NA else material[[1]],
+                   steering = if (is_empty(steering)) NA else steering[[1]],
+                   keel_type = if (is_empty(keel_type)) NA else keel_type[[1]],
+                   ballast = if (is_empty(ballast)) NA else ballast[[1]],
+                   no_persons = if (is_empty(no_persons)) NA else no_persons[[1]],
+                   headroom = if (is_empty(headroom)) NA else headroom[[1]],
+                   no_cabins = if (is_empty(no_cabins)) NA else no_cabins[[1]],
+                   no_beds = if (is_empty(no_beds)) NA else no_beds[[1]],
+                   propulsion = if (is_empty(propulsion)) NA else propulsion[[1]],
+                   engine_perf = if (is_empty(engine_perf)) NA else engine_perf[[1]],
+                   fuel_type = if (is_empty(fuel_type)) NA else fuel_type[[1]],
+                   fuel_cap = if (is_empty(fuel_cap)) NA else fuel_cap[[1]],
+                   engine_hours = if (is_empty(engine_hours)) NA else engine_hours[[1]],
+                   mainsail = if (is_empty(mainsail)) NA else mainsail[[1]],
+                   genoa = if (is_empty(genoa)) NA else genoa[[1]],
+                   spinnaker = if (is_empty(spinnaker)) NA else spinnaker[[1]],
+                   ad_date = if (is_empty(ad_date)) NA else ad_date[[1]],
+                   no_views = if (is_empty(no_views)) NA else no_views[[1]],
+                   no_favs = if (is_empty(no_favs)) NA else no_favs[[1]])
+      
+    }
+    # Rowbind the dataframe 
+    boat_df &amp;lt;- bind_rows(boat_df, df)
+    
+  }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Afterwards the dataframe is appended to our previously created one. Then we have to increase the &lt;code&gt;page_num&lt;/code&gt; counter and go to the next page.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Jump to the next page in steps of 20 (boats per page)
+  page_num &amp;lt;- page_num + 20
+  url &amp;lt;- paste0(&amp;quot;https://www.boat24.com/en/sailboats/?page=&amp;quot;, 
+                as.character(page_num), &amp;quot;&amp;amp;sort=datdesc&amp;quot;)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the end we can save our final dataframe as a csv or any other file format. Now we’ll look at the first entries of our data:&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;boat_df |&amp;gt; 
+  head(3) |&amp;gt; 
+  paged_table()&lt;/code&gt;&lt;/pre&gt;
+&lt;div data-pagedtable="false"&gt;
+&lt;script data-pagedtable-source type="application/json"&gt;
+{"columns":[{"label":["id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["price"],"name":[3],"type":["chr"],"align":["left"]},{"label":["condition"],"name":[4],"type":["chr"],"align":["left"]},{"label":["manufacturer"],"name":[5],"type":["chr"],"align":["left"]},{"label":["model"],"name":[6],"type":["chr"],"align":["left"]},{"label":["region"],"name":[7],"type":["chr"],"align":["left"]},{"label":["location"],"name":[8],"type":["chr"],"align":["left"]},{"label":["year"],"name":[9],"type":["chr"],"align":["left"]},{"label":["length_width"],"name":[10],"type":["chr"],"align":["left"]},{"label":["draft"],"name":[11],"type":["chr"],"align":["left"]},{"label":["displacement"],"name":[12],"type":["chr"],"align":["left"]},{"label":["material"],"name":[13],"type":["chr"],"align":["left"]},{"label":["steering"],"name":[14],"type":["chr"],"align":["left"]},{"label":["keel_type"],"name":[15],"type":["chr"],"align":["left"]},{"label":["ballast"],"name":[16],"type":["chr"],"align":["left"]},{"label":["no_persons"],"name":[17],"type":["chr"],"align":["left"]},{"label":["headroom"],"name":[18],"type":["chr"],"align":["left"]},{"label":["no_cabins"],"name":[19],"type":["chr"],"align":["left"]},{"label":["no_beds"],"name":[20],"type":["chr"],"align":["left"]},{"label":["propulsion"],"name":[21],"type":["chr"],"align":["left"]},{"label":["engine_perf"],"name":[22],"type":["chr"],"align":["left"]},{"label":["fuel_type"],"name":[23],"type":["chr"],"align":["left"]},{"label":["fuel_cap"],"name":[24],"type":["chr"],"align":["left"]},{"label":["engine_hours"],"name":[25],"type":["chr"],"align":["left"]},{"label":["mainsail"],"name":[26],"type":["chr"],"align":["left"]},{"label":["genoa"],"name":[27],"type":["chr"],"align":["left"]},{"label":["spinnaker"],"name":[28],"type":["chr"],"align":["left"]},{"label":["ad_date"],"name":[29],"type":["chr"],"align":["left"]},{"label":["no_views"],"name":[30],"type":["chr"],"align":["left"]},{"label":["no_favs"],"name":[31],"type":["chr"],"align":["left"]}],"data":[{"1":"289862","2":"Sailing Yacht","3":"EUR 80.000,-","4":"good condition","5":"Najad","6":"Aphrodite 36","7":"Italy » Sicilia »","8":"Lipari- prossimamente a Procida","9":"1988","10":"10.95 m x 3.50 m","11":"1.00 - 1.40 m","12":"9'000 kg","13":"GRP","14":"Wheel control","15":"Long Keel","16":"NA","17":"7 Persons","18":"NA","19":"2 Cabins","20":"7 beds","21":"Saildrive","22":"1 x 35 HP / 26 kW","23":"Diesel","24":"150 l","25":"2'000 h","26":"25 m²","27":"25 m²","28":"35 m²","29":"10.12.2021","30":"1'148","31":"27"},{"1":"480117","2":"Sailing Yacht","3":"EUR 250.000,-","4":"As new","5":"Dehler","6":"38","7":"Germany » Ostsee »","8":"Stralsund","9":"2016","10":"11.64 m x 3.75 m","11":"2.03 m","12":"7'500 kg","13":"GRP","14":"Dual Wheel Control","15":"Bulb Keel","16":"NA","17":"8 Persons","18":"NA","19":"3 Cabins","20":"8 beds","21":"Saildrive","22":"1 x 38 HP / 28 kW","23":"Diesel","24":"160 l","25":"536 h","26":"80 m² (Battened Mainsail)","27":"NA","28":"NA","29":"12.12.2021","30":"743","31":"33"},{"1":"483884","2":"Cruising Yacht","3":"EUR 296.500,-","4":"good condition","5":"van de Stadt","6":"Tasman 48","7":"Spain » Costa del Sol »","8":"Almerimar","9":"1996","10":"14.97 m x 4.49 m","11":"2.40 m","12":"20'170 kg","13":"Steel","14":"Dual Wheel Control","15":"Long Keel","16":"5'700 kg","17":"8 Persons","18":"200 cm","19":"3 Cabins","20":"8 beds","21":"Inboard Direct-Drive","22":"1 x 160 HP / 118 kW","23":"Diesel","24":"1'120 l","25":"1'958 h","26":"90 m² (Battened Mainsail)","27":"60 m² (Roller Furling)","28":"180 m²","29":"15.10.2021","30":"919","31":"29"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  &lt;/script&gt;
+&lt;/div&gt;
+&lt;p&gt;For simplicity the variables are all encoded as character. The next step is to clean the data.&lt;/p&gt;
+&lt;h1 id="data-cleaning"&gt;Data Cleaning&lt;/h1&gt;
+&lt;p&gt;The main function to clean the data is the &lt;code&gt;readr::parse_number()&lt;/code&gt; function. With &lt;code&gt;across()&lt;/code&gt; we can apply this function to several variables. Another aspect is the fact that the prices are not displayed in a consistent format. That’s why I had to extract the currency and convert all prices in Euro.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;cleaned_df &amp;lt;- boat_df |&amp;gt;  
+  drop_na(id) |&amp;gt; 
+  distinct(id, .keep_all = TRUE) |&amp;gt; 
+  separate(col = engine_perf, into = c(&amp;quot;no_eng&amp;quot;, &amp;quot;hp_eng&amp;quot;), sep = &amp;quot;x&amp;quot;) |&amp;gt;  
+  separate(col = length_width, into = c(&amp;quot;length&amp;quot;, &amp;quot;width&amp;quot;), sep = &amp;quot;x&amp;quot;) |&amp;gt; 
+  mutate(currency = str_sub(price, 1, 1),
+         price = parse_number(price, 
+                              locale = locale(decimal_mark = &amp;quot;,&amp;quot;, 
+                                              grouping_mark = &amp;quot;.&amp;quot;)),
+         hp_eng = str_extract(hp_eng, pattern = &amp;quot;(\\d)+(?= HP)&amp;quot;),
+         displacement = parse_number(displacement,
+                                     locale = locale(grouping_mark = &amp;quot;&amp;#39;&amp;quot;)),
+         across(.cols = c(no_persons, draft, no_cabins, no_beds, headroom, fuel_cap, 
+                engine_hours, no_views, no_favs, ballast, mainsail, genoa, year,
+                spinnaker, no_eng, hp_eng, length, width),
+                .fns = parse_number),
+         region = case_when(str_detect(region, &amp;quot;United Kingdom&amp;quot;) ~ &amp;quot;United_Kingdom&amp;quot;,
+                            str_detect(region, &amp;quot;United States&amp;quot;) ~ &amp;quot;USA&amp;quot;,
+                            TRUE ~ region),
+         country = str_extract(region, pattern = &amp;quot;\\w+&amp;quot;),
+         price = case_when(currency == &amp;quot;£&amp;quot; ~ price*1.18,
+                           currency == &amp;quot;C&amp;quot; ~ price*0.9,
+                           currency == &amp;quot;D&amp;quot; ~ price*0.13,
+                           currency == &amp;quot;E&amp;quot; ~ price*1,
+                           currency == &amp;quot;S&amp;quot; ~ price*0.1,
+                           currency == &amp;quot;U&amp;quot; ~ price*0.85,
+                           TRUE ~ NA_real_),
+         ad_date = dmy(ad_date))&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id="further-steps"&gt;Further steps&lt;/h1&gt;
+&lt;p&gt;Now we could do some analysis, picking our favorite boat etc. We could calculate statistics of which boats get the most views or are getting marked as favorites most often. We could try to answer questions like - &lt;em&gt;Does the country where I sell my boat has an impact on the price?&lt;/em&gt; and so on.&lt;/p&gt;
+&lt;h1 id="geographical-representation"&gt;Geographical Representation&lt;/h1&gt;
+&lt;p&gt;At last I will give a geographical view on how many boats are listed in different european countries. Here I use a dataframe where I scraped information from not only sailing but motorboats as well. To plot it on a map, there are packages like &lt;code&gt;rnaturalearth&lt;/code&gt; or &lt;code&gt;spData&lt;/code&gt; which offer datasets for spatial analysis. There are lots of great &lt;a href="https://r-spatial.org/r/2018/10/25/ggplot2-sf-3.html"&gt;tutorials&lt;/a&gt; which show how to do that. I work with &lt;a href="https://r-spatial.github.io/sf/"&gt;&lt;em&gt;simple Features (sf)&lt;/em&gt;&lt;/a&gt; objects and {ggplot2}.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;ggplot() +
+  geom_sf(data = df_e, aes(fill = n_listings)) +
+  coord_sf(xlim = c(-15, 45), ylim = c(32, 70), expand = FALSE) +
+  scale_fill_viridis_c(direction = -1) +
+  labs(fill = &amp;quot;Number of listings&amp;quot;) +
+  guides(fill = guide_colorbar(title.position = &amp;quot;top&amp;quot;, 
+                                title.hjust = .5, 
+                                barwidth = 10, 
+                                barheight = 1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src="file358c4f9236b2_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;We can directly see that this marketplace focuses mainly on the german/swiss market. The portfolio of boats outside of Central/Western Europe is negligible.&lt;/p&gt;
+&lt;h1 id="conclusion"&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;In this post I wanted to show how to scrape information from a webpage. It is a useful skill to be able to analyze the structure of websites and see how they are built. I went with the Boat24.com example as I am interested in sailing yachts but the use cases are quite diverse. The Internet offers the largest source of data and with Webscraping it can be accessed. You could use it to compare prices of products on different websites, monitor competitors or just for general research tasks.&lt;/p&gt;
+&lt;pre class="r distill-force-highlighting-css"&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;</description>
+      <distill:md5>287bc069e3cd273eb5f89df7682ab1e4</distill:md5>
+      <category>R</category>
+      <category>Webscraping</category>
+      <guid>https://lukas-r.blog/posts/2022-01-10-scraping-used-boats</guid>
+      <pubDate>Sun, 09 Jan 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://lukas-r.blog/posts/2022-01-10-scraping-used-boats/img/used_boats.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>API's and parameterized reports</title>
       <dc:creator>Lukas Gröninger</dc:creator>
@@ -67,12 +338,12 @@ resp_status(req)&lt;/code&gt;&lt;/pre&gt;
 content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
                      ticker = map_chr(content_json$data, 2))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Let’s have a look at the first few rows of our dataframe of available companies:&lt;/p&gt;
-&lt;div id="thglggwits" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="aqksnfensm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#thglggwits .gt_table {
+#aqksnfensm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -97,7 +368,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-left-color: #D3D3D3;
 }
 
-#thglggwits .gt_heading {
+#aqksnfensm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -109,7 +380,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#thglggwits .gt_title {
+#aqksnfensm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -119,7 +390,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-bottom-width: 0;
 }
 
-#thglggwits .gt_subtitle {
+#aqksnfensm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -129,13 +400,13 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-width: 0;
 }
 
-#thglggwits .gt_bottom_border {
+#aqksnfensm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#thglggwits .gt_col_headings {
+#aqksnfensm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -150,7 +421,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#thglggwits .gt_col_heading {
+#aqksnfensm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -170,7 +441,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   overflow-x: hidden;
 }
 
-#thglggwits .gt_column_spanner_outer {
+#aqksnfensm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -182,15 +453,15 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 4px;
 }
 
-#thglggwits .gt_column_spanner_outer:first-child {
+#aqksnfensm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#thglggwits .gt_column_spanner_outer:last-child {
+#aqksnfensm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#thglggwits .gt_column_spanner {
+#aqksnfensm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -202,7 +473,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   width: 100%;
 }
 
-#thglggwits .gt_group_heading {
+#aqksnfensm .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -224,7 +495,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   vertical-align: middle;
 }
 
-#thglggwits .gt_empty_group_heading {
+#aqksnfensm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -239,15 +510,15 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   vertical-align: middle;
 }
 
-#thglggwits .gt_from_md &gt; :first-child {
+#aqksnfensm .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#thglggwits .gt_from_md &gt; :last-child {
+#aqksnfensm .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#thglggwits .gt_row {
+#aqksnfensm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -266,7 +537,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   overflow-x: hidden;
 }
 
-#thglggwits .gt_stub {
+#aqksnfensm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -278,7 +549,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-left: 12px;
 }
 
-#thglggwits .gt_summary_row {
+#aqksnfensm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -288,7 +559,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 5px;
 }
 
-#thglggwits .gt_first_summary_row {
+#aqksnfensm .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -298,7 +569,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-color: #D3D3D3;
 }
 
-#thglggwits .gt_grand_summary_row {
+#aqksnfensm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -308,7 +579,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 5px;
 }
 
-#thglggwits .gt_first_grand_summary_row {
+#aqksnfensm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -318,11 +589,11 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-color: #D3D3D3;
 }
 
-#thglggwits .gt_striped {
+#aqksnfensm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#thglggwits .gt_table_body {
+#aqksnfensm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -331,7 +602,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-bottom-color: #D3D3D3;
 }
 
-#thglggwits .gt_footnotes {
+#aqksnfensm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -345,13 +616,13 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#thglggwits .gt_footnote {
+#aqksnfensm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#thglggwits .gt_sourcenotes {
+#aqksnfensm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -365,41 +636,41 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#thglggwits .gt_sourcenote {
+#aqksnfensm .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#thglggwits .gt_left {
+#aqksnfensm .gt_left {
   text-align: left;
 }
 
-#thglggwits .gt_center {
+#aqksnfensm .gt_center {
   text-align: center;
 }
 
-#thglggwits .gt_right {
+#aqksnfensm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#thglggwits .gt_font_normal {
+#aqksnfensm .gt_font_normal {
   font-weight: normal;
 }
 
-#thglggwits .gt_font_bold {
+#aqksnfensm .gt_font_bold {
   font-weight: bold;
 }
 
-#thglggwits .gt_font_italic {
+#aqksnfensm .gt_font_italic {
   font-style: italic;
 }
 
-#thglggwits .gt_super {
+#aqksnfensm .gt_super {
   font-size: 65%;
 }
 
-#thglggwits .gt_footnote_marks {
+#aqksnfensm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -463,12 +734,12 @@ apple_json &amp;lt;- resp_body_json(apple_req)[[1]]
 apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
                    value = map_chr(apple_json$data[[1]], 1, .null = NA_character_))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now we can inspect some information for Apple’s last quarter.&lt;/p&gt;
-&lt;div id="cbiulnebbg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="hftdqbiebd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#cbiulnebbg .gt_table {
+#hftdqbiebd .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -493,7 +764,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-left-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_heading {
+#hftdqbiebd .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -505,7 +776,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_title {
+#hftdqbiebd .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -515,7 +786,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-bottom-width: 0;
 }
 
-#cbiulnebbg .gt_subtitle {
+#hftdqbiebd .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -525,13 +796,13 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-width: 0;
 }
 
-#cbiulnebbg .gt_bottom_border {
+#hftdqbiebd .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_col_headings {
+#hftdqbiebd .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -546,7 +817,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_col_heading {
+#hftdqbiebd .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -566,7 +837,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   overflow-x: hidden;
 }
 
-#cbiulnebbg .gt_column_spanner_outer {
+#hftdqbiebd .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -578,15 +849,15 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 4px;
 }
 
-#cbiulnebbg .gt_column_spanner_outer:first-child {
+#hftdqbiebd .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cbiulnebbg .gt_column_spanner_outer:last-child {
+#hftdqbiebd .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cbiulnebbg .gt_column_spanner {
+#hftdqbiebd .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -598,7 +869,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   width: 100%;
 }
 
-#cbiulnebbg .gt_group_heading {
+#hftdqbiebd .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -620,7 +891,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   vertical-align: middle;
 }
 
-#cbiulnebbg .gt_empty_group_heading {
+#hftdqbiebd .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -635,15 +906,15 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   vertical-align: middle;
 }
 
-#cbiulnebbg .gt_from_md &gt; :first-child {
+#hftdqbiebd .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#cbiulnebbg .gt_from_md &gt; :last-child {
+#hftdqbiebd .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#cbiulnebbg .gt_row {
+#hftdqbiebd .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -662,7 +933,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   overflow-x: hidden;
 }
 
-#cbiulnebbg .gt_stub {
+#hftdqbiebd .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -674,7 +945,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-left: 12px;
 }
 
-#cbiulnebbg .gt_summary_row {
+#hftdqbiebd .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -684,7 +955,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 5px;
 }
 
-#cbiulnebbg .gt_first_summary_row {
+#hftdqbiebd .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -694,7 +965,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_grand_summary_row {
+#hftdqbiebd .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -704,7 +975,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 5px;
 }
 
-#cbiulnebbg .gt_first_grand_summary_row {
+#hftdqbiebd .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -714,11 +985,11 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_striped {
+#hftdqbiebd .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cbiulnebbg .gt_table_body {
+#hftdqbiebd .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -727,7 +998,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-bottom-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_footnotes {
+#hftdqbiebd .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -741,13 +1012,13 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_footnote {
+#hftdqbiebd .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#cbiulnebbg .gt_sourcenotes {
+#hftdqbiebd .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -761,41 +1032,41 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#cbiulnebbg .gt_sourcenote {
+#hftdqbiebd .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#cbiulnebbg .gt_left {
+#hftdqbiebd .gt_left {
   text-align: left;
 }
 
-#cbiulnebbg .gt_center {
+#hftdqbiebd .gt_center {
   text-align: center;
 }
 
-#cbiulnebbg .gt_right {
+#hftdqbiebd .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cbiulnebbg .gt_font_normal {
+#hftdqbiebd .gt_font_normal {
   font-weight: normal;
 }
 
-#cbiulnebbg .gt_font_bold {
+#hftdqbiebd .gt_font_bold {
   font-weight: bold;
 }
 
-#cbiulnebbg .gt_font_italic {
+#hftdqbiebd .gt_font_italic {
   font-style: italic;
 }
 
-#cbiulnebbg .gt_super {
+#hftdqbiebd .gt_super {
   font-size: 65%;
 }
 
-#cbiulnebbg .gt_footnote_marks {
+#hftdqbiebd .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -876,7 +1147,7 @@ shares &amp;lt;- sfa_get_prices(ticker = params$stocks) |&amp;gt;
   labs(title = glue::glue(&amp;quot;Stock prices over the year {params$fiscal_year}&amp;quot;),
        x = NULL,
        y = NULL)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file36304bb1dbc_files/figure-html/unnamed-chunk-12-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file358c322b47bd_files/figure-html/unnamed-chunk-12-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;We can not only filter by our parameters but also using it to dynamically change the title of the plot. With different scales it is hard to compare the development between the selected companies. That’s why we’ll produce a plot with a logarithmized y axis.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;shares |&amp;gt;  
   mutate(year = year(date)) |&amp;gt;  
@@ -890,7 +1161,7 @@ shares &amp;lt;- sfa_get_prices(ticker = params$stocks) |&amp;gt;
        x = NULL,
        y = NULL,
        colour = NULL) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file36304bb1dbc_files/figure-html/unnamed-chunk-13-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file358c322b47bd_files/figure-html/unnamed-chunk-13-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;Here we can see directly the comparison between companies and specifically the “Corona effect” in the middle of march. By now I guess many have seen logarithmized scales as they were quite popular to illustrate exponential growth of Corona Virus cases. The difference between 10$ and 100$ is the same as the difference between 30$ and 300$. The social network whose share price has risen the most is Pinterest. One hypothesis is that Pinterest in particular could benefit from the retreat into the own four walls. On this platform, the topics of designing and decorating the home, garden etc. are popular.&lt;/p&gt;
 &lt;h3 id="creating-your-own-metric"&gt;Creating your own metric&lt;/h3&gt;
 &lt;p&gt;Now we don’t want to only compare the development of the stock prices, but have a deeper look at some characteristics of these companies. The SimFin API offers a variety of variables and information. We can access them through the {simfinapi} function &lt;code&gt;sfa_get_statement()&lt;/code&gt;. For now, we want to calculate our own metric to compare our four companies. This metric will be the &lt;em&gt;Rule of 40&lt;/em&gt;&lt;a href="#fn1" class="footnote-ref" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; which is typically applied to SaaS (Software as a Service) companies to evaluate their development. Two metrics will be combined here. One is the growth of the company and the other is profit. In the first years of a company, it is common that there is no profit yet, but an emphasis on growth. As a rule of thumb the sum of growth and profit should equal to at least 40. For example 50% Growth and -10% Profit Margin would still satisfy this condition.&lt;/p&gt;
@@ -926,12 +1197,12 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   inner_join(select(derived_q4, net_profit_margin, ticker)) |&amp;gt; 
   mutate(rule_40 = growth + net_profit_margin,
          revenue = revenue/1e6)&lt;/code&gt;&lt;/pre&gt;
-&lt;div id="odghxuwfce" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="bwangxhdux" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#odghxuwfce .gt_table {
+#bwangxhdux .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -956,7 +1227,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-left-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_heading {
+#bwangxhdux .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -968,7 +1239,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_title {
+#bwangxhdux .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -978,7 +1249,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-bottom-width: 0;
 }
 
-#odghxuwfce .gt_subtitle {
+#bwangxhdux .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -988,13 +1259,13 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-width: 0;
 }
 
-#odghxuwfce .gt_bottom_border {
+#bwangxhdux .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_col_headings {
+#bwangxhdux .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1009,7 +1280,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_col_heading {
+#bwangxhdux .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1029,7 +1300,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   overflow-x: hidden;
 }
 
-#odghxuwfce .gt_column_spanner_outer {
+#bwangxhdux .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1041,15 +1312,15 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 4px;
 }
 
-#odghxuwfce .gt_column_spanner_outer:first-child {
+#bwangxhdux .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#odghxuwfce .gt_column_spanner_outer:last-child {
+#bwangxhdux .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#odghxuwfce .gt_column_spanner {
+#bwangxhdux .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1061,7 +1332,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   width: 100%;
 }
 
-#odghxuwfce .gt_group_heading {
+#bwangxhdux .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1083,7 +1354,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   vertical-align: middle;
 }
 
-#odghxuwfce .gt_empty_group_heading {
+#bwangxhdux .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1098,15 +1369,15 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   vertical-align: middle;
 }
 
-#odghxuwfce .gt_from_md &gt; :first-child {
+#bwangxhdux .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#odghxuwfce .gt_from_md &gt; :last-child {
+#bwangxhdux .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#odghxuwfce .gt_row {
+#bwangxhdux .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1125,7 +1396,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   overflow-x: hidden;
 }
 
-#odghxuwfce .gt_stub {
+#bwangxhdux .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1137,7 +1408,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-left: 12px;
 }
 
-#odghxuwfce .gt_summary_row {
+#bwangxhdux .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1147,7 +1418,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 5px;
 }
 
-#odghxuwfce .gt_first_summary_row {
+#bwangxhdux .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1157,7 +1428,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_grand_summary_row {
+#bwangxhdux .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1167,7 +1438,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 5px;
 }
 
-#odghxuwfce .gt_first_grand_summary_row {
+#bwangxhdux .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1177,11 +1448,11 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_striped {
+#bwangxhdux .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#odghxuwfce .gt_table_body {
+#bwangxhdux .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1190,7 +1461,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-bottom-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_footnotes {
+#bwangxhdux .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1204,13 +1475,13 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_footnote {
+#bwangxhdux .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#odghxuwfce .gt_sourcenotes {
+#bwangxhdux .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1224,41 +1495,41 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#odghxuwfce .gt_sourcenote {
+#bwangxhdux .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#odghxuwfce .gt_left {
+#bwangxhdux .gt_left {
   text-align: left;
 }
 
-#odghxuwfce .gt_center {
+#bwangxhdux .gt_center {
   text-align: center;
 }
 
-#odghxuwfce .gt_right {
+#bwangxhdux .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#odghxuwfce .gt_font_normal {
+#bwangxhdux .gt_font_normal {
   font-weight: normal;
 }
 
-#odghxuwfce .gt_font_bold {
+#bwangxhdux .gt_font_bold {
   font-weight: bold;
 }
 
-#odghxuwfce .gt_font_italic {
+#bwangxhdux .gt_font_italic {
   font-style: italic;
 }
 
-#odghxuwfce .gt_super {
+#bwangxhdux .gt_super {
   font-size: 65%;
 }
 
-#odghxuwfce .gt_footnote_marks {
+#bwangxhdux .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1330,7 +1601,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
       <category>API</category>
       <category>reporting</category>
       <guid>https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports</guid>
-      <pubDate>Tue, 14 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 15 Dec 2021 00:00:00 +0000</pubDate>
       <media:content url="https://lukas-r.blog/posts/2021-12-15-apis-and-parameterized-reports/img/use_apis.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
@@ -1474,7 +1745,7 @@ sims |&amp;gt;
   labs(title = &amp;quot;Distribution of numbers of surviving players&amp;quot;,
        x = &amp;quot;N surviving players&amp;quot;,
        fill = NULL)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file363053642875_files/figure-html/unnamed-chunk-9-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file358c5cd73f15_files/figure-html/unnamed-chunk-9-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;The two different colours indicate which function was used to calculate the result. From this graph we directly see almost the exact same result from the two functions.&lt;/p&gt;
 &lt;p&gt;To answer our previously posed question: We would expect 7 players to survive the game.&lt;/p&gt;
 &lt;h2 id="benchmarking-for-vs-while-loop"&gt;Benchmarking for vs while loop&lt;/h2&gt;
@@ -1487,7 +1758,7 @@ test &amp;lt;- microbenchmark(
 )
 
 autoplot(test)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file363053642875_files/figure-html/unnamed-chunk-10-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file358c5cd73f15_files/figure-html/unnamed-chunk-10-1.png" width="960" /&gt;&lt;/p&gt;
 &lt;p&gt;Again there is not really a difference…&lt;/p&gt;
 &lt;h2 id="mathematical-solution"&gt;Mathematical Solution&lt;/h2&gt;
 &lt;p&gt;Of course we can not only simulate the game to get to our solution.&lt;/p&gt;
