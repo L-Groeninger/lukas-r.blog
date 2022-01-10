@@ -245,45 +245,29 @@ lookahead *"[^\n]+(?=Condition?)"*.
 
 After having stored all information in variables we fill them in a dataframe/tibble.
 For some boats there were missing variables which had to be coded as `NA`.
+We can write a short function to do that.
+
+```{r}
+# Function to select only the first element, if empty --> NA
+check_input <- function(x) if (is_empty(x)) NA else x[[1]]
+```
+
 
 ```{r eval = FALSE}
-# Bind variables to dataframe. Select only the first element, if empty --> NA
-      df <- tibble(id = if (is_empty(id)) NA else id[[1]],
-                   type = if (is_empty(type)) NA else type[[1]],
-                   price = if (is_empty(price)) NA else price[[1]],
-                   condition = if (is_empty(condition)) NA else condition[[1]],
-                   manufacturer = if (is_empty(manufacturer)) NA else manufacturer[[1]],
-                   model = if (is_empty(model)) NA else model[[1]],
-                   region = if (is_empty(region)) NA else region[[1]],
-                   location = if (is_empty(location)) NA else location[[1]],
-                   year = if (is_empty(year)) NA else year[[1]],
-                   length_width = if (is_empty(length_width)) NA else length_width[[1]],
-                   draft = if (is_empty(draft)) NA else draft[[1]],
-                   displacement = if (is_empty(displacement)) NA else displacement[[1]],
-                   material = if (is_empty(material)) NA else material[[1]],
-                   steering = if (is_empty(steering)) NA else steering[[1]],
-                   keel_type = if (is_empty(keel_type)) NA else keel_type[[1]],
-                   ballast = if (is_empty(ballast)) NA else ballast[[1]],
-                   no_persons = if (is_empty(no_persons)) NA else no_persons[[1]],
-                   headroom = if (is_empty(headroom)) NA else headroom[[1]],
-                   no_cabins = if (is_empty(no_cabins)) NA else no_cabins[[1]],
-                   no_beds = if (is_empty(no_beds)) NA else no_beds[[1]],
-                   propulsion = if (is_empty(propulsion)) NA else propulsion[[1]],
-                   engine_perf = if (is_empty(engine_perf)) NA else engine_perf[[1]],
-                   fuel_type = if (is_empty(fuel_type)) NA else fuel_type[[1]],
-                   fuel_cap = if (is_empty(fuel_cap)) NA else fuel_cap[[1]],
-                   engine_hours = if (is_empty(engine_hours)) NA else engine_hours[[1]],
-                   mainsail = if (is_empty(mainsail)) NA else mainsail[[1]],
-                   genoa = if (is_empty(genoa)) NA else genoa[[1]],
-                   spinnaker = if (is_empty(spinnaker)) NA else spinnaker[[1]],
-                   ad_date = if (is_empty(ad_date)) NA else ad_date[[1]],
-                   no_views = if (is_empty(no_views)) NA else no_views[[1]],
-                   no_favs = if (is_empty(no_favs)) NA else no_favs[[1]])
+      extracted_vars <- list(id, type, price, condition, manufacturer, model, region,
+                             location, year, length_width, draft, displacement,
+                             material, steering, keel_type, ballast, no_persons,
+                             headroom, no_cabins, no_beds, propulsion, engine_perf,
+                             fuel_type, fuel_cap, engine_hours, mainsail, genoa,
+                             spinnaker, ad_date, no_views, no_favs)
+
+      df <- extracted_vars |> 
+        set_names(colnames(boat_df)) |> 
+        map_df(check_input) 
       
     }
     # Rowbind the dataframe 
     boat_df <- bind_rows(boat_df, df)
-    
   }
 ```
 

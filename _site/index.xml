@@ -169,44 +169,23 @@ while (page_num &amp;lt; 3280) {
         boat_link_site, 
         xpath = &amp;quot;//*[@id=&amp;#39;sticky-header-trigger&amp;#39;]/div/div/aside/section[2]/ul[1]/li[4]/strong&amp;quot;) |&amp;gt;  
         html_text()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;After having stored all information in variables we fill them in a dataframe/tibble. For some boats there were missing variables which had to be coded as &lt;code&gt;NA&lt;/code&gt;.&lt;/p&gt;
-&lt;pre class="r"&gt;&lt;code&gt;# Bind variables to dataframe. Select only the first element, if empty --&amp;gt; NA
-      df &amp;lt;- tibble(id = if (is_empty(id)) NA else id[[1]],
-                   type = if (is_empty(type)) NA else type[[1]],
-                   price = if (is_empty(price)) NA else price[[1]],
-                   condition = if (is_empty(condition)) NA else condition[[1]],
-                   manufacturer = if (is_empty(manufacturer)) NA else manufacturer[[1]],
-                   model = if (is_empty(model)) NA else model[[1]],
-                   region = if (is_empty(region)) NA else region[[1]],
-                   location = if (is_empty(location)) NA else location[[1]],
-                   year = if (is_empty(year)) NA else year[[1]],
-                   length_width = if (is_empty(length_width)) NA else length_width[[1]],
-                   draft = if (is_empty(draft)) NA else draft[[1]],
-                   displacement = if (is_empty(displacement)) NA else displacement[[1]],
-                   material = if (is_empty(material)) NA else material[[1]],
-                   steering = if (is_empty(steering)) NA else steering[[1]],
-                   keel_type = if (is_empty(keel_type)) NA else keel_type[[1]],
-                   ballast = if (is_empty(ballast)) NA else ballast[[1]],
-                   no_persons = if (is_empty(no_persons)) NA else no_persons[[1]],
-                   headroom = if (is_empty(headroom)) NA else headroom[[1]],
-                   no_cabins = if (is_empty(no_cabins)) NA else no_cabins[[1]],
-                   no_beds = if (is_empty(no_beds)) NA else no_beds[[1]],
-                   propulsion = if (is_empty(propulsion)) NA else propulsion[[1]],
-                   engine_perf = if (is_empty(engine_perf)) NA else engine_perf[[1]],
-                   fuel_type = if (is_empty(fuel_type)) NA else fuel_type[[1]],
-                   fuel_cap = if (is_empty(fuel_cap)) NA else fuel_cap[[1]],
-                   engine_hours = if (is_empty(engine_hours)) NA else engine_hours[[1]],
-                   mainsail = if (is_empty(mainsail)) NA else mainsail[[1]],
-                   genoa = if (is_empty(genoa)) NA else genoa[[1]],
-                   spinnaker = if (is_empty(spinnaker)) NA else spinnaker[[1]],
-                   ad_date = if (is_empty(ad_date)) NA else ad_date[[1]],
-                   no_views = if (is_empty(no_views)) NA else no_views[[1]],
-                   no_favs = if (is_empty(no_favs)) NA else no_favs[[1]])
+&lt;p&gt;After having stored all information in variables we fill them in a dataframe/tibble. For some boats there were missing variables which had to be coded as &lt;code&gt;NA&lt;/code&gt;. We can write a short function to do that.&lt;/p&gt;
+&lt;pre class="r"&gt;&lt;code&gt;# Function to select only the first element, if empty --&amp;gt; NA
+check_input &amp;lt;- function(x) if (is_empty(x)) NA else x[[1]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class="r"&gt;&lt;code&gt;      extracted_vars &amp;lt;- list(id, type, price, condition, manufacturer, model, region,
+                             location, year, length_width, draft, displacement,
+                             material, steering, keel_type, ballast, no_persons,
+                             headroom, no_cabins, no_beds, propulsion, engine_perf,
+                             fuel_type, fuel_cap, engine_hours, mainsail, genoa,
+                             spinnaker, ad_date, no_views, no_favs)
+
+      df &amp;lt;- extracted_vars |&amp;gt; 
+        set_names(colnames(boat_df)) |&amp;gt; 
+        map_df(check_input) 
       
     }
     # Rowbind the dataframe 
     boat_df &amp;lt;- bind_rows(boat_df, df)
-    
   }&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Afterwards the dataframe is appended to our previously created one. Then we have to increase the &lt;code&gt;page_num&lt;/code&gt; counter and go to the next page.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;# Jump to the next page in steps of 20 (boats per page)
@@ -267,7 +246,7 @@ while (page_num &amp;lt; 3280) {
                                 title.hjust = .5, 
                                 barwidth = 10, 
                                 barheight = 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file358c4f9236b2_files/figure-html/unnamed-chunk-12-1.png" width="672" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file52606e54115e_files/figure-html/unnamed-chunk-13-1.png" width="672" /&gt;&lt;/p&gt;
 &lt;p&gt;We can directly see that this marketplace focuses mainly on the german/swiss market. The portfolio of boats outside of Central/Western Europe is negligible.&lt;/p&gt;
 &lt;h1 id="conclusion"&gt;Conclusion&lt;/h1&gt;
 &lt;p&gt;In this post I wanted to show how to scrape information from a webpage. It is a useful skill to be able to analyze the structure of websites and see how they are built. I went with the Boat24.com example as I am interested in sailing yachts but the use cases are quite diverse. The Internet offers the largest source of data and with Webscraping it can be accessed. You could use it to compare prices of products on different websites, monitor competitors or just for general research tasks.&lt;/p&gt;
@@ -338,12 +317,12 @@ resp_status(req)&lt;/code&gt;&lt;/pre&gt;
 content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
                      ticker = map_chr(content_json$data, 2))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Let’s have a look at the first few rows of our dataframe of available companies:&lt;/p&gt;
-&lt;div id="aqksnfensm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="tydismdvyu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#aqksnfensm .gt_table {
+#tydismdvyu .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -368,7 +347,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-left-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_heading {
+#tydismdvyu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -380,7 +359,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_title {
+#tydismdvyu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -390,7 +369,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-bottom-width: 0;
 }
 
-#aqksnfensm .gt_subtitle {
+#tydismdvyu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -400,13 +379,13 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-width: 0;
 }
 
-#aqksnfensm .gt_bottom_border {
+#tydismdvyu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_col_headings {
+#tydismdvyu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -421,7 +400,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_col_heading {
+#tydismdvyu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -441,7 +420,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   overflow-x: hidden;
 }
 
-#aqksnfensm .gt_column_spanner_outer {
+#tydismdvyu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -453,15 +432,15 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 4px;
 }
 
-#aqksnfensm .gt_column_spanner_outer:first-child {
+#tydismdvyu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aqksnfensm .gt_column_spanner_outer:last-child {
+#tydismdvyu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aqksnfensm .gt_column_spanner {
+#tydismdvyu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -473,7 +452,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   width: 100%;
 }
 
-#aqksnfensm .gt_group_heading {
+#tydismdvyu .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -495,7 +474,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   vertical-align: middle;
 }
 
-#aqksnfensm .gt_empty_group_heading {
+#tydismdvyu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -510,15 +489,15 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   vertical-align: middle;
 }
 
-#aqksnfensm .gt_from_md &gt; :first-child {
+#tydismdvyu .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#aqksnfensm .gt_from_md &gt; :last-child {
+#tydismdvyu .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#aqksnfensm .gt_row {
+#tydismdvyu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -537,7 +516,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   overflow-x: hidden;
 }
 
-#aqksnfensm .gt_stub {
+#tydismdvyu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -549,7 +528,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-left: 12px;
 }
 
-#aqksnfensm .gt_summary_row {
+#tydismdvyu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -559,7 +538,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 5px;
 }
 
-#aqksnfensm .gt_first_summary_row {
+#tydismdvyu .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -569,7 +548,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_grand_summary_row {
+#tydismdvyu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -579,7 +558,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   padding-right: 5px;
 }
 
-#aqksnfensm .gt_first_grand_summary_row {
+#tydismdvyu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -589,11 +568,11 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-top-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_striped {
+#tydismdvyu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aqksnfensm .gt_table_body {
+#tydismdvyu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -602,7 +581,7 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-bottom-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_footnotes {
+#tydismdvyu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -616,13 +595,13 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_footnote {
+#tydismdvyu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#aqksnfensm .gt_sourcenotes {
+#tydismdvyu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -636,41 +615,41 @@ content_df &amp;lt;- tibble(simfin_id = map_dbl(content_json$data, 1),
   border-right-color: #D3D3D3;
 }
 
-#aqksnfensm .gt_sourcenote {
+#tydismdvyu .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#aqksnfensm .gt_left {
+#tydismdvyu .gt_left {
   text-align: left;
 }
 
-#aqksnfensm .gt_center {
+#tydismdvyu .gt_center {
   text-align: center;
 }
 
-#aqksnfensm .gt_right {
+#tydismdvyu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aqksnfensm .gt_font_normal {
+#tydismdvyu .gt_font_normal {
   font-weight: normal;
 }
 
-#aqksnfensm .gt_font_bold {
+#tydismdvyu .gt_font_bold {
   font-weight: bold;
 }
 
-#aqksnfensm .gt_font_italic {
+#tydismdvyu .gt_font_italic {
   font-style: italic;
 }
 
-#aqksnfensm .gt_super {
+#tydismdvyu .gt_super {
   font-size: 65%;
 }
 
-#aqksnfensm .gt_footnote_marks {
+#tydismdvyu .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -734,12 +713,12 @@ apple_json &amp;lt;- resp_body_json(apple_req)[[1]]
 apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
                    value = map_chr(apple_json$data[[1]], 1, .null = NA_character_))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Now we can inspect some information for Apple’s last quarter.&lt;/p&gt;
-&lt;div id="hftdqbiebd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="hmurgqotql" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#hftdqbiebd .gt_table {
+#hmurgqotql .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -764,7 +743,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-left-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_heading {
+#hmurgqotql .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -776,7 +755,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_title {
+#hmurgqotql .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -786,7 +765,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-bottom-width: 0;
 }
 
-#hftdqbiebd .gt_subtitle {
+#hmurgqotql .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -796,13 +775,13 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-width: 0;
 }
 
-#hftdqbiebd .gt_bottom_border {
+#hmurgqotql .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_col_headings {
+#hmurgqotql .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -817,7 +796,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_col_heading {
+#hmurgqotql .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -837,7 +816,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   overflow-x: hidden;
 }
 
-#hftdqbiebd .gt_column_spanner_outer {
+#hmurgqotql .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -849,15 +828,15 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 4px;
 }
 
-#hftdqbiebd .gt_column_spanner_outer:first-child {
+#hmurgqotql .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hftdqbiebd .gt_column_spanner_outer:last-child {
+#hmurgqotql .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hftdqbiebd .gt_column_spanner {
+#hmurgqotql .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -869,7 +848,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   width: 100%;
 }
 
-#hftdqbiebd .gt_group_heading {
+#hmurgqotql .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -891,7 +870,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   vertical-align: middle;
 }
 
-#hftdqbiebd .gt_empty_group_heading {
+#hmurgqotql .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -906,15 +885,15 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   vertical-align: middle;
 }
 
-#hftdqbiebd .gt_from_md &gt; :first-child {
+#hmurgqotql .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#hftdqbiebd .gt_from_md &gt; :last-child {
+#hmurgqotql .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#hftdqbiebd .gt_row {
+#hmurgqotql .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -933,7 +912,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   overflow-x: hidden;
 }
 
-#hftdqbiebd .gt_stub {
+#hmurgqotql .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -945,7 +924,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-left: 12px;
 }
 
-#hftdqbiebd .gt_summary_row {
+#hmurgqotql .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -955,7 +934,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 5px;
 }
 
-#hftdqbiebd .gt_first_summary_row {
+#hmurgqotql .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -965,7 +944,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_grand_summary_row {
+#hmurgqotql .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -975,7 +954,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   padding-right: 5px;
 }
 
-#hftdqbiebd .gt_first_grand_summary_row {
+#hmurgqotql .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -985,11 +964,11 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-top-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_striped {
+#hmurgqotql .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hftdqbiebd .gt_table_body {
+#hmurgqotql .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -998,7 +977,7 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-bottom-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_footnotes {
+#hmurgqotql .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1012,13 +991,13 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_footnote {
+#hmurgqotql .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#hftdqbiebd .gt_sourcenotes {
+#hmurgqotql .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1032,41 +1011,41 @@ apple_df &amp;lt;- tibble(variable = map_chr(apple_json$columns, 1),
   border-right-color: #D3D3D3;
 }
 
-#hftdqbiebd .gt_sourcenote {
+#hmurgqotql .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#hftdqbiebd .gt_left {
+#hmurgqotql .gt_left {
   text-align: left;
 }
 
-#hftdqbiebd .gt_center {
+#hmurgqotql .gt_center {
   text-align: center;
 }
 
-#hftdqbiebd .gt_right {
+#hmurgqotql .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hftdqbiebd .gt_font_normal {
+#hmurgqotql .gt_font_normal {
   font-weight: normal;
 }
 
-#hftdqbiebd .gt_font_bold {
+#hmurgqotql .gt_font_bold {
   font-weight: bold;
 }
 
-#hftdqbiebd .gt_font_italic {
+#hmurgqotql .gt_font_italic {
   font-style: italic;
 }
 
-#hftdqbiebd .gt_super {
+#hmurgqotql .gt_super {
   font-size: 65%;
 }
 
-#hftdqbiebd .gt_footnote_marks {
+#hmurgqotql .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1147,7 +1126,7 @@ shares &amp;lt;- sfa_get_prices(ticker = params$stocks) |&amp;gt;
   labs(title = glue::glue(&amp;quot;Stock prices over the year {params$fiscal_year}&amp;quot;),
        x = NULL,
        y = NULL)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file358c322b47bd_files/figure-html/unnamed-chunk-12-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file526016de5440_files/figure-html/unnamed-chunk-12-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;We can not only filter by our parameters but also using it to dynamically change the title of the plot. With different scales it is hard to compare the development between the selected companies. That’s why we’ll produce a plot with a logarithmized y axis.&lt;/p&gt;
 &lt;pre class="r"&gt;&lt;code&gt;shares |&amp;gt;  
   mutate(year = year(date)) |&amp;gt;  
@@ -1161,7 +1140,7 @@ shares &amp;lt;- sfa_get_prices(ticker = params$stocks) |&amp;gt;
        x = NULL,
        y = NULL,
        colour = NULL) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file358c322b47bd_files/figure-html/unnamed-chunk-13-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file526016de5440_files/figure-html/unnamed-chunk-13-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;Here we can see directly the comparison between companies and specifically the “Corona effect” in the middle of march. By now I guess many have seen logarithmized scales as they were quite popular to illustrate exponential growth of Corona Virus cases. The difference between 10$ and 100$ is the same as the difference between 30$ and 300$. The social network whose share price has risen the most is Pinterest. One hypothesis is that Pinterest in particular could benefit from the retreat into the own four walls. On this platform, the topics of designing and decorating the home, garden etc. are popular.&lt;/p&gt;
 &lt;h3 id="creating-your-own-metric"&gt;Creating your own metric&lt;/h3&gt;
 &lt;p&gt;Now we don’t want to only compare the development of the stock prices, but have a deeper look at some characteristics of these companies. The SimFin API offers a variety of variables and information. We can access them through the {simfinapi} function &lt;code&gt;sfa_get_statement()&lt;/code&gt;. For now, we want to calculate our own metric to compare our four companies. This metric will be the &lt;em&gt;Rule of 40&lt;/em&gt;&lt;a href="#fn1" class="footnote-ref" id="fnref1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; which is typically applied to SaaS (Software as a Service) companies to evaluate their development. Two metrics will be combined here. One is the growth of the company and the other is profit. In the first years of a company, it is common that there is no profit yet, but an emphasis on growth. As a rule of thumb the sum of growth and profit should equal to at least 40. For example 50% Growth and -10% Profit Margin would still satisfy this condition.&lt;/p&gt;
@@ -1197,12 +1176,12 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   inner_join(select(derived_q4, net_profit_margin, ticker)) |&amp;gt; 
   mutate(rule_40 = growth + net_profit_margin,
          revenue = revenue/1e6)&lt;/code&gt;&lt;/pre&gt;
-&lt;div id="bwangxhdux" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
+&lt;div id="kkdnsyyzys" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"&gt;
 &lt;style&gt;html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#bwangxhdux .gt_table {
+#kkdnsyyzys .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1227,7 +1206,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-left-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_heading {
+#kkdnsyyzys .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1239,7 +1218,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_title {
+#kkdnsyyzys .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1249,7 +1228,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-bottom-width: 0;
 }
 
-#bwangxhdux .gt_subtitle {
+#kkdnsyyzys .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1259,13 +1238,13 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-width: 0;
 }
 
-#bwangxhdux .gt_bottom_border {
+#kkdnsyyzys .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_col_headings {
+#kkdnsyyzys .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1280,7 +1259,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_col_heading {
+#kkdnsyyzys .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1300,7 +1279,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   overflow-x: hidden;
 }
 
-#bwangxhdux .gt_column_spanner_outer {
+#kkdnsyyzys .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1312,15 +1291,15 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 4px;
 }
 
-#bwangxhdux .gt_column_spanner_outer:first-child {
+#kkdnsyyzys .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bwangxhdux .gt_column_spanner_outer:last-child {
+#kkdnsyyzys .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bwangxhdux .gt_column_spanner {
+#kkdnsyyzys .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1332,7 +1311,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   width: 100%;
 }
 
-#bwangxhdux .gt_group_heading {
+#kkdnsyyzys .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1354,7 +1333,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   vertical-align: middle;
 }
 
-#bwangxhdux .gt_empty_group_heading {
+#kkdnsyyzys .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1369,15 +1348,15 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   vertical-align: middle;
 }
 
-#bwangxhdux .gt_from_md &gt; :first-child {
+#kkdnsyyzys .gt_from_md &gt; :first-child {
   margin-top: 0;
 }
 
-#bwangxhdux .gt_from_md &gt; :last-child {
+#kkdnsyyzys .gt_from_md &gt; :last-child {
   margin-bottom: 0;
 }
 
-#bwangxhdux .gt_row {
+#kkdnsyyzys .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1396,7 +1375,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   overflow-x: hidden;
 }
 
-#bwangxhdux .gt_stub {
+#kkdnsyyzys .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1408,7 +1387,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-left: 12px;
 }
 
-#bwangxhdux .gt_summary_row {
+#kkdnsyyzys .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1418,7 +1397,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 5px;
 }
 
-#bwangxhdux .gt_first_summary_row {
+#kkdnsyyzys .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1428,7 +1407,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_grand_summary_row {
+#kkdnsyyzys .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1438,7 +1417,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   padding-right: 5px;
 }
 
-#bwangxhdux .gt_first_grand_summary_row {
+#kkdnsyyzys .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1448,11 +1427,11 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-top-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_striped {
+#kkdnsyyzys .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bwangxhdux .gt_table_body {
+#kkdnsyyzys .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1461,7 +1440,7 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-bottom-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_footnotes {
+#kkdnsyyzys .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1475,13 +1454,13 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_footnote {
+#kkdnsyyzys .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#bwangxhdux .gt_sourcenotes {
+#kkdnsyyzys .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1495,41 +1474,41 @@ rule_40 &amp;lt;- profit_loss_q4 |&amp;gt;
   border-right-color: #D3D3D3;
 }
 
-#bwangxhdux .gt_sourcenote {
+#kkdnsyyzys .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#bwangxhdux .gt_left {
+#kkdnsyyzys .gt_left {
   text-align: left;
 }
 
-#bwangxhdux .gt_center {
+#kkdnsyyzys .gt_center {
   text-align: center;
 }
 
-#bwangxhdux .gt_right {
+#kkdnsyyzys .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bwangxhdux .gt_font_normal {
+#kkdnsyyzys .gt_font_normal {
   font-weight: normal;
 }
 
-#bwangxhdux .gt_font_bold {
+#kkdnsyyzys .gt_font_bold {
   font-weight: bold;
 }
 
-#bwangxhdux .gt_font_italic {
+#kkdnsyyzys .gt_font_italic {
   font-style: italic;
 }
 
-#bwangxhdux .gt_super {
+#kkdnsyyzys .gt_super {
   font-size: 65%;
 }
 
-#bwangxhdux .gt_footnote_marks {
+#kkdnsyyzys .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -1745,7 +1724,7 @@ sims |&amp;gt;
   labs(title = &amp;quot;Distribution of numbers of surviving players&amp;quot;,
        x = &amp;quot;N surviving players&amp;quot;,
        fill = NULL)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file358c5cd73f15_files/figure-html/unnamed-chunk-9-1.png" width="768" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5260293b68bb_files/figure-html/unnamed-chunk-9-1.png" width="768" /&gt;&lt;/p&gt;
 &lt;p&gt;The two different colours indicate which function was used to calculate the result. From this graph we directly see almost the exact same result from the two functions.&lt;/p&gt;
 &lt;p&gt;To answer our previously posed question: We would expect 7 players to survive the game.&lt;/p&gt;
 &lt;h2 id="benchmarking-for-vs-while-loop"&gt;Benchmarking for vs while loop&lt;/h2&gt;
@@ -1758,7 +1737,7 @@ test &amp;lt;- microbenchmark(
 )
 
 autoplot(test)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src="file358c5cd73f15_files/figure-html/unnamed-chunk-10-1.png" width="960" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="file5260293b68bb_files/figure-html/unnamed-chunk-10-1.png" width="960" /&gt;&lt;/p&gt;
 &lt;p&gt;Again there is not really a difference…&lt;/p&gt;
 &lt;h2 id="mathematical-solution"&gt;Mathematical Solution&lt;/h2&gt;
 &lt;p&gt;Of course we can not only simulate the game to get to our solution.&lt;/p&gt;

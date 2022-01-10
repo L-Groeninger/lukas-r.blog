@@ -1671,46 +1671,30 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 <span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        <span class="at">xpath =</span> <span class="st">&quot;//*[@id=&#39;sticky-header-trigger&#39;]/div/div/aside/section[2]/ul[1]/li[4]/strong&quot;</span>) <span class="sc">|&gt;</span>  </span>
 <span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="fu">html_text</span>()</span></code></pre></div>
 </div>
-<p>After having stored all information in variables we fill them in a dataframe/tibble. For some boats there were missing variables which had to be coded as <code>NA</code>.</p>
+<p>After having stored all information in variables we fill them in a dataframe/tibble. For some boats there were missing variables which had to be coded as <code>NA</code>. We can write a short function to do that.</p>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bind variables to dataframe. Select only the first element, if empty --&gt; NA</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>      df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(id)) <span class="cn">NA</span> <span class="cf">else</span> id[[<span class="dv">1</span>]],</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">type =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(type)) <span class="cn">NA</span> <span class="cf">else</span> type[[<span class="dv">1</span>]],</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">price =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(price)) <span class="cn">NA</span> <span class="cf">else</span> price[[<span class="dv">1</span>]],</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">condition =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(condition)) <span class="cn">NA</span> <span class="cf">else</span> condition[[<span class="dv">1</span>]],</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">manufacturer =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(manufacturer)) <span class="cn">NA</span> <span class="cf">else</span> manufacturer[[<span class="dv">1</span>]],</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">model =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(model)) <span class="cn">NA</span> <span class="cf">else</span> model[[<span class="dv">1</span>]],</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">region =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(region)) <span class="cn">NA</span> <span class="cf">else</span> region[[<span class="dv">1</span>]],</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">location =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(location)) <span class="cn">NA</span> <span class="cf">else</span> location[[<span class="dv">1</span>]],</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">year =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(year)) <span class="cn">NA</span> <span class="cf">else</span> year[[<span class="dv">1</span>]],</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">length_width =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(length_width)) <span class="cn">NA</span> <span class="cf">else</span> length_width[[<span class="dv">1</span>]],</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">draft =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(draft)) <span class="cn">NA</span> <span class="cf">else</span> draft[[<span class="dv">1</span>]],</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">displacement =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(displacement)) <span class="cn">NA</span> <span class="cf">else</span> displacement[[<span class="dv">1</span>]],</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">material =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(material)) <span class="cn">NA</span> <span class="cf">else</span> material[[<span class="dv">1</span>]],</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">steering =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(steering)) <span class="cn">NA</span> <span class="cf">else</span> steering[[<span class="dv">1</span>]],</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">keel_type =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(keel_type)) <span class="cn">NA</span> <span class="cf">else</span> keel_type[[<span class="dv">1</span>]],</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ballast =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(ballast)) <span class="cn">NA</span> <span class="cf">else</span> ballast[[<span class="dv">1</span>]],</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">no_persons =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(no_persons)) <span class="cn">NA</span> <span class="cf">else</span> no_persons[[<span class="dv">1</span>]],</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                   <span class="at">headroom =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(headroom)) <span class="cn">NA</span> <span class="cf">else</span> headroom[[<span class="dv">1</span>]],</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">no_cabins =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(no_cabins)) <span class="cn">NA</span> <span class="cf">else</span> no_cabins[[<span class="dv">1</span>]],</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                   <span class="at">no_beds =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(no_beds)) <span class="cn">NA</span> <span class="cf">else</span> no_beds[[<span class="dv">1</span>]],</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>                   <span class="at">propulsion =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(propulsion)) <span class="cn">NA</span> <span class="cf">else</span> propulsion[[<span class="dv">1</span>]],</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                   <span class="at">engine_perf =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(engine_perf)) <span class="cn">NA</span> <span class="cf">else</span> engine_perf[[<span class="dv">1</span>]],</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fuel_type =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(fuel_type)) <span class="cn">NA</span> <span class="cf">else</span> fuel_type[[<span class="dv">1</span>]],</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fuel_cap =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(fuel_cap)) <span class="cn">NA</span> <span class="cf">else</span> fuel_cap[[<span class="dv">1</span>]],</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                   <span class="at">engine_hours =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(engine_hours)) <span class="cn">NA</span> <span class="cf">else</span> engine_hours[[<span class="dv">1</span>]],</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mainsail =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(mainsail)) <span class="cn">NA</span> <span class="cf">else</span> mainsail[[<span class="dv">1</span>]],</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">genoa =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(genoa)) <span class="cn">NA</span> <span class="cf">else</span> genoa[[<span class="dv">1</span>]],</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                   <span class="at">spinnaker =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(spinnaker)) <span class="cn">NA</span> <span class="cf">else</span> spinnaker[[<span class="dv">1</span>]],</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>                   <span class="at">ad_date =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(ad_date)) <span class="cn">NA</span> <span class="cf">else</span> ad_date[[<span class="dv">1</span>]],</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>                   <span class="at">no_views =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(no_views)) <span class="cn">NA</span> <span class="cf">else</span> no_views[[<span class="dv">1</span>]],</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>                   <span class="at">no_favs =</span> <span class="cf">if</span> (<span class="fu">is_empty</span>(no_favs)) <span class="cn">NA</span> <span class="cf">else</span> no_favs[[<span class="dv">1</span>]])</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="er">}</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Rowbind the dataframe </span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    boat_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(boat_df, df)</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span></span></code></pre></div>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Function to select only the first element, if empty --&gt; NA</span>
+<span class='va'>check_input</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rlang.r-lib.org/reference/is_empty.html'>is_empty</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span> <span class='cn'>NA</span> <span class='kw'>else</span> <span class='va'>x</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>      extracted_vars <span class="ot">&lt;-</span> <span class="fu">list</span>(id, type, price, condition, manufacturer, model, region,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                             location, year, length_width, draft, displacement,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                             material, steering, keel_type, ballast, no_persons,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                             headroom, no_cabins, no_beds, propulsion, engine_perf,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                             fuel_type, fuel_cap, engine_hours, mainsail, genoa,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                             spinnaker, ad_date, no_views, no_favs)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      df <span class="ot">&lt;-</span> extracted_vars <span class="sc">|&gt;</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">set_names</span>(<span class="fu">colnames</span>(boat_df)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">map_df</span>(check_input) </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="er">}</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Rowbind the dataframe </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    boat_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(boat_df, df)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span></span></code></pre></div>
 </div>
 <p>Afterwards the dataframe is appended to our previously created one. Then we have to increase the <code>page_num</code> counter and go to the next page.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1787,7 +1771,7 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
                                 barheight <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
-<p><img src="scraping-used-boats_files/figure-html5/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="scraping-used-boats_files/figure-html5/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 <p>We can directly see that this marketplace focuses mainly on the german/swiss market. The portfolio of boats outside of Central/Western Europe is negligible.</p>
 <h1 id="conclusion">Conclusion</h1>
