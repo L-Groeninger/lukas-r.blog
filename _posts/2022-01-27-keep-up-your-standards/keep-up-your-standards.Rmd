@@ -1,0 +1,38 @@
+---
+title: "Keep up your Standards"
+description: |
+  How to set up default files to nudge you in the right direction.
+repository_url: https://github.com/L-Groeninger/lukas-r.blog
+preview: img/use_apis.jpg
+author:
+  - name: Lukas Gröninger
+categories:
+  - R
+draft: true
+date: 2022-01-27
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+
+
+```{r setup, include = FALSE}
+library(knitr)
+library(kableExtra)
+options(scipen = 1, digits = 3)
+opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
+
+```
+
+
+
+
+Test
+
+
+
+
+
+
