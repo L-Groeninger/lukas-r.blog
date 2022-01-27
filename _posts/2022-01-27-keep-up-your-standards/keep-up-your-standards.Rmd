@@ -3,7 +3,7 @@ title: "Keep up your Standards"
 description: |
   How to set up default files to nudge you in the right direction.
 repository_url: https://github.com/L-Groeninger/lukas-r.blog
-preview: img/use_apis.jpg
+preview: img/standard_1.jpg
 author:
   - name: Lukas Gröninger
 categories:
@@ -12,6 +12,8 @@ draft: true
 date: 2022-01-27
 output:
   distill::distill_article:
+    toc: true
+    toc_depth: 3
     self_contained: false
 ---
 
@@ -26,10 +28,61 @@ opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 
 ```
 
+- Importance of standards
+- What is Nudging
+- What are good standards?
+
+This is for a Windows machine.
 
 
 
-Test
+
+![](img/st_gzuz.gif)
+
+
+```{r}
+library(fs)
+library(usethis)
+```
+
+
+
+```{r}
+
+# If you are on Windows
+# Create a templates folder
+dir_create(path = "~/AppData/Roaming/RStudio/templates")
+
+# Create the file, here we start with a normal R script
+file_create("~/AppData/Roaming/RStudio/templates/default.R")
+
+# Open the file in RStudio
+edit_file("~/AppData/Roaming/RStudio/templates/default.R")
+
+# Now we do the same with an RMarkdown Script
+file_create("~/AppData/Roaming/RStudio/templates/default.Rmd")
+
+# And open the file in RStudio again
+edit_file("~/AppData/Roaming/RStudio/templates/default.Rmd")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
