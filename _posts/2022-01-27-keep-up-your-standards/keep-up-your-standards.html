@@ -139,7 +139,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/create_empty_doc.png","img/st_gzuz.gif","img/standard_1.jpg","keep-up-your-standards_files/anchor-4.2.2/anchor.min.js","keep-up-your-standards_files/bowser-1.9.3/bowser.min.js","keep-up-your-standards_files/distill-2.2.21/template.v2.js","keep-up-your-standards_files/header-attrs-2.11/header-attrs.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.min.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.min.map","keep-up-your-standards_files/popper-2.6.0/popper.min.js","keep-up-your-standards_files/tippy-6.2.7/tippy-bundle.umd.min.js","keep-up-your-standards_files/tippy-6.2.7/tippy-light-border.css","keep-up-your-standards_files/tippy-6.2.7/tippy.css","keep-up-your-standards_files/tippy-6.2.7/tippy.umd.min.js","keep-up-your-standards_files/webcomponents-2.0.0/webcomponents.js","references.bib"]}
+  {"type":"character","attributes":{},"value":["img/create_empty_doc.png","img/default_R.png","img/default_Rmd.png","img/st_gzuz.gif","img/standard_1.jpg","keep-up-your-standards_files/anchor-4.2.2/anchor.min.js","keep-up-your-standards_files/bowser-1.9.3/bowser.min.js","keep-up-your-standards_files/distill-2.2.21/template.v2.js","keep-up-your-standards_files/header-attrs-2.11/header-attrs.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.min.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.min.map","keep-up-your-standards_files/popper-2.6.0/popper.min.js","keep-up-your-standards_files/tippy-6.2.7/tippy-bundle.umd.min.js","keep-up-your-standards_files/tippy-6.2.7/tippy-light-border.css","keep-up-your-standards_files/tippy-6.2.7/tippy.css","keep-up-your-standards_files/tippy-6.2.7/tippy.umd.min.js","keep-up-your-standards_files/webcomponents-2.0.0/webcomponents.js","references.bib"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1507,37 +1507,62 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<p>This post is about setting up new standard R and R-Markdown files to help you benefit from the <strong>default effect</strong>. This effect makes use of the fact that people are inherently lazy. We suffer from the status quo bias. That means we tend to leave things as they are. This is why we just agree to General Terms and Conditions and accept all cookie tracking on websites. Companies and organizations are well aware of this flaw of ours and take advantage of it. It is good practice to design decision architectures to “Improving decisions about health, wealth, and happiness” <span class="citation" data-cites="thaler_nudge_2009">(<a href="#ref-thaler_nudge_2009" role="doc-biblioref">Thaler and Sunstein 2009</a>)</span></p>
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#what-are-good-standards">What are good standards?</a></li>
+<li><a href="#creating-default-r-templates">Creating default R templates</a></li>
+<li><a href="#the-next-step">The next step</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<h2 id="introduction">Introduction</h2>
+<p>This post is about setting up new standard R and R-Markdown files to help you benefit from the <strong>default effect</strong>. This effect makes use of the fact that people are inherently lazy. We suffer from the status quo bias. That means we tend to leave things as they are. This is why we just agree to General Terms and Conditions and accept all cookie tracking on websites. Companies and organizations are well aware of this flaw of ours and take advantage of it. This means we can leverage this behaviour as well to e.g. improve our code documentation. It is good practice to design decision architectures to “Improving decisions about health, wealth, and happiness” <span class="citation" data-cites="thaler_nudge_2009">(<a href="#ref-thaler_nudge_2009" role="doc-biblioref">Thaler and Sunstein 2009</a>)</span>.</p>
 <aside>
 You will find lots of literature on the topic in the field of behavioural economics. Prominent authors are Daniel Kahnemann (<em>Thinking, fast and slow</em>) and Richard Thaler (<em>Nudge</em>)
 </aside>
+<h2 id="what-are-good-standards">What are good standards?</h2>
+<p>Code documentation is crucial for:</p>
 <ul>
-<li>Importance of standards</li>
-<li>What is Nudging</li>
-<li>What are good standards?</li>
+<li>Maintainability</li>
+<li>Reproducibility</li>
+<li>General knowledge transfer</li>
 </ul>
-<p>This is for a Windows machine.</p>
 <p><img src="img/st_gzuz.gif" /></p>
+<p>When we create a new script we often don’t bother to give it a title, date or a short description about it’s purpose and further information. After all, we know exactly what we need it for, right? The problem is that this is not the case in 4 or 5 months from now. And even less if someone else wants to understand why this script exists. But we can set ourselves up for success by using smart default templates.</p>
+<p><strong>Disclaimer:</strong></p>
+<p>I will demonstrate how to change the default templates on a Windows machine using RStudio. The process for Macs and another IDE will look different.</p>
+<h2 id="creating-default-r-templates">Creating default R templates</h2>
+<p>Currently when we go to New File -&gt; R Script or type <em>Ctrl+Shift+N</em> we see an empty script. To change that we have to create a templates folder first. In this new folder we’ll create a new default.R file. Now we can edit this file as we like.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://fs.r-lib.org'>fs</a></span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Required libraries</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://fs.r-lib.org'>fs</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://usethis.r-lib.org'>usethis</a></span><span class='op'>)</span>
-</code></pre>
-</div>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># If you are on Windows</span>
+
 <span class='co'># Create a templates folder</span>
 <span class='fu'><a href='https://fs.r-lib.org/reference/create.html'>dir_create</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"~/AppData/Roaming/RStudio/templates"</span><span class='op'>)</span>
 
 <span class='co'># Create the file, here we start with a normal R script</span>
 <span class='fu'><a href='https://fs.r-lib.org/reference/create.html'>file_create</a></span><span class='op'>(</span><span class='st'>"~/AppData/Roaming/RStudio/templates/default.R"</span><span class='op'>)</span>
 
-<span class='co'># Open the file in RStudio</span>
+<span class='co'># Open the file in RStudio to edit it</span>
 <span class='fu'><a href='https://usethis.r-lib.org/reference/edit_file.html'>edit_file</a></span><span class='op'>(</span><span class='st'>"~/AppData/Roaming/RStudio/templates/default.R"</span><span class='op'>)</span>
-
-<span class='co'># Now we do the same with an RMarkdown Script</span>
+</code></pre>
+</div>
+</div>
+<p>It is helpful to specify some meta information like Author, E-Mail or Date especially when these scripts are being shared with others. Another aspect is to use the code folding feature (shown in line 11).</p>
+<p>The result might look like this:</p>
+<figure>
+<img src="img/default_R.png" alt="Modify default.R" /><figcaption aria-hidden="true">Modify default.R</figcaption>
+</figure>
+<p>We can do now the same for R-Markdown files. The procedure is the same.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Now we do the same with an RMarkdown Script</span>
 <span class='fu'><a href='https://fs.r-lib.org/reference/create.html'>file_create</a></span><span class='op'>(</span><span class='st'>"~/AppData/Roaming/RStudio/templates/default.Rmd"</span><span class='op'>)</span>
 
 <span class='co'># And open the file in RStudio again</span>
@@ -1545,6 +1570,18 @@ You will find lots of literature on the topic in the field of behavioural econom
 </code></pre>
 </div>
 </div>
+<p>Here the template is somewhat more verbose. Often you know what things you enter repeatedly. These templates may look different for everyone.</p>
+<figure>
+<img src="img/default_Rmd.png" alt="Modify default.Rmd" /><figcaption aria-hidden="true">Modify default.Rmd</figcaption>
+</figure>
+<h2 id="the-next-step">The next step</h2>
+<p>You can not only create default templates for your local machine. The next step would be to create an R package for the sole purpose of containing a set of standardized default templates for e.g. your organization or your team. Let’s imagine you work in a company and you want to create specific reports on a regular basis. This would be a good use case to create a template for that.</p>
+<p><a href="https://rstudio4edu.github.io/rstudio4edu-book/rmd-templates.html">Here</a> is a great resource for doing that. I used it to create the <a href="https://github.com/L-Groeninger/test_templates">{TestTemplates}</a> package. Now everyone can just install the package and be able to use your templates.</p>
+<figure>
+<img src="img/create_empty_doc.png" alt="TestTemplates Package" /><figcaption aria-hidden="true">TestTemplates Package</figcaption>
+</figure>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this post I went through the process of setting up default R templates. They do not ensure that all at once your code structure will be perfect. The idea is to reflect and work out how standards should be constructed for your particular case. The purpose of these templates is only to nudge us in the right direction towards a good code structure as well as programming practices.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-thaler_nudge_2009" class="csl-entry" role="doc-biblioentry">
