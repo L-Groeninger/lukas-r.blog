@@ -15,10 +15,8 @@ output:
     toc: true
     toc_depth: 3
     self_contained: false
+bibliography: references.bib
 ---
-
-
-
 
 ```{r setup, include = FALSE}
 library(knitr)
@@ -28,24 +26,28 @@ opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 
 ```
 
-- Importance of standards
-- What is Nudging
-- What are good standards?
+This post is about setting up new standard R and R-Markdown files to help you benefit from the **default effect**.
+This effect makes use of the fact that people are inherently lazy. We suffer from the status quo bias. That means we tend to leave things as they are. This is why we just agree to General Terms and Conditions and accept all cookie tracking on websites. Companies and organizations are well aware of this flaw of ours and take advantage of it.
+It is good practice to design decision architectures to "Improving decisions about health, wealth, and happiness" [@thaler_nudge_2009].
+
+<aside> You will find lots of literature on the topic in the field of behavioural economics. Prominent authors are Daniel Kahnemann (*Thinking, fast and slow*) and Richard Thaler (*Nudge*) </aside>
+
+This means we can leverage this behaviour as well to e.g. improve our code documentation.
+Code documentation is crucial for maintainability, reproducibility and general 
+knowledge transfer
+
+-   Importance of standards
+-   What is Nudging
+-   What are good standards?
 
 This is for a Windows machine.
 
-
-
-
 ![](img/st_gzuz.gif)
-
 
 ```{r}
 library(fs)
 library(usethis)
 ```
-
-
 
 ```{r}
 
@@ -66,26 +68,3 @@ file_create("~/AppData/Roaming/RStudio/templates/default.Rmd")
 edit_file("~/AppData/Roaming/RStudio/templates/default.Rmd")
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

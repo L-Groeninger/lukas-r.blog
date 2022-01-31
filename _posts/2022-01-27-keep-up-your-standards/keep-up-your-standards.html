@@ -85,6 +85,27 @@ code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
+</style>
 
   <!--radix_placeholder_meta_tags-->
   <title>Keep up your Standards</title>
@@ -109,15 +130,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta property="twitter:description" content="How to set up default files to nudge you in the right direction."/>
 
   <!--/radix_placeholder_meta_tags-->
+  
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","repository_url","preview","author","categories","draft","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Keep up your Standards"]},{"type":"character","attributes":{},"value":["How to set up default files to nudge you in the right direction.\n"]},{"type":"character","attributes":{},"value":["https://github.com/L-Groeninger/lukas-r.blog"]},{"type":"character","attributes":{},"value":["img/use_apis.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["R"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2022-01-27"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","repository_url","preview","author","categories","draft","date","output","bibliography"]}},"value":[{"type":"character","attributes":{},"value":["Keep up your Standards"]},{"type":"character","attributes":{},"value":["How to set up default files to nudge you in the right direction.\n"]},{"type":"character","attributes":{},"value":["https://github.com/L-Groeninger/lukas-r.blog"]},{"type":"character","attributes":{},"value":["img/standard_1.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["R"]},{"type":"logical","attributes":{},"value":[true]},{"type":"character","attributes":{},"value":["2022-01-27"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["references.bib"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/st_gzuz.gif","keep-up-your-standards_files/anchor-4.2.2/anchor.min.js","keep-up-your-standards_files/bowser-1.9.3/bowser.min.js","keep-up-your-standards_files/distill-2.2.21/template.v2.js","keep-up-your-standards_files/header-attrs-2.11/header-attrs.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.min.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.min.map","keep-up-your-standards_files/popper-2.6.0/popper.min.js","keep-up-your-standards_files/tippy-6.2.7/tippy-bundle.umd.min.js","keep-up-your-standards_files/tippy-6.2.7/tippy-light-border.css","keep-up-your-standards_files/tippy-6.2.7/tippy.css","keep-up-your-standards_files/tippy-6.2.7/tippy.umd.min.js","keep-up-your-standards_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["img/create_empty_doc.png","img/st_gzuz.gif","img/standard_1.jpg","keep-up-your-standards_files/anchor-4.2.2/anchor.min.js","keep-up-your-standards_files/bowser-1.9.3/bowser.min.js","keep-up-your-standards_files/distill-2.2.21/template.v2.js","keep-up-your-standards_files/header-attrs-2.11/header-attrs.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.min.js","keep-up-your-standards_files/jquery-3.6.0/jquery-3.6.0.min.map","keep-up-your-standards_files/popper-2.6.0/popper.min.js","keep-up-your-standards_files/tippy-6.2.7/tippy-bundle.umd.min.js","keep-up-your-standards_files/tippy-6.2.7/tippy-light-border.css","keep-up-your-standards_files/tippy-6.2.7/tippy.css","keep-up-your-standards_files/tippy-6.2.7/tippy.umd.min.js","keep-up-your-standards_files/webcomponents-2.0.0/webcomponents.js","references.bib"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1485,8 +1507,50 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
+<p>This post is about setting up new standard R and R-Markdown files to help you benefit from the <strong>default effect</strong>. This effect makes use of the fact that people are inherently lazy. We suffer from the status quo bias. That means we tend to leave things as they are. This is why we just agree to General Terms and Conditions and accept all cookie tracking on websites. Companies and organizations are well aware of this flaw of ours and take advantage of it. It is good practice to design decision architectures to “Improving decisions about health, wealth, and happiness” <span class="citation" data-cites="thaler_nudge_2009">(<a href="#ref-thaler_nudge_2009" role="doc-biblioref">Thaler and Sunstein 2009</a>)</span></p>
+<aside>
+You will find lots of literature on the topic in the field of behavioural economics. Prominent authors are Daniel Kahnemann (<em>Thinking, fast and slow</em>) and Richard Thaler (<em>Nudge</em>)
+</aside>
+<ul>
+<li>Importance of standards</li>
+<li>What is Nudging</li>
+<li>What are good standards?</li>
+</ul>
+<p>This is for a Windows machine.</p>
 <p><img src="img/st_gzuz.gif" /></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://fs.r-lib.org'>fs</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://usethis.r-lib.org'>usethis</a></span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># If you are on Windows</span>
+<span class='co'># Create a templates folder</span>
+<span class='fu'><a href='https://fs.r-lib.org/reference/create.html'>dir_create</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"~/AppData/Roaming/RStudio/templates"</span><span class='op'>)</span>
+
+<span class='co'># Create the file, here we start with a normal R script</span>
+<span class='fu'><a href='https://fs.r-lib.org/reference/create.html'>file_create</a></span><span class='op'>(</span><span class='st'>"~/AppData/Roaming/RStudio/templates/default.R"</span><span class='op'>)</span>
+
+<span class='co'># Open the file in RStudio</span>
+<span class='fu'><a href='https://usethis.r-lib.org/reference/edit_file.html'>edit_file</a></span><span class='op'>(</span><span class='st'>"~/AppData/Roaming/RStudio/templates/default.R"</span><span class='op'>)</span>
+
+<span class='co'># Now we do the same with an RMarkdown Script</span>
+<span class='fu'><a href='https://fs.r-lib.org/reference/create.html'>file_create</a></span><span class='op'>(</span><span class='st'>"~/AppData/Roaming/RStudio/templates/default.Rmd"</span><span class='op'>)</span>
+
+<span class='co'># And open the file in RStudio again</span>
+<span class='fu'><a href='https://usethis.r-lib.org/reference/edit_file.html'>edit_file</a></span><span class='op'>(</span><span class='st'>"~/AppData/Roaming/RStudio/templates/default.Rmd"</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-thaler_nudge_2009" class="csl-entry" role="doc-biblioentry">
+Thaler, Richard H., and Cass R. Sunstein. 2009. <em>Nudge: Improving Decisions about Health, Wealth, and Happiness</em>. New York: Penguin Books.
+</div>
+</div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
@@ -1499,6 +1563,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
 <div class="appendix-bottom">
+<h3 id="references">References</h3>
+<div id="references-listing"></div>
 <h3 id="updates-and-corrections">Corrections</h3>
 <p>If you see mistakes or want to suggest changes, please <a href="https://github.com/L-Groeninger/lukas-r.blog/issues/new">create an issue</a> on the source repository.</p>
 </div>
