@@ -7,7 +7,18 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Tue, 01 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 13 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Tidy Comparisons: Part 1</title>
+      <dc:creator>Lukas Gröninger</dc:creator>
+      <link>https://lukas-r.blog/posts/2022-02-13-tidy-comparisons-part-1</link>
+      <description>How to recode largish data in the tidy(table)verse.</description>
+      <category>R</category>
+      <category>Benchmark</category>
+      <guid>https://lukas-r.blog/posts/2022-02-13-tidy-comparisons-part-1</guid>
+      <pubDate>Sun, 13 Feb 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://lukas-r.blog/posts/2022-02-13-tidy-comparisons-part-1/img/tidy_table.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Keep up your Standards</title>
       <dc:creator>Lukas Gröninger</dc:creator>
