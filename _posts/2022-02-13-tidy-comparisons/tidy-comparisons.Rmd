@@ -1,5 +1,5 @@
 ---
-title: "Tidy Comparisons: Part 1"
+title: "Tidy Comparisons"
 description: |
   How to recode largish data in the tidy(table)verse.
 author:
@@ -38,8 +38,7 @@ by [Mark Fairbanks](https://github.com/markfairbanks).
 I feel quite at home in the tidyverse and had never really felt the necessity 
 to deal with {datatable}. When I came across a tweet discussing {tidytable} 
 I wanted to have a look. The reason why I don't use {dtplyr} is that {tidytable}
-to my knowledge has a better support for tidy evaluation. But that is for
-the second post to come.
+to my knowledge has a better support for tidy evaluation. 
 
 <aside> Another inspiration for this post was [this](https://community.rstudio.com/t/quickly-recoding-large-ish-vectors-in-a-tibble/2447/6)
 discussion on R-Studio Community on how to quickly recode largish vectors in a 
@@ -241,7 +240,7 @@ result <- map2_df(.x = tibble_list, .y = tidytable_list,
 
 
 ```{r include = FALSE}
-result <- readRDS(file = here::here("_posts/2022-02-13-tidy-comparisons-part-1", "speed_comparison.RDS"))
+result <- readRDS(file = here::here("_posts/2022-02-13-tidy-comparisons", "speed_comparison.RDS"))
 ```
 
 I use the `map2_df()` function and give the two created lists of dataframes as 
@@ -303,10 +302,8 @@ becomes significantly larger (more than 1 million rows) it is more reasonable to
 use the {tidytable} alternative. 
 Furthermore, the `left_join()` variant is probably a bit cleaner or better to 
 manage as you store the dictionary in a separate table.
-
 The great thing about {tidytable} is that the switch is so easy.
-In the next post I will look at a case where I will test the compatibility with 
-the tidy evaluation framework.
+
 
 
 
