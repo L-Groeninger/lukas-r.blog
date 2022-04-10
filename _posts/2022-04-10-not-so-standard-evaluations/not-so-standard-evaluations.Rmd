@@ -1,24 +1,63 @@
 ---
 title: "Not so standard evaluations"
 description: |
-  A short description of the post.
+  Getting a better understanding of the tidyeval framework
 author:
-  - name: Lukas GrÃ¶ninger
-    url: {}
+  - name: Lukas Gröninger
+preview: img/glass.jpg
 date: 2022-04-10
+categories:
+  - R
 output:
   distill::distill_article:
+    toc: true
+    toc_depth: 3
     self_contained: false
 draft: true
 ---
 
 
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(kableExtra)
+library(rmarkdown)
+options(scipen = 100000, digits = 3)
+opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
+
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
 
-Learn more about using Distill at <https://rstudio.github.io/distill>.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
