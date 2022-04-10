@@ -724,7 +724,7 @@
       "RemoteUsername": "L-Groeninger",
       "RemoteRef": "HEAD",
       "RemoteSha": "978d8368a66aa250c2c6f66086ae21a276789c10",
-      "Hash": "0cd75238b8c7d38070df540aa5189a7b"
+      "Hash": "239bdb814bbbbf4d6c04b518c88b122c"
     },
     "png": {
       "Package": "png",
@@ -1099,10 +1099,10 @@
     },
     "xfun": {
       "Package": "xfun",
-      "Version": "0.29",
+      "Version": "0.30",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "e2e5fb1a74fbb68b27d6efc5372635dc"
+      "Hash": "e83f48136b041845e50a6658feffb197"
     },
     "xml2": {
       "Package": "xml2",
