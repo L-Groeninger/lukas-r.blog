@@ -28,26 +28,50 @@ opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 ```
 
 
-The R language has some peculiarities. One of these is the concept of 
-non standard evaluation and the notion of Metaprogramming.
-
-I'm not trying to explain these concepts in detail. There are great resources 
-in the [{rlang}](https://rlang.r-lib.org/index.html) documentation as well as in  
-the [Big Picture Chapture](https://adv-r.hadley.nz/meta-big-picture.html) of
-Advanced R. 
-
-
-
+The R language has some peculiarities. One of these is the use of 
+non standard evaluation (NSE) and the notion of Metaprogramming.
 I'm using R for quite some time now and these concepts have already given me 
 some serious headaches (and probably continue to do so...). 
-In the first two years of using R (it was my first programming language), I never
-thought about the whole concept of closures, quasiquotation, 
+In the first two years of using R (it was my first programming language), 
+I have not given a single thought to this idea, because I didn't need it at all.
+Furthermore, I didn't even question why the following was working:
 
-- Defusing an expression
+```{r}
+mtcars |> dplyr::filter(cyl == 6)
+```
+
+How does R know where to find `cyl` and why does both `library(dplyr)` and 
+`library("dplyr")` work?
+
+I don't recall which problem I tried to fix, but one day I landed on a stackoverflow thread 
+where one solution used the `!!` (bang-bang) operator. I have never seen it before and was puzzled. 
+I copied the code and was glad that it worked, but I had no idea why. 
+The more I started to define my own functions, the more I stumbled across this
+strange topic of non standard evaluations and Metaprogramming. There were more than a
+handful of expressions (`r emo::ji("wink")`) I couldn't grasp. Examples are:
+
+
 - Quasiquotation
-- !! (Bang-Bang Operator) (force evaluation of part of an expression)
-- Dynamic dots
-- !!! (Big Bang or unquote-splice Operator)  
+- !! (Bang-Bang Operator) 
+- ... (Dynamic dots)
+- Data Masking
+- !!! (Big Bang or unquote-splice Operator) 
+- Defusing an expression
+- `{{}}` (Embrace, Curly-Curly or Doublestash Operator)
+- Closures
+- Quosures
+
+All of these concepts seem highly complex and difficult and this post is not 
+about trying to explain all or any of them in detail. There are great resources 
+in the [{rlang}](https://rlang.r-lib.org/index.html) documentation as well as in  
+the [Big Picture Chapture](https://adv-r.hadley.nz/meta-big-picture.html) of
+Advanced R. What also helped me a lot was the [Tidy Evaluation](https://tidyeval.tidyverse.org/sec-up-to-speed.html)
+book by Lionel Henry and Hadley Wickham. 
+
+
+[quo vs enquo](https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo)
+
+
 
 The you stumble across the Bang-Bang operator in a stack overflow thread
 
@@ -60,7 +84,7 @@ and to provide an example I used a couple of weeks ago.
 - [Standard and non standard evaluation](https://www.brodieg.com/2020/05/05/on-nse/) by Brodie Gaslam
 - [Tidy Evaluation](https://tidyeval.tidyverse.org/sec-up-to-speed.html)
 - [Tidy Eval is confusing sometimes](https://www.kelly-bodwin.com/blog/tidyeval/) by Kelly Bodwin
-
+- [On quosures](https://www.brodieg.com/2020/08/11/quosures/#:~:text=rlang%3A%3Aquo%20is%20used,relation%20to%20base%3A%3Aenquote%20.)
 
 
 
@@ -69,6 +93,7 @@ and to provide an example I used a couple of weeks ago.
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
+
 
 
 ```
