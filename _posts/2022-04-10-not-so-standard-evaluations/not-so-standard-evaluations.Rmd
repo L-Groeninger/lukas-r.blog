@@ -31,7 +31,7 @@ opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
 The R language has some peculiarities. One of these is the use of 
 non standard evaluation (NSE) and the notion of Metaprogramming.
 I'm using R for quite some time now and these concepts have already given me 
-some serious headaches (and probably continue to do so...). 
+some serious headaches (and will probably continue to do so...). 
 In the first two years of using R (it was my first programming language), 
 I have not given a single thought to this idea, because I didn't need it at all.
 Furthermore, I didn't even question why the following was working:
@@ -52,41 +52,45 @@ handful of expressions (`r emo::ji("wink")`) I couldn't grasp. Examples are:
 
 
 - Quasiquotation
-- !! (Bang-Bang Operator) 
-- ... (Dynamic dots)
+- `!!` (Bang-Bang Operator) 
+- `...` (Dynamic dots)
 - Data Masking
-- !!! (Big Bang or unquote-splice Operator) 
+- `!!!` (Big Bang or unquote-splice Operator) 
 - Defusing an expression
-- `{{}}` (Embrace, Curly-Curly or Doublestash Operator)
+- `{{}}` (Embrace, Curly-Curly or Doublestashe Operator)
 - Closures
 - Quosures
+
 
 All of these concepts seem highly complex and difficult and this post is not 
 about trying to explain all or any of them in detail. There are great resources 
 in the [{rlang}](https://rlang.r-lib.org/index.html) documentation as well as in  
 the [Big Picture Chapture](https://adv-r.hadley.nz/meta-big-picture.html) of
 Advanced R. What also helped me a lot was the [Tidy Evaluation](https://tidyeval.tidyverse.org/sec-up-to-speed.html)
-book by Lionel Henry and Hadley Wickham. 
+book by Lionel Henry and Hadley Wickham. In particular, the difference and the use cases between 
+the Bang-Bang (`!!`) and the Big-Bang (`!!!`) operator became much clearer after reading it.
+For an R Beginner I feel these topics are quite intimidating and 
 
 
-[quo vs enquo](https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo)
 
 
 
-The you stumble across the Bang-Bang operator in a stack overflow thread
+
+
 
 This post should serve as a resource to find other helpful articles on the topic
 and to provide an example I used a couple of weeks ago.
 
 
+## Helpful Blog Posts/Threads/Videos
+
 - [Programming with Dplyr](https://dplyr.tidyverse.org/articles/programming.html) article
 - [Tips on non-standard evaluation](https://renkun.me/2014/12/03/tips-on-non-standard-evaluation-in-r/) by Kun Ren
-- [Standard and non standard evaluation](https://www.brodieg.com/2020/05/05/on-nse/) by Brodie Gaslam
-- [Tidy Evaluation](https://tidyeval.tidyverse.org/sec-up-to-speed.html)
+- [Standard and non standard evaluation](https://www.brodieg.com/2020/05/05/on-nse/) and [On quosures](https://www.brodieg.com/2020/08/11/quosures/#:~:text=rlang%3A%3Aquo%20is%20used,relation%20to%20base%3A%3Aenquote%20.) by Brodie Gaslam
 - [Tidy Eval is confusing sometimes](https://www.kelly-bodwin.com/blog/tidyeval/) by Kelly Bodwin
-- [On quosures](https://www.brodieg.com/2020/08/11/quosures/#:~:text=rlang%3A%3Aquo%20is%20used,relation%20to%20base%3A%3Aenquote%20.)
-
-
+- [quo vs enquo](https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo) on stackoverflow
+- [Tidy Evaluation in 5 mins](https://www.youtube.com/watch?v=nERXS3ssntw)
+- [Useful Tidy Evaluation in R](https://www.youtube.com/watch?v=d2v43jJqn4I)
 
 
 

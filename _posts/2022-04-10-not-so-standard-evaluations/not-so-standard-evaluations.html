@@ -1485,13 +1485,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<p>The R language has some peculiarities. One of these is the use of non
-standard evaluation (NSE) and the notion of Metaprogramming. I’m using R
-for quite some time now and these concepts have already given me some
-serious headaches (and probably continue to do so…). In the first two
-years of using R (it was my first programming language), I have not
-given a single thought to this idea, because I didn’t need it at all.
-Furthermore, I didn’t even question why the following was working:</p>
+<p>The R language has some peculiarities. One of these is the use of non standard evaluation (NSE) and the notion of Metaprogramming. I’m using R for quite some time now and these concepts have already given me some serious headaches (and will probably continue to do so…). In the first two years of using R (it was my first programming language), I have not given a single thought to this idea, because I didn’t need it at all. Furthermore, I didn’t even question why the following was working:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mtcars</span> |&gt; <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>6</span><span class='op'>)</span>
@@ -1506,56 +1500,28 @@ Merc 280       19.2   6  168 123 3.92 3.44 18.3  1  0    4    4
 Merc 280C      17.8   6  168 123 3.92 3.44 18.9  1  0    4    4
 Ferrari Dino   19.7   6  145 175 3.62 2.77 15.5  0  1    5    6</code></pre>
 </div>
-<p>How does R know where to find <code>cyl</code> and why does both
-<code>library(dplyr)</code> and <code>library("dplyr")</code> work?</p>
-<p>I don’t recall which problem I tried to fix, but one day I landed on
-a stackoverflow thread where one solution used the <code>!!</code>
-(bang-bang) operator. I have never seen it before and was puzzled. I
-copied the code and was glad that it worked, but I had no idea why. The
-more I started to define my own functions, the more I stumbled across
-this strange topic of non standard evaluations and Metaprogramming.
-There were more than a handful of expressions (😉) I couldn’t grasp.
-Examples are:</p>
+<p>How does R know where to find <code>cyl</code> and why does both <code>library(dplyr)</code> and <code>library("dplyr")</code> work?</p>
+<p>I don’t recall which problem I tried to fix, but one day I landed on a stackoverflow thread where one solution used the <code>!!</code> (bang-bang) operator. I have never seen it before and was puzzled. I copied the code and was glad that it worked, but I had no idea why. The more I started to define my own functions, the more I stumbled across this strange topic of non standard evaluations and Metaprogramming. There were more than a handful of expressions (😉) I couldn’t grasp. Examples are:</p>
 <ul>
 <li>Quasiquotation</li>
-<li>!! (Bang-Bang Operator)</li>
-<li>… (Dynamic dots)</li>
-<li>!!! (Big Bang or unquote-splice Operator)</li>
+<li><code>!!</code> (Bang-Bang Operator)</li>
+<li><code>...</code> (Dynamic dots)</li>
+<li>Data Masking</li>
+<li><code>!!!</code> (Big Bang or unquote-splice Operator)</li>
 <li>Defusing an expression</li>
-<li></li>
+<li><code>{{}}</code> (Embrace, Curly-Curly or Doublestash Operator)</li>
+<li>Closures</li>
+<li>Quosures</li>
 </ul>
-<p>This post is not about trying to explain all these concepts in
-detail. There are great resources in the <a
-href="https://rlang.r-lib.org/index.html">{rlang}</a> documentation as
-well as in<br />
-the <a href="https://adv-r.hadley.nz/meta-big-picture.html">Big Picture
-Chapture</a> of Advanced R.</p>
-<p>thought about the whole concept of closures, quasiquotation,</p>
+<p>All of these concepts seem highly complex and difficult and this post is not about trying to explain all or any of them in detail. There are great resources in the <a href="https://rlang.r-lib.org/index.html">{rlang}</a> documentation as well as in<br />
+the <a href="https://adv-r.hadley.nz/meta-big-picture.html">Big Picture Chapture</a> of Advanced R. What also helped me a lot was the <a href="https://tidyeval.tidyverse.org/sec-up-to-speed.html">Tidy Evaluation</a> book by Lionel Henry and Hadley Wickham. In particular, the difference and the use cases between the Bang-Bang (<code>!!</code>) and the Big-Bang (<code>!!!</code>) operator became much clearer after reading it. For an R Beginner I feel these topics are quite intimidating and</p>
+<p><a href="https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo">quo vs enquo</a></p>
+<p>This post should serve as a resource to find other helpful articles on the topic and to provide an example I used a couple of weeks ago.</p>
 <ul>
-<li>Defusing an expression</li>
-<li>Quasiquotation</li>
-<li>!! (Bang-Bang Operator) (force evaluation of part of an
-expression)</li>
-<li>Dynamic dots</li>
-<li>!!! (Big Bang or unquote-splice Operator)</li>
-</ul>
-<p>The you stumble across the Bang-Bang operator in a stack overflow
-thread</p>
-<p>This post should serve as a resource to find other helpful articles
-on the topic and to provide an example I used a couple of weeks ago.</p>
-<ul>
-<li><a
-href="https://dplyr.tidyverse.org/articles/programming.html">Programming
-with Dplyr</a> article</li>
-<li><a
-href="https://renkun.me/2014/12/03/tips-on-non-standard-evaluation-in-r/">Tips
-on non-standard evaluation</a> by Kun Ren</li>
-<li><a href="https://www.brodieg.com/2020/05/05/on-nse/">Standard and
-non standard evaluation</a> by Brodie Gaslam</li>
-<li><a href="https://tidyeval.tidyverse.org/sec-up-to-speed.html">Tidy
-Evaluation</a></li>
-<li><a href="https://www.kelly-bodwin.com/blog/tidyeval/">Tidy Eval is
-confusing sometimes</a> by Kelly Bodwin</li>
+<li><a href="https://dplyr.tidyverse.org/articles/programming.html">Programming with Dplyr</a> article</li>
+<li><a href="https://renkun.me/2014/12/03/tips-on-non-standard-evaluation-in-r/">Tips on non-standard evaluation</a> by Kun Ren</li>
+<li><a href="https://www.brodieg.com/2020/05/05/on-nse/">Standard and non standard evaluation</a> and <a href="https://www.brodieg.com/2020/08/11/quosures/#:~:text=rlang%3A%3Aquo%20is%20used,relation%20to%20base%3A%3Aenquote%20.">On quosures</a> by Brodie Gaslam</li>
+<li><a href="https://www.kelly-bodwin.com/blog/tidyeval/">Tidy Eval is confusing sometimes</a> by Kelly Bodwin</li>
 </ul>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1617,8 +1583,7 @@ confusing sometimes</a> by Kelly Bodwin</li>
 </code></pre>
 </div>
 </div>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
