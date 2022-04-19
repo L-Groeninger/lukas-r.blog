@@ -112,12 +112,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","preview","date","categories","output","draft"]}},"value":[{"type":"character","attributes":{},"value":["Not so standard evaluations"]},{"type":"character","attributes":{},"value":["Getting a better understanding of the tidyeval framework\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["img/glass.jpg"]},{"type":"character","attributes":{},"value":["2022-04-10"]},{"type":"character","attributes":{},"value":["R"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[true]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","preview","date","categories","output","draft"]}},"value":[{"type":"character","attributes":{},"value":["Not so standard evaluations"]},{"type":"character","attributes":{},"value":["Getting a better understanding of the tidyeval framework\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["img/glass.jpg"]},{"type":"character","attributes":{},"value":["2022-04-10"]},{"type":"character","attributes":{},"value":["R","NSE","Metaprogramming"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[true]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/glass.jpg","not-so-standard-evaluations_files/anchor-4.2.2/anchor.min.js","not-so-standard-evaluations_files/bowser-1.9.3/bowser.min.js","not-so-standard-evaluations_files/distill-2.2.21/template.v2.js","not-so-standard-evaluations_files/header-attrs-2.11/header-attrs.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.min.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.min.map","not-so-standard-evaluations_files/popper-2.6.0/popper.min.js","not-so-standard-evaluations_files/tippy-6.2.7/tippy-bundle.umd.min.js","not-so-standard-evaluations_files/tippy-6.2.7/tippy-light-border.css","not-so-standard-evaluations_files/tippy-6.2.7/tippy.css","not-so-standard-evaluations_files/tippy-6.2.7/tippy.umd.min.js","not-so-standard-evaluations_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["img/glass.jpg","img/penguins.png","img/var_sum_1.png","not-so-standard-evaluations_files/anchor-4.2.2/anchor.min.js","not-so-standard-evaluations_files/bowser-1.9.3/bowser.min.js","not-so-standard-evaluations_files/distill-2.2.21/template.v2.js","not-so-standard-evaluations_files/header-attrs-2.11/header-attrs.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.min.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.min.map","not-so-standard-evaluations_files/popper-2.6.0/popper.min.js","not-so-standard-evaluations_files/tippy-6.2.7/tippy-bundle.umd.min.js","not-so-standard-evaluations_files/tippy-6.2.7/tippy-light-border.css","not-so-standard-evaluations_files/tippy-6.2.7/tippy.css","not-so-standard-evaluations_files/tippy-6.2.7/tippy.umd.min.js","not-so-standard-evaluations_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1473,6 +1473,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
 <div class="dt=tag">R</div>
+<div class="dt=tag">NSE</div>
+<div class="dt=tag">Metaprogramming</div>
 </div>
 <!--/radix_placeholder_categories-->
 <p><p>Getting a better understanding of the tidyeval framework</p></p>
@@ -1485,10 +1487,21 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<p>The R language has some peculiarities. One of these is the use of non standard evaluation (NSE) and the notion of Metaprogramming. I’m using R for quite some time now and these concepts have already given me some serious headaches (and will probably continue to do so…). In the first two years of using R (it was my first programming language), I have not given a single thought to this idea, because I didn’t need it at all. Furthermore, I didn’t even question why the following was working:</p>
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#list-of-helpful-ressources">List of helpful Ressources</a></li>
+<li><a href="#an-example-of-using-nse">An example of using NSE</a></li>
+</ul>
+</nav>
+</div>
+<p>The R language has some peculiarities. One of these is the use of non-standard evaluation (NSE) and the notion of Metaprogramming. I’m using R for quite some time now and these concepts have already given me some serious headaches (and will probably continue to do so…). Nevertheless, I have become a friend of this concept and enjoy using it. In the first two years of using R (it was my first programming language), I have not given a single thought to this idea, because I didn’t need it at all. Furthermore, I didn’t even question why the following was working:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>mtcars</span> |&gt; <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>6</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+
+<span class='va'>mtcars</span> |&gt; <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>6</span><span class='op'>)</span>
 </code></pre>
 </div>
 <pre><code>                mpg cyl disp  hp drat   wt qsec vs am gear carb
@@ -1509,81 +1522,194 @@ Ferrari Dino   19.7   6  145 175 3.62 2.77 15.5  0  1    5    6</code></pre>
 <li>Data Masking</li>
 <li><code>!!!</code> (Big Bang or unquote-splice Operator)</li>
 <li>Defusing an expression</li>
-<li><code>{{}}</code> (Embrace, Curly-Curly or Doublestash Operator)</li>
+<li><code>{{}}</code> (Embrace, Curly-Curly or Doublestashe Operator)</li>
 <li>Closures</li>
 <li>Quosures</li>
 </ul>
-<p>All of these concepts seem highly complex and difficult and this post is not about trying to explain all or any of them in detail. There are great resources in the <a href="https://rlang.r-lib.org/index.html">{rlang}</a> documentation as well as in<br />
-the <a href="https://adv-r.hadley.nz/meta-big-picture.html">Big Picture Chapture</a> of Advanced R. What also helped me a lot was the <a href="https://tidyeval.tidyverse.org/sec-up-to-speed.html">Tidy Evaluation</a> book by Lionel Henry and Hadley Wickham. In particular, the difference and the use cases between the Bang-Bang (<code>!!</code>) and the Big-Bang (<code>!!!</code>) operator became much clearer after reading it. For an R Beginner I feel these topics are quite intimidating and</p>
-<p><a href="https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo">quo vs enquo</a></p>
-<p>This post should serve as a resource to find other helpful articles on the topic and to provide an example I used a couple of weeks ago.</p>
+<p>All of these concepts seem highly complex and difficult and this post is not about trying to explain all or any of them in detail. For an R Beginner I feel these topics are quite intimidating and for me they would have been overwhelming and deterring. But have no fear, there are great ressources out there in the <a href="https://rlang.r-lib.org/index.html">{rlang}</a> documentation as well as in the <a href="https://adv-r.hadley.nz/meta-big-picture.html">Big Picture Chapture</a> of Advanced R. What also helped me a lot was the <a href="https://tidyeval.tidyverse.org/sec-up-to-speed.html">Tidy Evaluation</a> book by Lionel Henry and Hadley Wickham. In particular, the difference and the use cases between the Bang-Bang (<code>!!</code>) and the Big-Bang (<code>!!!</code>) operator became much clearer after reading it.</p>
+<p>So what is this post about then? It should serve as a ressource (for myself and potentially others) to find helpful articles/posts or videos on the topic and to provide an example of how I use non standard evaluation in exploratory data analysis.</p>
+<aside>
+I remember being really impressed after having seen how <a href="https://www.youtube.com/watch?v=42GyyDM3Uzg">David Robinson</a> used custom functions for interactive data exploration.
+</aside>
+<h3 id="list-of-helpful-ressources">List of helpful Ressources</h3>
+<h4 id="blog-posts">Blog Posts</h4>
 <ul>
 <li><a href="https://dplyr.tidyverse.org/articles/programming.html">Programming with Dplyr</a> article</li>
 <li><a href="https://renkun.me/2014/12/03/tips-on-non-standard-evaluation-in-r/">Tips on non-standard evaluation</a> by Kun Ren</li>
 <li><a href="https://www.brodieg.com/2020/05/05/on-nse/">Standard and non standard evaluation</a> and <a href="https://www.brodieg.com/2020/08/11/quosures/#:~:text=rlang%3A%3Aquo%20is%20used,relation%20to%20base%3A%3Aenquote%20.">On quosures</a> by Brodie Gaslam</li>
 <li><a href="https://www.kelly-bodwin.com/blog/tidyeval/">Tidy Eval is confusing sometimes</a> by Kelly Bodwin</li>
 </ul>
+<h4 id="forum-threads">Forum Threads</h4>
+<ul>
+<li><a href="https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo">quo vs enquo</a> on stackoverflow</li>
+<li><a href="https://community.rstudio.com/t/interesting-tidy-eval-use-cases/21121">Tidy Eval use cases</a> on R-Studio Community</li>
+</ul>
+<h4 id="videos">Videos</h4>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=nERXS3ssntw">Tidy Evaluation in 5 mins</a> by Hadley Wickham</li>
+<li><a href="https://www.youtube.com/watch?v=d2v43jJqn4I">Useful Tidy Evaluation in R</a> by Connor Krenzer</li>
+<li><a href="https://www.youtube.com/watch?v=2BXPLnLMTYo">Lazy Evaluation</a> by Jenny Bryan</li>
+</ul>
+<h3 id="an-example-of-using-nse">An example of using NSE</h3>
+<p>I mainly use the Tidy eval framework in the realm of interactive data exploration and visualization. Here I will show how to apply it to create count summaries for multiple variables of a dataframe. I’ll use the <code>tabyl()</code> function from the {janitor} package. Often I just want to have a short look at all distinct values of a variable and the corresponding percentages. This is exactly what <code>tabyl</code> allows us to do. We start by loading the required libraries.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://allisonhorst.github.io/palmerpenguins/'>palmerpenguins</a></span><span class='op'>)</span>
-</code></pre>
-</div>
-</div>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>penguins</span>
-</code></pre>
-</div>
-<pre><code># A tibble: 344 x 8
-   species island    bill_length_mm bill_depth_mm flipper_length_mm
-   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
- 1 Adelie  Torgersen           39.1          18.7               181
- 2 Adelie  Torgersen           39.5          17.4               186
- 3 Adelie  Torgersen           40.3          18                 195
- 4 Adelie  Torgersen           NA            NA                  NA
- 5 Adelie  Torgersen           36.7          19.3               193
- 6 Adelie  Torgersen           39.3          20.6               190
- 7 Adelie  Torgersen           38.9          17.8               181
- 8 Adelie  Torgersen           39.2          19.6               195
- 9 Adelie  Torgersen           34.1          18.1               193
-10 Adelie  Torgersen           42            20.2               190
-# ... with 334 more rows, and 3 more variables: body_mass_g &lt;int&gt;,
-#   sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>count_summary_stache</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>vars</span>, <span class='va'>sort</span> <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='va'>df</span> |&gt;
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>{</span><span class='op'>{</span><span class='va'>vars</span><span class='op'>}</span><span class='op'>}</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
-  
-  <span class='va'>col_names</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/tidyeval.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span>, sort <span class='op'>=</span> <span class='va'>sort</span><span class='op'>)</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>col_names</span><span class='op'>)</span>
-<span class='op'>}</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Required libraries</span>
 
-<span class='va'>count_summary_dots</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>...</span>, <span class='va'>sort</span> <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://purrr.tidyverse.org'>purrr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://allisonhorst.github.io/palmerpenguins/'>palmerpenguins</a></span><span class='op'>)</span> <span class='co'># Penguins Dataset to explore</span>
+</code></pre>
+</div>
+</div>
+<p>The dataset for which we want to create count summaries is the penguins dataset from the {palmerpenguins} package. This is a classic dataset to play around with and offers eight variables.</p>
+<figure>
+<img src="img/penguins.png" alt="Selecting variables from penguins dataframe" /><figcaption aria-hidden="true">Selecting variables from penguins dataframe</figcaption>
+</figure>
+<p>I really like this <em>preview</em> behaviour when accessing named lists or dataframes. What I also find enormously useful is the tidyselect syntax. Often the structure of variables in a dataframe follows a certain system. In this case we have variables that show directly in which metric they are measured (e.g. <code>bill_length_mm</code>). Tidyselect helpers offer a way to utilize this structure when selecting variables. There are several possibilities:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Selecting all variables measured in mm</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>ends_with</a></span><span class='op'>(</span><span class='st'>"_mm"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># Selecting all variables containing the word "bill"</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>contains</a></span><span class='op'>(</span><span class='st'>"bill"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># Selecting all variables from island up to sex</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='va'>island</span><span class='op'>:</span><span class='va'>sex</span><span class='op'>)</span>
+
+<span class='co'># Selecting specific variables</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>island</span>, <span class='va'>sex</span>, <span class='va'>year</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Let’s have a look at the output when using <code>tabyl</code>. We want to look at the gender or sex values of penguins in our dataset.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='va'>sex</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>    sex   n percent valid_percent
+ female 165   0.480         0.495
+   male 168   0.488         0.505
+   &lt;NA&gt;  11   0.032            NA</code></pre>
+</div>
+<p>Here we see that we get the count of distinct values and (valid) percentages. I want to store information like this for multiple variables in a named summary list. So how do I approach this problem?</p>
+<p>As Jenny Bryan said in her <a href="https://www.youtube.com/watch?v=2BXPLnLMTYo">Lazy evaluation talk</a> you probably don’t have to go too deep in the rlang tidy evaluation framework. In many cases you can <em>“just pass the dots”</em>. This refers to the <code>...</code> (Dynamic dots or forwarding) operator where you can collect multiple arguments to e.g. <code>select()</code> or <code>group_by()</code> calls.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Creating my custom var_summary function with `...`</span>
+<span class='va'>var_summary</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='co'># Extract the column names in a character vector</span>
   <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='va'>df</span> |&gt;
+    <span class='co'># Now I use the tidyselect helpers of the second argument</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> |&gt;
     <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
   
+  <span class='co'># Map over the character column names and create the count summary</span>
+  <span class='co'># In the end we want to name our so created list</span>
   <span class='va'>col_names</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/tidyeval.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span>, sort <span class='op'>=</span> <span class='va'>sort</span><span class='op'>)</span><span class='op'>)</span> |&gt;
+    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>cum_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>percent</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;
     <span class='fu'><a href='https://purrr.tidyverse.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>col_names</span><span class='op'>)</span>
 <span class='op'>}</span>
 
-
-<span class='va'>count_summary_tidyselect</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>vars</span>, <span class='va'>sort</span> <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>expr</span> <span class='op'>&lt;-</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/enquo.html'>enquo</a></span><span class='op'>(</span><span class='va'>vars</span><span class='op'>)</span>
-  <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'>tidyselect</span><span class='fu'>::</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/eval_select.html'>eval_select</a></span><span class='op'>(</span><span class='va'>expr</span>, data <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='va'>col_names</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/tidyeval.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span>, sort <span class='op'>=</span> <span class='va'>sort</span><span class='op'>)</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>col_names</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='co'># Test the function</span>
+<span class='va'>var_sum</span> <span class='op'>&lt;-</span> <span class='fu'>var_summary</span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>ends_with</a></span><span class='op'>(</span><span class='st'>"_mm"</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<figure>
+<img src="img/var_sum_1.png" alt="Accessing the resulting var_sum list" /><figcaption aria-hidden="true">Accessing the resulting var_sum list</figcaption>
+</figure>
+<p>Besides the <code>...</code> argument the <code>!!sym(.x)</code> stands out as a hint at a NSE pattern. What the <code>sym()</code> function does in our case is converting the character column name in a symbol that can be used as the second argument to the <code>tabyl()</code> function. This has to be evaluated through the use of the Bang-Bang operator. Let’s show an example:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define a character column name of our dataframe</span>
+<span class='va'>col_name</span> <span class='op'>&lt;-</span> <span class='st'>"sex"</span>
+
+<span class='co'># Convert to symbol</span>
+<span class='va'>sym_col_name</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='va'>col_name</span><span class='op'>)</span>
+
+<span class='co'># Force evaluation of symbol in the context of the tabyl function</span>
+<span class='va'>var_sum</span> <span class='op'>&lt;-</span> <span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='op'>!</span><span class='op'>!</span><span class='va'>sym_col_name</span><span class='op'>)</span>
+
+<span class='va'>var_sum</span>
+</code></pre>
+</div>
+<pre><code>    sex   n percent valid_percent
+ female 165   0.480         0.495
+   male 168   0.488         0.505
+   &lt;NA&gt;  11   0.032            NA</code></pre>
+</div>
+<p><img src="https://media.giphy.com/media/26gspxJg34maWDwIM/giphy.gif" /></p>
+<p>Great, but there is also another possibility we can use as a second argument to our created function. The <code>{{}}</code> doublestache operator (term coined by Kelly Bodwin) which was introduced in rlang 0.4.0 (2019) can be used exactly for our use case of variable selection. Here we just exchange the <code>...</code> with the <code>{{}}</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Creating my custom var_summary function with the doublestache operator</span>
+<span class='va'>var_summary</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>vars</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='co'># Extract the column names in a character vector</span>
+  <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='va'>df</span> |&gt;
+    <span class='co'># Now I use the tidyselect helpers of the second argument</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>{</span><span class='op'>{</span><span class='va'>vars</span><span class='op'>}</span><span class='op'>}</span><span class='op'>)</span> |&gt;
+    <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
+  
+  <span class='co'># Map over the character column names and create the count summary</span>
+  <span class='co'># In the end we want to name our so created list</span>
+  <span class='va'>col_names</span> |&gt;
+    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>cum_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>percent</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;
+    <span class='fu'><a href='https://purrr.tidyverse.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>col_names</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='co'># Test the function</span>
+<span class='va'>var_sum</span> <span class='op'>&lt;-</span> <span class='fu'>var_summary</span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>species</span>, <span class='va'>island</span>, <span class='va'>sex</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>When reading about the tidyselect helper functions I thought it is probably possible to just extract the character vector of column names without the overhead of <code>select</code>-ing all the variables. And exactly for this purpose <code>tidyselect::eval_select()</code> exists. It evaluates a tidyselect expression like for example <code>starts_with("bill")</code> in the context of a dataframe and returns a named integer vector with column names and position:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Capture an expression</span>
+<span class='va'>expression</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>expr</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"bill"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># Evaluating the selection in the dataframe environment</span>
+<span class='fu'>tidyselect</span><span class='fu'>::</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/eval_select.html'>eval_select</a></span><span class='op'>(</span><span class='va'>expression</span>, data <span class='op'>=</span> <span class='va'>penguins</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>bill_length_mm  bill_depth_mm 
+             3              4 </code></pre>
+</div>
+<p>The use of <code>tidyselect::eval_select()</code> leads to a slightly faster implementation of the function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Creating my custom var_summary function using eval_select()</span>
+<span class='va'>var_summary</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>vars</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>expression</span> <span class='op'>&lt;-</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/enquo.html'>enquo</a></span><span class='op'>(</span><span class='va'>vars</span><span class='op'>)</span>
+  <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'>tidyselect</span><span class='fu'>::</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/eval_select.html'>eval_select</a></span><span class='op'>(</span><span class='va'>expression</span>, data <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span> |&gt;
+    <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='va'>col_names</span> |&gt;
+    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>cum_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>percent</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;
+    <span class='fu'><a href='https://purrr.tidyverse.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>col_names</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='va'>var_sum</span> <span class='op'>&lt;-</span> <span class='fu'>var_summary</span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"bill"</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>In the end I created three different functions which did the same job highlighting different possibilities of how to use tidyeval/NSE patterns.</p>
+<p><img src="https://media.giphy.com/media/C6JQPEUsZUyVq/giphy.gif" /></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="https://tidyselect.r-lib.org/reference/language.html">Here</a> is a list with further examples<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
