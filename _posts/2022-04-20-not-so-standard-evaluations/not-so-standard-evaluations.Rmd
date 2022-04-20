@@ -5,7 +5,7 @@ description: |
 author:
   - name: Lukas Gröninger
 preview: img/glass.jpg
-date: 2022-04-10
+date: 2022-04-20
 categories:
   - R
   - NSE
@@ -15,7 +15,7 @@ output:
     toc: true
     toc_depth: 3
     self_contained: false
-draft: true
+draft: false
 ---
 
 
@@ -96,17 +96,18 @@ used custom functions for interactive data exploration. </aside>
 - [Standard and non standard evaluation](https://www.brodieg.com/2020/05/05/on-nse/) and [On quosures](https://www.brodieg.com/2020/08/11/quosures/#:~:text=rlang%3A%3Aquo%20is%20used,relation%20to%20base%3A%3Aenquote%20.) by Brodie Gaslam
 - [Tidy Eval is confusing sometimes](https://www.kelly-bodwin.com/blog/tidyeval/) by Kelly Bodwin
 
-#### Forum Threads
-
-- [quo vs enquo](https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo) on stackoverflow
-- [Tidy Eval use cases](https://community.rstudio.com/t/interesting-tidy-eval-use-cases/21121) on R-Studio Community
-
 #### Videos
 
 - [Tidy Evaluation in 5 mins](https://www.youtube.com/watch?v=nERXS3ssntw) by Hadley Wickham
 - [Useful Tidy Evaluation in R](https://www.youtube.com/watch?v=d2v43jJqn4I) by Connor Krenzer
 - [Lazy Evaluation](https://www.youtube.com/watch?v=2BXPLnLMTYo) by Jenny Bryan
+- [R Metaprogramming Tutorial Playlist](https://www.youtube.com/playlist?list=PLZ_9sY7D2wDB-ZVHNVuaIokYgh1jDpNUe) in german and english by Jurijy Weinblat
 
+#### Other
+
+- [quo vs enquo](https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo) on stackoverflow
+- [Tidy Eval use cases](https://community.rstudio.com/t/interesting-tidy-eval-use-cases/21121) on R-Studio Community
+- [Interactivity and programming in the tidyverse](https://speakerdeck.com/lionelhenry/interactivity-and-programming-in-the-tidyverse) by Lionel Henry
 
 ### An example of using NSE
 
@@ -209,13 +210,15 @@ operator. Let's look at an example:
 
 ```{r}
 # Define a character column name of our dataframe
-col_name <- "sex"
+col_name <- "island"
 
 # Convert to symbol
 sym_col_name <- sym(col_name)
 
 # Force evaluation of symbol in the context of the tabyl function
-var_sum <- janitor::tabyl(penguins, !!sym_col_name)
+var_sum <- janitor::tabyl(penguins, !!sym_col_name) |> 
+  arrange(desc(n)) |> 
+  mutate(cum_percent = cumsum(percent)) 
 
 var_sum
 ```
@@ -224,8 +227,10 @@ var_sum
 
 Great, but there is also another possibility we can use as a second argument to
 our created function. The `{{}}` doublestache operator (term coined by Kelly Bodwin)
-which was introduced in rlang 0.4.0 (2019) can be used exactly for our use case of
-variable selection. Here we just exchange the `...` with the `{{}}`. 
+which was introduced in [rlang 0.4.0](https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/) 
+(2019) can be used exactly for our use case as we only want to pass one argument 
+of variable selection. The dynamic dots are used as a more general placeholder for multiple arguments. 
+Here we just exchange the `...` with the `{{}}`. 
 
 ```{r}
 # Creating my custom var_summary function with the doublestache operator
@@ -287,8 +292,7 @@ var_sum <- var_summary(penguins, starts_with("bill"))
 
 ```
 
-### Conclusion 
-
+### Conclusion
 
 In the end I created three different functions which did the same job highlighting
 different possibilities of how to use tidyeval/NSE patterns.
@@ -296,7 +300,13 @@ different possibilities of how to use tidyeval/NSE patterns.
 
 ![](https://media.giphy.com/media/C6JQPEUsZUyVq/giphy.gif)
 
-
+I've written this post so that it provides a place of reference for me to come back to.
+Furthermore, it might lead to some people having a closer look at this paradigm and
+test their own ways of implementing Metaprogramming aspects in their workflow (I've just touched the surface here).
+I for myself find it a fascinating aspect of the R programming language which fits
+nicely into functional programming patterns. At the same time I have to admit, that
+it is hard to get your head around these ideas and see myself returning to
+the {rlang} documentation quite often...
 
 
 

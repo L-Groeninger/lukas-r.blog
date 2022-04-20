@@ -7,7 +7,19 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 13 Feb 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 19 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Not so standard evaluations</title>
+      <dc:creator>Lukas Gröninger</dc:creator>
+      <link>https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations</link>
+      <description>Getting a better understanding of the tidyeval framework</description>
+      <category>R</category>
+      <category>NSE</category>
+      <category>Metaprogramming</category>
+      <guid>https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations</guid>
+      <pubDate>Tue, 19 Apr 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/img/glass.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Tidy Comparisons</title>
       <dc:creator>Lukas Gröninger</dc:creator>
