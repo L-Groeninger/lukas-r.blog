@@ -424,10 +424,10 @@
     },
     "glue": {
       "Package": "glue",
-      "Version": "1.5.1",
+      "Version": "1.6.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "e01bc1fe0c20954ec97eac86640abc70"
+      "Hash": "4f2596dfb05dac67b9dc558e5c6fba2e"
     },
     "googledrive": {
       "Package": "googledrive",
@@ -693,6 +693,13 @@
       "Repository": "CRAN",
       "Hash": "1ae0f416121f09e4d9007fd13e6fee77"
     },
+    "palmerpenguins": {
+      "Package": "palmerpenguins",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "9a455031890b2adf20e19784a114ddd4"
+    },
     "parallelly": {
       "Package": "parallelly",
       "Version": "1.29.0",
@@ -724,7 +731,7 @@
       "RemoteUsername": "L-Groeninger",
       "RemoteRef": "HEAD",
       "RemoteSha": "978d8368a66aa250c2c6f66086ae21a276789c10",
-      "Hash": "239bdb814bbbbf4d6c04b518c88b122c"
+      "Hash": "0cd75238b8c7d38070df540aa5189a7b"
     },
     "png": {
       "Package": "png",
@@ -847,10 +854,10 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "0.4.12",
+      "Version": "1.0.2",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0879f5388fe6e4d56d7ef0b7ccb031e5"
+      "Hash": "04884d9a75d778aca22c7154b8333ec9"
     },
     "rmarkdown": {
       "Package": "rmarkdown",
@@ -998,6 +1005,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "7243004a708d06d4716717fa1ff5b2fe"
+    },
+    "tidytable": {
+      "Package": "tidytable",
+      "Version": "0.7.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d18bb324471fa0812516e3074817e343"
     },
     "tidyverse": {
       "Package": "tidyverse",
