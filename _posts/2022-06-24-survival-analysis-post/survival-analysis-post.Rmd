@@ -1,0 +1,23 @@
+---
+title: "survival analysis post"
+description: |
+  A short description of the post.
+author:
+  - name: Lukas Gröninger
+    url: {}
+date: 2022-06-24
+output:
+  distill::distill_article:
+    self_contained: false
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+sdf
+
+
