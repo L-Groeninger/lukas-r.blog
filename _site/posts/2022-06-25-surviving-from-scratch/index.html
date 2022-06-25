@@ -50,16 +50,17 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
+code span { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { } /* Attribute */
+code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
+code span.cf { color: #00769e; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -73,9 +74,9 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
+code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
+code span.ot { color: #00769e; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
 code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
@@ -85,53 +86,78 @@ code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
+<style>
+  div.csl-bib-body { }
+  div.csl-entry {
+    clear: both;
+    }
+  .hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+  }
+  div.csl-left-margin {
+    min-width:2em;
+    float:left;
+  }
+  div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+  }
+  div.csl-indent {
+    margin-left: 2em;
+  }
+</style>
 
   <!--radix_placeholder_meta_tags-->
-<title>Lukas R Blog: Not so standard evaluations</title>
+<title>Lukas R Blog: Surviving from scratch</title>
 
-<meta property="description" itemprop="description" content="Getting a better understanding of the tidyeval framework"/>
+<meta property="description" itemprop="description" content="How to model exponential survival probabilities using maximum likelihood from scratch"/>
 
-<link rel="canonical" href="https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/"/>
+<link rel="canonical" href="https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/"/>
 <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
 
 <!--  https://schema.org/Article -->
-<meta property="article:published" itemprop="datePublished" content="2022-04-20"/>
-<meta property="article:created" itemprop="dateCreated" content="2022-04-20"/>
+<meta property="article:published" itemprop="datePublished" content="2022-06-25"/>
+<meta property="article:created" itemprop="dateCreated" content="2022-06-25"/>
 <meta name="article:author" content="Lukas Gröninger"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="Lukas R Blog: Not so standard evaluations"/>
+<meta property="og:title" content="Lukas R Blog: Surviving from scratch"/>
 <meta property="og:type" content="article"/>
-<meta property="og:description" content="Getting a better understanding of the tidyeval framework"/>
-<meta property="og:url" content="https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/"/>
-<meta property="og:image" content="https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/img/glass.jpg"/>
+<meta property="og:description" content="How to model exponential survival probabilities using maximum likelihood from scratch"/>
+<meta property="og:url" content="https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/"/>
+<meta property="og:image" content="https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/img/survival_img.jpg"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Lukas R Blog"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary_large_image"/>
-<meta property="twitter:title" content="Lukas R Blog: Not so standard evaluations"/>
-<meta property="twitter:description" content="Getting a better understanding of the tidyeval framework"/>
-<meta property="twitter:url" content="https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/"/>
-<meta property="twitter:image" content="https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/img/glass.jpg"/>
+<meta property="twitter:title" content="Lukas R Blog: Surviving from scratch"/>
+<meta property="twitter:description" content="How to model exponential survival probabilities using maximum likelihood from scratch"/>
+<meta property="twitter:url" content="https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/"/>
+<meta property="twitter:image" content="https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/img/survival_img.jpg"/>
 
 <!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
-<meta name="citation_title" content="Lukas R Blog: Not so standard evaluations"/>
-<meta name="citation_fulltext_html_url" content="https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/"/>
+<meta name="citation_title" content="Lukas R Blog: Surviving from scratch"/>
+<meta name="citation_fulltext_html_url" content="https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/"/>
 <meta name="citation_fulltext_world_readable" content=""/>
-<meta name="citation_online_date" content="2022/04/20"/>
-<meta name="citation_publication_date" content="2022/04/20"/>
+<meta name="citation_online_date" content="2022/06/25"/>
+<meta name="citation_publication_date" content="2022/06/25"/>
 <meta name="citation_author" content="Lukas Gröninger"/>
 <!--/radix_placeholder_meta_tags-->
+  
+  <meta name="citation_reference" content="citation_title=Estimation of exponential survival probabilities with concomitant information;citation_publication_date=1965;citation_volume=21;citation_doi=10.2307/2528247;citation_author=Polly Feigl;citation_author=Marvin Zelen"/>
+  <meta name="citation_reference" content="citation_title=Exponential distribution as a survival model;citation_publication_date=2014;citation_publisher=John Wiley &amp; Sons, Ltd;citation_doi=10.1002/9781118445112.stat06019;citation_author=John P. Klein;citation_author=Per Kragh Andersen;citation_author=Niels Keiding"/>
+  <meta name="citation_reference" content="citation_title=Use of concomitant variables and incomplete survival information in the estimation of an exponential survival parameter;citation_publication_date=1966;citation_volume=22;citation_doi=10.2307/2528067;citation_author=Calvin Zippin;citation_author=Peter Armitage"/>
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","preview","date","categories","output","draft","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["Not so standard evaluations"]},{"type":"character","attributes":{},"value":["Getting a better understanding of the tidyeval framework"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["img/glass.jpg"]},{"type":"character","attributes":{},"value":["2022-04-20"]},{"type":"character","attributes":{},"value":["R","NSE","Metaprogramming"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[false]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/"]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["creative_commons","title","description","author","preview","date","categories","output","draft","bibliography","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["CC BY"]},{"type":"character","attributes":{},"value":["Surviving from scratch"]},{"type":"character","attributes":{},"value":["How to model exponential survival probabilities using maximum likelihood from scratch"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Lukas Gröninger"]}]}]},{"type":"character","attributes":{},"value":["img/survival_img.jpg"]},{"type":"character","attributes":{},"value":["2022-06-25"]},{"type":"character","attributes":{},"value":["R","survival analysis"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth","self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]},{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"logical","attributes":{},"value":[false]},{"type":"character","attributes":{},"value":["references.bib"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/"]},{"type":"character","attributes":{},"value":["https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/glass.jpg","img/penguins.png","img/var_sum_1.png","not-so-standard-evaluations_files/anchor-4.2.2/anchor.min.js","not-so-standard-evaluations_files/bowser-1.9.3/bowser.min.js","not-so-standard-evaluations_files/distill-2.2.21/template.v2.js","not-so-standard-evaluations_files/header-attrs-2.11/header-attrs.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.min.js","not-so-standard-evaluations_files/jquery-3.6.0/jquery-3.6.0.min.map","not-so-standard-evaluations_files/popper-2.6.0/popper.min.js","not-so-standard-evaluations_files/tippy-6.2.7/tippy-bundle.umd.min.js","not-so-standard-evaluations_files/tippy-6.2.7/tippy-light-border.css","not-so-standard-evaluations_files/tippy-6.2.7/tippy.css","not-so-standard-evaluations_files/tippy-6.2.7/tippy.umd.min.js","not-so-standard-evaluations_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["img/survival_img.jpg","references.bib","surviving-from-scratch_files/anchor-4.2.2/anchor.min.js","surviving-from-scratch_files/bowser-1.9.3/bowser.min.js","surviving-from-scratch_files/distill-2.2.21/template.v2.js","surviving-from-scratch_files/figure-html5/unnamed-chunk-8-1.png","surviving-from-scratch_files/figure-html5/unnamed-chunk-9-1.png","surviving-from-scratch_files/header-attrs-2.14/header-attrs.js","surviving-from-scratch_files/jquery-3.6.0/jquery-3.6.0.js","surviving-from-scratch_files/jquery-3.6.0/jquery-3.6.0.min.js","surviving-from-scratch_files/jquery-3.6.0/jquery-3.6.0.min.map","surviving-from-scratch_files/kePrint-0.0.1/kePrint.js","surviving-from-scratch_files/lightable-0.0.1/lightable.css","surviving-from-scratch_files/popper-2.6.0/popper.min.js","surviving-from-scratch_files/tippy-6.2.7/tippy-bundle.umd.min.js","surviving-from-scratch_files/tippy-6.2.7/tippy-light-border.css","surviving-from-scratch_files/tippy-6.2.7/tippy.css","surviving-from-scratch_files/tippy-6.2.7/tippy.umd.min.js","surviving-from-scratch_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2399,7 +2425,9 @@ d-appendix d-footnote-list a.footnote-backlink {
   color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
-  <script src="../../site_libs/header-attrs-2.11/header-attrs.js"></script>
+  <script src="../../site_libs/header-attrs-2.14/header-attrs.js"></script>
+  <script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
   <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -2459,7 +2487,7 @@ gtag('config', 'G-VJKXRJPYQX');
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Not so standard evaluations","description":"Getting a better understanding of the tidyeval framework","authors":[{"author":"Lukas Gröninger","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-04-20T00:00:00.000+02:00","citationText":"Gröninger, 2022"}
+{"title":"Surviving from scratch","description":"How to model exponential survival probabilities using maximum likelihood from scratch","authors":[{"author":"Lukas Gröninger","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-06-25T00:00:00.000+02:00","citationText":"Gröninger, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2485,21 +2513,21 @@ gtag('config', 'G-VJKXRJPYQX');
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Not so standard evaluations</h1>
+<h1>Surviving from scratch</h1>
 <!--radix_placeholder_categories-->
 <div class="dt-tags">
   <a href="../../index.html#category:R" class="dt-tag">R</a>
-  <a href="../../index.html#category:NSE" class="dt-tag">NSE</a>
-  <a href="../../index.html#category:Metaprogramming" class="dt-tag">Metaprogramming</a>
+  <a href="../../index.html#category:survival_analysis" class="dt-tag">survival analysis</a>
 </div>
 <!--/radix_placeholder_categories-->
-<p><p>Getting a better understanding of the tidyeval framework</p></p>
+<p><p>How to model exponential survival probabilities using maximum
+likelihood from scratch</p></p>
 </div>
 
 <div class="d-byline">
   Lukas Gröninger  
   
-<br/>2022-04-20
+<br/>2022-06-25
 </div>
 
 <div class="d-article">
@@ -2507,241 +2535,568 @@ gtag('config', 'G-VJKXRJPYQX');
 <nav class="l-text toc figcaption" id="TOC">
 <h3>Contents</h3>
 <ul>
-<li><a href="#list-of-helpful-ressources">List of helpful Ressources</a></li>
-<li><a href="#an-example-of-using-nse">An example of using NSE</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#summary-of-the-paper">Summary of the paper</a>
+<ul>
+<li><a href="#the-statistical-model">The statistical model</a></li>
+<li><a href="#application-of-the-model">Application of the
+model</a></li>
+<li><a href="#discussion">Discussion</a></li>
+</ul></li>
+<li><a href="#reproducing-the-results-of-feigl-zelen">Reproducing the
+results of Feigl &amp; Zelen</a></li>
 </ul>
 </nav>
 </div>
-<p>The R language has some peculiarities. One of these is the use of non-standard evaluation (NSE) and the notion of Metaprogramming. I’m using R for quite some time now and these concepts have already given me some serious headaches (and will probably continue to do so…). Nevertheless, I have become a friend of this concept and enjoy using it. In the first two years of using R (it was my first programming language), I have not given a single thought to this idea, because I didn’t need it at all. Furthermore, I didn’t even question why the following was working:</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-
-<span class='va'>mtcars</span> |&gt; <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>cyl</span> <span class='op'>==</span> <span class='fl'>6</span><span class='op'>)</span>
-</code></pre>
-</div>
-<pre><code>                mpg cyl disp  hp drat   wt qsec vs am gear carb
-Mazda RX4      21.0   6  160 110 3.90 2.62 16.5  0  1    4    4
-Mazda RX4 Wag  21.0   6  160 110 3.90 2.88 17.0  0  1    4    4
-Hornet 4 Drive 21.4   6  258 110 3.08 3.21 19.4  1  0    3    1
-Valiant        18.1   6  225 105 2.76 3.46 20.2  1  0    3    1
-Merc 280       19.2   6  168 123 3.92 3.44 18.3  1  0    4    4
-Merc 280C      17.8   6  168 123 3.92 3.44 18.9  1  0    4    4
-Ferrari Dino   19.7   6  145 175 3.62 2.77 15.5  0  1    5    6</code></pre>
-</div>
-<p>How does R know where to find <code>cyl</code> and why does both <code>library(dplyr)</code> and <code>library("dplyr")</code> work?</p>
-<p>I don’t recall which problem I tried to fix, but one day I landed on a stackoverflow thread where one solution used the <code>!!</code> (bang-bang) operator. I have never seen it before and was puzzled. I copied the code and was glad that it worked, but I had no idea why. The more I started to define my own functions, the more I stumbled across this strange topic of non standard evaluations and Metaprogramming. There were more than a handful of expressions (😉) I couldn’t grasp. Examples are:</p>
-<ul>
-<li>Quasiquotation</li>
-<li><code>!!</code> (Bang-Bang Operator)</li>
-<li><code>...</code> (Dynamic dots)</li>
-<li>Data Masking</li>
-<li><code>!!!</code> (Big Bang or unquote-splice Operator)</li>
-<li>Defusing an expression</li>
-<li><code>{{}}</code> (Embrace, Curly-Curly or Doublestashe Operator)</li>
-<li>Closures</li>
-<li>Quosures</li>
-</ul>
-<p>All of these concepts seem highly complex and difficult and this post is not about trying to explain all or any of them in detail. For an R Beginner I feel these topics are quite intimidating and for me they would have been overwhelming and deterring. But have no fear, there are great ressources out there in the <a href="https://rlang.r-lib.org/index.html">{rlang}</a> documentation as well as in the <a href="https://adv-r.hadley.nz/meta-big-picture.html">Big Picture Chapture</a> of Advanced R. What also helped me a lot was the <a href="https://tidyeval.tidyverse.org/sec-up-to-speed.html">Tidy Evaluation</a> book by Lionel Henry and Hadley Wickham. In particular, the difference and the use cases between the Bang-Bang (<code>!!</code>) and the Big-Bang (<code>!!!</code>) operator became much clearer after reading it.</p>
-<p>So what is this post about then? It should serve as a ressource (for myself and potentially others) to find helpful articles/posts or videos on the topic and to provide an example of how I use non standard evaluation in exploratory data analysis.</p>
+<p>This post will be about surviving. To be more specific about
+probabilities of surviving up to a time point <span
+class="math inline">\(t\)</span>. The field of survival analysis is
+quite interesting and although there is a strong connection to the field
+of epidemiology and medicine, survival can also stand for a variety of
+things like mechanical parts “surviving” up to a certain point or
+predicting the point in time up to when housing loans are being paid
+back. I was glad to see a new package <a
+href="https://censored.tidymodels.org/">{censored}</a> joining the
+tidymodels family incorporating different survival engines. Now we will
+turn to the beginnings of this field and see what one of the first
+regression models for survival data looked like.</p>
 <aside>
-I remember being really impressed after having seen how <a href="https://www.youtube.com/watch?v=42GyyDM3Uzg">David Robinson</a> used custom functions for interactive data exploration.
+For further information on survival analysis I can recommend the book by
+<span class="citation" data-cites="kleinbaum_survival_2012">Kleinbaum
+and Klein (<a href="#ref-kleinbaum_survival_2012"
+role="doc-biblioref">2012</a>)</span>.
 </aside>
-<h3 id="list-of-helpful-ressources">List of helpful Ressources</h3>
-<h4 id="blog-posts">Blog Posts</h4>
+<p>The influential paper of <span class="citation"
+data-cites="feigl1965">Feigl and Zelen (<a href="#ref-feigl1965"
+role="doc-biblioref">1965</a>)</span> is about the estimation of
+exponential survival probabilities with concomitant information. That
+means they estimated survival distributions when the survival times are
+assumed to follow an exponential distribution where the parameters were
+influenced by a covariate. In their work they applied these methods on
+data of deceased leukemia patients. I will give a summary of their paper
+and afterwards reproduce some of it in R using an alternative model.</p>
+<h1 id="summary-of-the-paper">Summary of the paper</h1>
+<p>The paper by <span class="citation" data-cites="feigl1965">Feigl and
+Zelen (<a href="#ref-feigl1965" role="doc-biblioref">1965</a>)</span>
+published in the journal <em>Biometrics</em> deals with a statistical
+model for estimating the survival time of cancer patients. In
+particular, they studied data from patients with leukaemia. Leukaemia
+develops in the cells of the bone marrow and is usually characterised by
+a large increase in the number of white blood cells in the blood. During
+the course of the disease, there is a constant increase in the
+concentration of white blood cells, which indicates its severity. When
+it comes to predicting the survival time of patients, information on the
+amount of white blood cells as well as other indicators of disease
+progression is crucial. In their paper, Feigl and Zelen (1965) discuss a
+method for modelling survival times based on an exponential distribution
+whose parameters depend on these indicators. It is therefore a
+parametric model with the white blood cell count as a covariate. In
+addition, the survival curves of two different patient groups are
+compared. One group has Auer bodies in their cells and the other group
+does not.</p>
+<p>To estimate the parameters of the model, they use the maximum
+likelihood method. In what follows, I will discuss the statistical model
+and its methodology in more detail. I also describe in more detail the
+data and their approach, as well as the conclusions the authors draw at
+the end. What do their results mean and what alternative models could be
+applied in this area?</p>
+<h2 id="the-statistical-model">The statistical model</h2>
+<p>The objective of the two authors is to predict the probability of
+survival at a time <span class="math inline">\(t\)</span> of patients
+with leukaemia. The survival time variable follows an exponential
+distribution whose parameters depend on variables such as the number of
+white blood cells. The probability density function of this survival
+time can be represented as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+f_i(t) &amp;= \lambda_i \ exp(-\lambda_i t) \; \; for \; \; t \geqslant
+0  \\
+&amp;= 0 \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \; \ \ for
+\; \; t &lt; 0
+\end{aligned}
+\]</span></p>
+<p>The parameter <span class="math inline">\(\lambda\)</span> is then
+dependent on another variable <span class="math inline">\(x\)</span>
+which determines the expected value of the survival time of the patient:
+<span class="math inline">\(E(t_i) = \frac{1}{\lambda_i} = a + b
+x_i\)</span>.</p>
+<p>Thus, the parameter <span
+class="math inline">\(\lambda_i^{-1}\)</span> results from the equation
+resembling the classical linear regression of <span
+class="math inline">\(a + bx_i\)</span>. In order to estimate the two
+parameters <span class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span>, the maximum likelihood method is
+applied. The likelihood function is as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+l(a, b) &amp;= \prod_{i=1}^n f_i(t_i) = \prod_{i=1}^n \lambda_i \
+exp(-\lambda_i t)  \\
+&amp;= (\prod_{i=1}^n (a + bx_i)^{-1})  (exp - \sum_{i=1}^n t_i(a +
+bx_i)^{-1})
+\end{aligned}
+\]</span></p>
+<p>Classically, this function is logarithmised to facilitate its use. To
+estimate the two parameters, the partial derivatives <span
+class="math inline">\(\frac{\partial L}{\partial a}\)</span> and <span
+class="math inline">\(\frac{\partial L}{\partial b}\)</span> are now set
+to <span class="math inline">\(0\)</span>. The solution is obtained
+using the Taylor series. Here, these two equations are expanded in first
+order terms. Then, the two parameters <span class="math inline">\(\hat
+a\)</span> and <span class="math inline">\(\hat b\)</span> are
+estimated, respecting the constraint that <span
+class="math inline">\(\hat a + \hat bx_i &gt; 0\)</span> for all <span
+class="math inline">\(x_i\)</span> since the parameter <span
+class="math inline">\(\lambda\)</span> can only be positive. Finally,
+the estimated parameters are used to calculate the probability of
+survival of patient <span class="math inline">\(i\)</span>. It is
+presented as follows:</p>
+<p><span class="math display">\[
+S_i(t) = \int_t^{\infty} f_i(\xi) \, d \xi = exp (- \lambda_i t) = exp \
+[-t(a + bx_i)^{-1}]
+\]</span></p>
+<p>As a quality criterion for their estimation, the authors examined the
+expected and estimated number of patient deaths in specific time
+intervals <span class="math inline">\(t_i(p)\)</span>. The intervals of
+<span class="math inline">\(p\)</span> were chosen as quartile
+probabilities <span class="math inline">\(p = (0.25, 0.5,
+0.75)\)</span>.</p>
+<p><span class="math display">\[
+\hat S_i[t_i(p)] = exp \ [-t_i(p)(\hat a + \hat bx_i)^{-1}] = p
+\]</span></p>
+<p>A <span class="math inline">\(\chi^2\)</span> test (in this case with
+2 degrees of freedom) can then be performed to compare the observed and
+estimated numbers for the specified intervals.</p>
+<h2 id="application-of-the-model">Application of the model</h2>
+<p>Now that the theoretical statistical model has been presented, let us
+move on to the application. As described earlier, this is uncensored
+data on patients who died of leukaemia. The <span
+class="math inline">\(33\)</span> patients are divided into two groups
+according to the presence (AG Positive, <span class="math inline">\(n =
+17\)</span>) or absence (AG Negative, <span class="math inline">\(n =
+16\)</span>) of Auer bodies in the cytoplasm of their cells. Auer bodies
+or rods are found in about 30% of cases in myeloid leukaemia and may
+increase the probability of a complete remission rate <span
+class="citation" data-cites="seymour1993">(<a href="#ref-seymour1993"
+role="doc-biblioref">Seymour and Estey 1993</a>)</span>. The time to
+death of patients is given in weeks. The accompanying variable <span
+class="math inline">\(x\)</span> is the white blood cell count (<span
+class="math inline">\(wbc\)</span>) at diagnosis. This means that this
+variable is considered to be independent of time.</p>
+<p>Looking at the data, it appears that patients in the GA positive
+group have a lower number of <span class="math inline">\(wbc\)</span>
+and a significantly longer survival time on average than patients in the
+GA negative group. When estimating the parameters <span
+class="math inline">\(a\)</span> and <span
+class="math inline">\(b\)</span> for each group, the following values
+were obtained using the presented method.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-1">Table 1: </span>Maximum Likelihood parameters
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Patient Group
+</th>
+<th style="text-align:right;">
+a
+</th>
+<th style="text-align:right;">
+b
+</th>
+<th style="text-align:right;">
+sd a
+</th>
+<th style="text-align:right;">
+sd b
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+AG positive
+</td>
+<td style="text-align:right;">
+240
+</td>
+<td style="text-align:right;">
+-44
+</td>
+<td style="text-align:right;">
+95.5
+</td>
+<td style="text-align:right;">
+20.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AG negative
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+-3
+</td>
+<td style="text-align:right;">
+35.1
+</td>
+<td style="text-align:right;">
+8.2
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>By testing their model, they were able to show that the fit was
+adequate. The maximum difference between the observed survival
+probabilities and the estimated mean is 12%. The most interesting
+finding made by the authors concerns the division between the two
+groups. For the first AG positive group, the survival probability
+depends very strongly on the variable <span
+class="math inline">\(wbc\)</span>. For the second group, there is only
+a weak relationship. This relationship is also very well reflected in
+the different values of <span class="math inline">\(b\)</span>. The
+higher <span class="math inline">\(|b|\)</span> is, the greater the
+influence of the variable. The authors’ two-sided test revealed a
+significant difference between the parameters of the two groups.</p>
+<h2 id="discussion">Discussion</h2>
+<p><span class="citation" data-cites="feigl1965">Feigl and Zelen (<a
+href="#ref-feigl1965" role="doc-biblioref">1965</a>)</span> were able to
+show in their work that they can predict survival time with different
+exponential distributions as a function of one or possibly several
+variables. They were the first to perform a regression analysis of
+exponentially distributed survival times <span class="citation"
+data-cites="klein2014">(<a href="#ref-klein2014"
+role="doc-biblioref">Klein, Andersen, and Keiding 2014</a>)</span>. This
+is a definite improvement over previous methods. However, there were
+some aspects that simplified their model. First, they treated the
+variable <span class="math inline">\(wbc\)</span> as time independent,
+recorded at the beginning of diagnostic analysis. For a more realistic
+model, this variable should be considered as time-dependent, as the
+number of white blood cells changes during the course of the disease.
+Another aspect is the fact that only data from patients who have already
+died were analysed. A year later, in the same journal, <span
+class="citation" data-cites="zippin1966">Zippin and Armitage (<a
+href="#ref-zippin1966" role="doc-biblioref">1966</a>)</span> applied and
+extended Feigl and Zelen’s approach to data that had been right
+censored.</p>
+<p>Through their analysis, Feigl and Zelen were able to identify three
+important use cases.</p>
 <ul>
-<li><a href="https://dplyr.tidyverse.org/articles/programming.html">Programming with Dplyr</a> article</li>
-<li><a href="https://renkun.me/2014/12/03/tips-on-non-standard-evaluation-in-r/">Tips on non-standard evaluation</a> by Kun Ren</li>
-<li><a href="https://www.brodieg.com/2020/05/05/on-nse/">Standard and non standard evaluation</a> and <a href="https://www.brodieg.com/2020/08/11/quosures/#:~:text=rlang%3A%3Aquo%20is%20used,relation%20to%20base%3A%3Aenquote%20.">On quosures</a> by Brodie Gaslam</li>
-<li><a href="https://www.kelly-bodwin.com/blog/tidyeval/">Tidy Eval is confusing sometimes</a> by Kelly Bodwin</li>
+<li><p>The comparison of survival curves incorporating different
+variables and medical information.</p></li>
+<li><p>Predicting survival probabilities of individual patients based on
+different variables.</p></li>
+<li><p>Evaluation of survival data from clinical trials.</p></li>
 </ul>
-<h4 id="videos">Videos</h4>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=nERXS3ssntw">Tidy Evaluation in 5 mins</a> by Hadley Wickham</li>
-<li><a href="https://www.youtube.com/watch?v=d2v43jJqn4I">Useful Tidy Evaluation in R</a> by Connor Krenzer</li>
-<li><a href="https://www.youtube.com/watch?v=2BXPLnLMTYo">Lazy Evaluation</a> by Jenny Bryan</li>
-<li><a href="https://www.youtube.com/playlist?list=PLZ_9sY7D2wDB-ZVHNVuaIokYgh1jDpNUe">R Metaprogramming Tutorial Playlist</a> in german and english by Jurijy Weinblat</li>
-</ul>
-<h4 id="other">Other</h4>
-<ul>
-<li><a href="https://stackoverflow.com/questions/53067407/tidyeval-quo-vs-enquo">quo vs enquo</a> on stackoverflow</li>
-<li><a href="https://community.rstudio.com/t/interesting-tidy-eval-use-cases/21121">Tidy Eval use cases</a> on R-Studio Community</li>
-<li><a href="https://speakerdeck.com/lionelhenry/interactivity-and-programming-in-the-tidyverse">Interactivity and programming in the tidyverse</a> by Lionel Henry</li>
-</ul>
-<h3 id="an-example-of-using-nse">An example of using NSE</h3>
-<p>I mainly use the Tidy eval framework in the realm of interactive data exploration and visualization. Here I will show how to apply it to create count summaries for multiple variables of a dataframe. I’ll use the <code>tabyl()</code> function from the {janitor} package. Often I just want to have a short look at all distinct values of a variable and the corresponding percentages. This is exactly what <code>tabyl</code> allows us to do. We start by loading the required libraries.</p>
+<p>This last point seems to be the most important. It is a step forward
+if more in-depth information on patients can be included in clinical
+trials. In this way, the effects of treatments can be seen much more
+clearly. At the end of their work, they also show how other formulations
+of a model could arise. The first variant is <span
+class="math inline">\(E(t_i) = (a + bx_i)^{-1}\)</span>. This has the
+advantage that <span class="math inline">\(a\)</span> can be considered
+independent and in this case we only test the hypothesis that <span
+class="math inline">\(b = 0\)</span>. Another alternative is the
+formulation <span class="math inline">\(E(t_i) = ae^{bx_i}\)</span>.
+Here it is assumed that the logarithm of the average survival time can
+be considered as a linear function of the variable <span
+class="math inline">\(x\)</span>. I have used this model to reproduce
+the authors’ results.</p>
+<p>In conclusion, the authors’ contribution has advanced the field of
+survival analysis. Nevertheless, it must be said that the exponential
+distribution has found limited use in biomedical applications, as its
+lack of aging property is too restrictive for most problems. Here, for
+example, the Weibull distribution has clear advantages because it not
+only allows a constant hazard rate.</p>
+<h1 id="reproducing-the-results-of-feigl-zelen">Reproducing the results
+of Feigl &amp; Zelen</h1>
+<p>I present here the code and calculations with which the results of
+<span class="citation" data-cites="feigl1965">Feigl and Zelen (<a
+href="#ref-feigl1965" role="doc-biblioref">1965</a>)</span> have been
+reproduced. It is the following alternative model:</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(t_i) &amp;= ae^{bx_i}  \\
+&amp;= ae^{bd_i}  \; \; with \; \; d_i = x_i - \overline{x}
+\end{aligned}
+\]</span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Required libraries</span>
-
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://purrr.tidyverse.org'>purrr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://allisonhorst.github.io/palmerpenguins/'>palmerpenguins</a></span><span class='op'>)</span> <span class='co'># Penguins Dataset to explore</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Required library</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='fu'>plotutils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/plotutils/man/set_custom_theme.html'>set_custom_theme</a></span><span class='op'>(</span>base_size <span class='op'>=</span> <span class='fl'>26</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>The dataset for which we want to create count summaries is the penguins dataset from the {palmerpenguins} package. This is a classic dataset to play around with and offers eight variables.</p>
-<figure>
-<img src="img/penguins.png" alt="Selecting variables from penguins dataframe" /><figcaption aria-hidden="true">Selecting variables from penguins dataframe</figcaption>
-</figure>
-<p>I really like this <em>preview</em> behaviour when accessing named lists or dataframes. What I also find enormously useful is the tidyselect syntax. Often the structure of variables in a dataframe follows a certain system. In this case we have variables that show directly in which metric they are measured (e.g. <code>bill_length_mm</code>). Tidyselect helpers offer a way to utilize this structure when selecting variables. There are several possibilities:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>In their paper, the authors work with a data sample of leukemia
+patients with information about their white blood cell count (<span
+class="math inline">\(x\)</span>) and the survival time in weeks (<span
+class="math inline">\(t\)</span>) from date of diagnosis. Here we have
+<span class="math inline">\(n = 17\)</span> data points of group 1 and
+their respective survival times. The number is quite small, but it
+serves only as a demonstration.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Selecting all variables measured in mm</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>ends_with</a></span><span class='op'>(</span><span class='st'>"_mm"</span><span class='op'>)</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2300</span>, <span class='fl'>750</span>, <span class='fl'>4300</span>, <span class='fl'>2600</span>, <span class='fl'>6000</span>, <span class='fl'>10500</span>, <span class='fl'>10000</span>, <span class='fl'>17000</span>, <span class='fl'>5400</span>, <span class='fl'>7000</span>, <span class='fl'>9400</span>,
+       <span class='fl'>32000</span>, <span class='fl'>35000</span>, <span class='fl'>100000</span>, <span class='fl'>100000</span>, <span class='fl'>52000</span>, <span class='fl'>100000</span><span class='op'>)</span>
+<span class='va'>t</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>65</span>, <span class='fl'>165</span>, <span class='fl'>100</span>, <span class='fl'>134</span>, <span class='fl'>16</span>, <span class='fl'>108</span>, <span class='fl'>121</span>, <span class='fl'>4</span>, <span class='fl'>39</span>, <span class='fl'>143</span>, <span class='fl'>56</span>, <span class='fl'>26</span>, <span class='fl'>22</span>, <span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>5</span>,<span class='fl'>65</span><span class='op'>)</span>
 
-<span class='co'># Selecting all variables containing the word "bill"</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>contains</a></span><span class='op'>(</span><span class='st'>"bill"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># Selecting all variables from island up to sex</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='va'>island</span><span class='op'>:</span><span class='va'>sex</span><span class='op'>)</span>
-
-<span class='co'># Selecting specific variables</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>island</span>, <span class='va'>sex</span>, <span class='va'>year</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>x</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>
-<p>Let’s have a look at the output when using <code>tabyl</code>. We want to look at the gender or sex values of penguins in our dataset.</p>
+<p>To obtain parameter estimates the maximum likelihood method is
+applied. This method maximizes the joint probability density function
+with respect to a certain distribution. It then computes the estimate of
+the population parameter value that is the optimal fit to the observed
+data. The maximum likelihood here can be written as follows:</p>
+<p><span class="math display">\[
+L(a, b) = -n \; log \; a - \sum_i \frac{t_ie^{-bd_i}}{a}
+\]</span></p>
+<p>Now the parameters have to be estimated. First we solve for an
+estimate for <span class="math inline">\(\hat b\)</span>. Afterwards we
+can use the result to receive an estimate for <span
+class="math inline">\(\hat a\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\partial L}{\partial b} &amp;= 0 = \sum_{i = 1}^n t_id_ie^{- \hat
+bd_i} \\
+\hat a &amp;= \sum_{i = 1}^n \frac{t_ie^{-\hat bd_i}}{n}
+\end{aligned}
+\]</span></p>
+<p>For the calculation of <span class="math inline">\(\hat b\)</span>,
+we’ll use the Newton Raphson method. It is a root-finding algorithm that
+can be applied iteratively. The idea is to start with an initial guess,
+then to approximate the function by its tangent line, and finally to
+compute the x-intercept of this tangent line. <span
+class="math inline">\(\hat{b}_k\)</span> is the estimate at the <span
+class="math inline">\(k\)</span>th iteration.</p>
+<p><span class="math display">\[
+\hat{b}_{k + 1} = \hat{b}_k - \phi(\hat{b}_k) / \phi&#39;(\hat{b}_k)
+\]</span></p>
+<p>In our case the we are interested in the function <span
+class="math inline">\(\phi(\hat{b})\)</span> as well as the first
+derivative <span class="math inline">\(\phi&#39;(\hat{b})\)</span>.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\phi(\hat{b}) &amp;= \sum_{i = 1}^n t_id_ie^{-\hat{b}d_i} \\
+\phi&#39;(\hat{b}) &amp;= - \sum_{i = 1}^n t_id_i^2 e^{-\hat b d_i}
+\end{aligned}
+\]</span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='va'>sex</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># We'll calculate the paramters with the Newton-Raphson method</span>
+<span class='co'># Phi(b)</span>
+<span class='va'>f</span> <span class='op'>&lt;-</span> \<span class='op'>(</span><span class='va'>b</span><span class='op'>)</span> <span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>*</span><span class='va'>d</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>b</span><span class='op'>*</span><span class='va'>d</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span>
+
+<span class='co'># The first derivative of Phi(b)</span>
+<span class='va'>df</span> <span class='op'>&lt;-</span> \<span class='op'>(</span><span class='va'>b</span><span class='op'>)</span> <span class='op'>{</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>*</span><span class='va'>d</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>b</span><span class='op'>*</span><span class='va'>d</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span>
 </code></pre>
 </div>
-<pre><code>    sex   n percent valid_percent
- female 165   0.480         0.495
-   male 168   0.488         0.505
-   &lt;NA&gt;  11   0.032            NA</code></pre>
 </div>
-<p>Here we see that we get the count of distinct values and (valid) percentages. I want to store information like this for multiple variables in a named summary list. So how do I approach this problem?</p>
-<p>As Jenny Bryan said in her <a href="https://www.youtube.com/watch?v=2BXPLnLMTYo">Lazy evaluation talk</a> you probably don’t have to go too deep in the rlang tidy evaluation framework. In many cases you can <em>“just pass the dots”</em>. This refers to the <code>...</code> (Dynamic dots or forwarding) operator where you can collect multiple arguments to e.g. <code>select()</code> or <code>group_by()</code> calls.</p>
+<p>A first estimate of <span class="math inline">\(\hat b\)</span> is
+obtained as follows.</p>
+<p><span class="math display">\[
+\hat b_0 = \sum_{i = 1}^n d_i \;log\; t_i \; / \;\sum_{i = 1}^n d_i^2
+\]</span></p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Creating my custom var_summary function with `...`</span>
-<span class='va'>var_summary</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='co'># Extract the column names in a character vector</span>
-  <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='va'>df</span> |&gt;
-    <span class='co'># Now I use the tidyselect helpers of the second argument</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Initial value for b</span>
+<span class='va'>b</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>eps</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
+
+<span class='co'># Iterative Newton-Raphson method</span>
+<span class='kw'>while</span><span class='op'>(</span><span class='va'>eps</span> <span class='op'>&gt;</span> <span class='fl'>1e-6</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>b_new</span> <span class='op'>&lt;-</span> <span class='va'>b</span> <span class='op'>-</span> <span class='fu'>f</span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/stats/Fdist.html'>df</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span>
+  <span class='va'>b</span> <span class='op'>&lt;-</span> <span class='va'>b_new</span>
+  <span class='va'>eps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/stats/Fdist.html'>df</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<p>After that, we can then calculate <span class="math inline">\(\hat
+a\)</span>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Calculate the estimate for a</span>
+<span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>b</span><span class='op'>*</span><span class='va'>d</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>The survival function is then as already described above as
+follows:</p>
+<p><span class="math display">\[
+S(t) = exp(-t \; (ae^{bd})^{-1})
+\]</span></p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Survival function</span>
+<span class='va'>survie</span> <span class='op'>&lt;-</span> \<span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>t</span><span class='op'>*</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='op'>(</span><span class='va'>a</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>*</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>We are looking at different values for the white blood cell count
+variable so that we can compare survival probability curves.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>x_values</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2500</span>, <span class='fl'>5000</span>, <span class='fl'>10000</span>, <span class='fl'>20000</span>, <span class='fl'>35000</span>, <span class='fl'>50000</span>, <span class='fl'>75000</span>, <span class='fl'>100000</span><span class='op'>)</span>
+<span class='va'>d_values</span> <span class='op'>&lt;-</span> <span class='va'>x_values</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x_values</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Now we apply our survie function and plot the result.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>s_df_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>s <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>d_values</span>, <span class='va'>survie</span><span class='op'>)</span><span class='op'>)</span>,
+               wbc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>x_values</span>, each <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>,
+               t <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>d_values</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;  
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>s <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x_values</span><span class='op'>)</span><span class='op'>)</span>, <span class='co'># Starting values: </span>
+                   t <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x_values</span><span class='op'>)</span><span class='op'>)</span>, <span class='co'># t = 0 -&gt; s = 1</span>
+                   wbc <span class='op'>=</span> <span class='va'>x_values</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ag <span class='op'>=</span> <span class='st'>"AG: positive"</span><span class='op'>)</span>
+
+<span class='co'># Create the plot</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>s_df_1</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>t</span>, y <span class='op'>=</span> <span class='va'>s</span>, colour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>wbc</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1.7</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Modeling Survival Probability"</span>,
+       x <span class='op'>=</span> <span class='st'>"Time (weeks)"</span>,
+       y <span class='op'>=</span> <span class='st'>"Probability"</span>,
+       colour <span class='op'>=</span> <span class='st'>"Different values of WBC"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"YlOrRd"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<p><img src="surviving-from-scratch_files/figure-html5/unnamed-chunk-8-1.png" width="768" /></p>
+</div>
+<p>Here we can directly see the effect of the white blood cell count
+variable on the survival probablity curve for group 1 (AG: positive). To
+make it easier to work with now we incorporate these parts into one
+function.</p>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Put it in one function</span>
+<span class='va'>survie_fun</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>t</span><span class='op'>)</span> <span class='op'>{</span>
   
-  <span class='co'># Map over the character column names and create the count summary</span>
-  <span class='co'># In the end we want to name our so created list</span>
-  <span class='va'>col_names</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>cum_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>percent</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>col_names</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-<span class='co'># Test the function</span>
-<span class='va'>var_sum</span> <span class='op'>&lt;-</span> <span class='fu'>var_summary</span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>ends_with</a></span><span class='op'>(</span><span class='st'>"_mm"</span><span class='op'>)</span><span class='op'>)</span>
-</code></pre>
-</div>
-</div>
-<figure>
-<img src="img/var_sum_1.png" alt="Accessing the resulting var_sum list" /><figcaption aria-hidden="true">Accessing the resulting var_sum list</figcaption>
-</figure>
-<p>Besides the <code>...</code> argument the <code>!!sym(.x)</code> stands out as a hint at a NSE pattern. What the <code>sym()</code> function does in our case is converting the character column name into a symbol that can be used as the second argument to the <code>tabyl()</code> function. This has to be evaluated through the use of the Bang-Bang operator. Let’s look at an example:</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Define a character column name of our dataframe</span>
-<span class='va'>col_name</span> <span class='op'>&lt;-</span> <span class='st'>"island"</span>
-
-<span class='co'># Convert to symbol</span>
-<span class='va'>sym_col_name</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='va'>col_name</span><span class='op'>)</span>
-
-<span class='co'># Force evaluation of symbol in the context of the tabyl function</span>
-<span class='va'>var_sum</span> <span class='op'>&lt;-</span> <span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>penguins</span>, <span class='op'>!</span><span class='op'>!</span><span class='va'>sym_col_name</span><span class='op'>)</span> |&gt; 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>cum_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>percent</span><span class='op'>)</span><span class='op'>)</span> 
-
-<span class='va'>var_sum</span>
-</code></pre>
-</div>
-<pre><code>    island   n percent cum_percent
-    Biscoe 168   0.488       0.488
-     Dream 124   0.360       0.849
- Torgersen  52   0.151       1.000</code></pre>
-</div>
-<p><img src="https://media.giphy.com/media/26gspxJg34maWDwIM/giphy.gif" /></p>
-<p>Great, but there is also another possibility we can use as a second argument to our created function. The <code>{{}}</code> doublestache operator (term coined by Kelly Bodwin) which was introduced in <a href="https://www.tidyverse.org/blog/2019/06/rlang-0-4-0/">rlang 0.4.0</a> (2019) can be used exactly for our use case as we only want to pass one argument of variable selection. The dynamic dots are used as a more general placeholder for multiple arguments. Here we just exchange the <code>...</code> with the <code>{{}}</code>.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Creating my custom var_summary function with the doublestache operator</span>
-<span class='va'>var_summary</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>vars</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='co'># Extract the column names in a character vector</span>
-  <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='va'>df</span> |&gt;
-    <span class='co'># Now I use the tidyselect helpers of the second argument</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>{</span><span class='op'>{</span><span class='va'>vars</span><span class='op'>}</span><span class='op'>}</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>x</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
   
-  <span class='co'># Map over the character column names and create the count summary</span>
-  <span class='co'># In the end we want to name our so created list</span>
-  <span class='va'>col_names</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>cum_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>percent</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>col_names</span><span class='op'>)</span>
+  <span class='co'># Phi(b)</span>
+  <span class='va'>f</span> <span class='op'>&lt;-</span> \<span class='op'>(</span><span class='va'>b</span><span class='op'>)</span> <span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>*</span><span class='va'>d</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>b</span><span class='op'>*</span><span class='va'>d</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span>
+  
+  <span class='co'># The first derivative of Phi(b)</span>
+  <span class='va'>df</span> <span class='op'>&lt;-</span> \<span class='op'>(</span><span class='va'>b</span><span class='op'>)</span> <span class='op'>{</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>*</span><span class='va'>d</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>b</span><span class='op'>*</span><span class='va'>d</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span>
+  
+  <span class='co'># Inital valeur pour b</span>
+  <span class='va'>b</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>log</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>^</span><span class='fl'>2</span><span class='op'>)</span>
+  <span class='va'>eps</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
+  
+  <span class='co'># Methode de Newton-Raphson</span>
+  <span class='kw'>while</span><span class='op'>(</span><span class='va'>eps</span> <span class='op'>&gt;</span> <span class='fl'>1e-6</span><span class='op'>)</span><span class='op'>{</span>
+    <span class='va'>b_new</span> <span class='op'>&lt;-</span> <span class='va'>b</span> <span class='op'>-</span> <span class='fu'>f</span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/stats/Fdist.html'>df</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span>
+    <span class='va'>b</span> <span class='op'>&lt;-</span> <span class='va'>b_new</span>
+    <span class='va'>eps</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/stats/Fdist.html'>df</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='op'>}</span>
+  
+  <span class='co'># Calculer l'estimateur de a</span>
+  <span class='va'>a</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>b</span><span class='op'>*</span><span class='va'>d</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span><span class='op'>)</span>
+  
+  <span class='co'># On regarde les valeurs differents pour la covariate wbc (white blood count)</span>
+  <span class='va'>x_values</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2500</span>, <span class='fl'>5000</span>, <span class='fl'>10000</span>, <span class='fl'>20000</span>, <span class='fl'>35000</span>, <span class='fl'>50000</span>, <span class='fl'>75000</span>, <span class='fl'>100000</span><span class='op'>)</span>
+  <span class='va'>d_values</span> <span class='op'>&lt;-</span> <span class='va'>x_values</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>x_values</span><span class='op'>)</span>
+  
+  <span class='co'># Calculer la survie pour les valeurs differents</span>
+  <span class='va'>survie</span> <span class='op'>&lt;-</span> \<span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>t</span><span class='op'>*</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='op'>(</span><span class='va'>a</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>b</span><span class='op'>*</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>}</span>
+  
+  <span class='va'>survie_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>s <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/unlist.html'>unlist</a></span><span class='op'>(</span><span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='va'>d_values</span>, <span class='va'>survie</span><span class='op'>)</span><span class='op'>)</span>,
+                   wbc <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>x_values</span>, each <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>,
+                   t <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='va'>t</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>d_values</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;  
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>s <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x_values</span><span class='op'>)</span><span class='op'>)</span>,
+                     t <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x_values</span><span class='op'>)</span><span class='op'>)</span>,
+                     wbc <span class='op'>=</span> <span class='va'>x_values</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>survie_df</span><span class='op'>)</span>
 <span class='op'>}</span>
 
-<span class='co'># Test the function</span>
-<span class='va'>var_sum</span> <span class='op'>&lt;-</span> <span class='fu'>var_summary</span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>species</span>, <span class='va'>island</span>, <span class='va'>sex</span><span class='op'>)</span><span class='op'>)</span>
-</code></pre>
-</div>
-</div>
-<p>When reading about the tidyselect helper functions I thought it is probably possible to just extract the character vector of column names without the overhead of <code>select</code>-ing all the variables. And exactly for this purpose <code>tidyselect::eval_select()</code> exists. It evaluates a tidyselect expression like for example <code>starts_with("bill")</code> in the context of a dataframe and returns a named integer vector with column names and position:</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Capture an expression</span>
-<span class='va'>expression</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>expr</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"bill"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># The values for Group 2</span>
+<span class='va'>x_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4400</span>, <span class='fl'>3000</span>, <span class='fl'>4000</span>, <span class='fl'>1500</span>, <span class='fl'>9000</span>, <span class='fl'>5300</span>, <span class='fl'>10000</span>, <span class='fl'>19000</span>, <span class='fl'>27000</span>, <span class='fl'>28000</span>, <span class='fl'>31000</span>,
+       <span class='fl'>26000</span>, <span class='fl'>21000</span>, <span class='fl'>79000</span>, <span class='fl'>100000</span>, <span class='fl'>100000</span><span class='op'>)</span>
+<span class='va'>t_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>56</span>, <span class='fl'>65</span>, <span class='fl'>17</span>, <span class='fl'>7</span>, <span class='fl'>16</span>, <span class='fl'>22</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>3</span>, <span class='fl'>30</span>, <span class='fl'>4</span>, <span class='fl'>43</span><span class='op'>)</span>
 
-<span class='co'># Evaluating the selection in the dataframe environment</span>
-<span class='fu'>tidyselect</span><span class='fu'>::</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/eval_select.html'>eval_select</a></span><span class='op'>(</span><span class='va'>expression</span>, data <span class='op'>=</span> <span class='va'>penguins</span><span class='op'>)</span>
-</code></pre>
-</div>
-<pre><code>bill_length_mm  bill_depth_mm 
-             3              4 </code></pre>
-</div>
-<p>The use of <code>tidyselect::eval_select()</code> leads to a slightly faster implementation of the function.</p>
-<div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Creating my custom var_summary function using eval_select()</span>
-<span class='va'>var_summary</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>vars</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>expression</span> <span class='op'>&lt;-</span> <span class='fu'>rlang</span><span class='fu'>::</span><span class='fu'><a href='https://rlang.r-lib.org/reference/enquo.html'>enquo</a></span><span class='op'>(</span><span class='va'>vars</span><span class='op'>)</span>
-  <span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'>tidyselect</span><span class='fu'>::</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/eval_select.html'>eval_select</a></span><span class='op'>(</span><span class='va'>expression</span>, data <span class='op'>=</span> <span class='va'>df</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='va'>col_names</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/map.html'>map</a></span><span class='op'>(</span><span class='op'>~</span><span class='fu'>janitor</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/janitor/man/tabyl.html'>tabyl</a></span><span class='op'>(</span><span class='va'>df</span>, <span class='op'>!</span><span class='op'>!</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/tidyeval-compat.html'>sym</a></span><span class='op'>(</span><span class='va'>.x</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/desc.html'>desc</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
-          <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>cum_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>percent</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt;
-    <span class='fu'><a href='https://purrr.tidyverse.org/reference/set_names.html'>set_names</a></span><span class='op'>(</span><span class='va'>col_names</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='va'>s_df_2</span> <span class='op'>&lt;-</span> <span class='fu'>survie_fun</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x_2</span>, t <span class='op'>=</span> <span class='va'>t_2</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>ag <span class='op'>=</span> <span class='st'>"AG: negative"</span><span class='op'>)</span>
 
-<span class='va'>var_sum</span> <span class='op'>&lt;-</span> <span class='fu'>var_summary</span><span class='op'>(</span><span class='va'>penguins</span>, <span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"bill"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>s_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span><span class='va'>s_df_1</span>, <span class='va'>s_df_2</span><span class='op'>)</span>
+
+<span class='co'># Plot the comparison</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>s_df</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>t</span>, y <span class='op'>=</span> <span class='va'>s</span>, colour <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>wbc</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>1.7</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span><span class='op'>(</span>size <span class='op'>=</span> <span class='fl'>0.9</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>ag</span>, scales <span class='op'>=</span> <span class='st'>"free_x"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>"Modeling the Survival Probability"</span>,
+       subtitle <span class='op'>=</span> <span class='st'>"Influence of Auer Bodies"</span>,
+       x <span class='op'>=</span> <span class='st'>"Time (weeks)"</span>,
+       y <span class='op'>=</span> <span class='st'>"Probability"</span>,
+       colour <span class='op'>=</span> <span class='st'>"Different values of WBC"</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_brewer.html'>scale_color_brewer</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='st'>"YlOrRd"</span><span class='op'>)</span>
 </code></pre>
 </div>
+<p><img src="surviving-from-scratch_files/figure-html5/unnamed-chunk-9-1.png" width="768" /></p>
 </div>
-<h3 id="conclusion">Conclusion</h3>
-<p>In the end I created three different functions which did the same job highlighting different possibilities of how to use tidyeval/NSE patterns.</p>
-<p><img src="https://media.giphy.com/media/C6JQPEUsZUyVq/giphy.gif" /></p>
-<p>I’ve written this post so that it provides a place of reference for me to come back to. Furthermore, it might lead to some people having a closer look at this paradigm and test their own ways of implementing Metaprogramming aspects in their workflow (I’ve just touched the surface here). I for myself find it a fascinating aspect of the R programming language which fits nicely into functional programming patterns. At the same time I have to admit, that it is hard to get your head around these ideas and see myself returning to the {rlang} documentation quite often…</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
-<section class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p><a href="https://tidyselect.r-lib.org/reference/language.html">Here</a> is a list with further examples<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
+<p>We managed to show that, also with this alternative model, for the
+group with the presence of Auer bodies (AG: positive) the survival
+probability depends very strongly on the variable <span
+class="math inline">\(wbc\)</span>. This however is not the case when
+looking at the group that do not show Auer bodies (AG: negative).</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div id="refs" class="references csl-bib-body hanging-indent"
+role="doc-bibliography">
+<div id="ref-feigl1965" class="csl-entry" role="doc-biblioentry">
+Feigl, Polly, and Marvin Zelen. 1965. <span>“Estimation of Exponential
+Survival Probabilities with Concomitant Information.”</span>
+<em>Biometrics</em> 21 (4): 826. <a
+href="https://doi.org/10.2307/2528247">https://doi.org/10.2307/2528247</a>.
+</div>
+<div id="ref-klein2014" class="csl-entry" role="doc-biblioentry">
+Klein, John P., Per Kragh Andersen, and Niels Keiding. 2014.
+<span>“Exponential Distribution as a Survival Model.”</span> John Wiley
+&amp; Sons, Ltd. <a
+href="https://doi.org/10.1002/9781118445112.stat06019">https://doi.org/10.1002/9781118445112.stat06019</a>.
+</div>
+<div id="ref-kleinbaum_survival_2012" class="csl-entry"
+role="doc-biblioentry">
+Kleinbaum, David G., and Mitchel Klein. 2012. <em>Survival
+<span>Analysis</span>: <span>A</span>
+<span>Self</span>-<span>Learning</span> <span>Text</span></em>.
+Statistics for <span>Biology</span> and <span>Health</span>. New York,
+NY: Springer New York. <a
+href="https://doi.org/10.1007/978-1-4419-6646-9">https://doi.org/10.1007/978-1-4419-6646-9</a>.
+</div>
+<div id="ref-seymour1993" class="csl-entry" role="doc-biblioentry">
+Seymour, J. F., and E. H. Estey. 1993. <span>“The Prognostic
+Significance of Auer Rods in Myelodysplasia.”</span> <em>British Journal
+of Haematology</em> 85 (1): 67–76. <a
+href="https://doi.org/10.1111/j.1365-2141.1993.tb08647.x">https://doi.org/10.1111/j.1365-2141.1993.tb08647.x</a>.
+</div>
+<div id="ref-zippin1966" class="csl-entry" role="doc-biblioentry">
+Zippin, Calvin, and Peter Armitage. 1966. <span>“Use of Concomitant
+Variables and Incomplete Survival Information in the Estimation of an
+Exponential Survival Parameter.”</span> <em>Biometrics</em> 22 (4): 665.
+<a
+href="https://doi.org/10.2307/2528067">https://doi.org/10.2307/2528067</a>.
+</div>
+</div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">
   <p class="social_footer">
     <span class="article-sharing">
       Share: &nbsp;
-      <a href="https://twitter.com/share?text=Not%20so%20standard%20evaluations&amp;url=https%3A%2F%2Flukas-r.blog%2Fposts%2F2022-04-20-not-so-standard-evaluations%2F" aria-label="share on twitter">
+      <a href="https://twitter.com/share?text=Surviving%20from%20scratch&amp;url=https%3A%2F%2Flukas-r.blog%2Fposts%2F2022-06-25-surviving-from-scratch%2F" aria-label="share on twitter">
         <i class="fab fa-twitter" aria-hidden="true"></i>
       </a>
-      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Flukas-r.blog%2Fposts%2F2022-04-20-not-so-standard-evaluations%2F&amp;title=Not%20so%20standard%20evaluations" aria-label="share on linkedin">
+      <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Flukas-r.blog%2Fposts%2F2022-06-25-surviving-from-scratch%2F&amp;title=Surviving%20from%20scratch" aria-label="share on linkedin">
         <i class="fab fa-linkedin" aria-hidden="true"></i>
       </a>
     </span>
@@ -2753,21 +3108,32 @@ I remember being really impressed after having seen how <a href="https://www.you
 <div class="d-appendix">
 </div>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
 <div class="appendix-bottom">
+  <h3 id="references">References</h3>
+  <div id="references-listing"></div>
   <h3 id="reuse">Reuse</h3>
   <p>Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. The figures that have been reused from other sources don't fall under this license and can be recognized by a note in their caption: "Figure from ...".</p>
   <h3 id="citation">Citation</h3>
   <p>For attribution, please cite this work as</p>
-  <pre class="citation-appendix short">Gröninger (2022, April 20). Lukas R Blog: Not so standard evaluations. Retrieved from https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/</pre>
+  <pre class="citation-appendix short">Gröninger (2022, June 25). Lukas R Blog: Surviving from scratch. Retrieved from https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/</pre>
   <p>BibTeX citation</p>
-  <pre class="citation-appendix long">@misc{gröninger2022not,
+  <pre class="citation-appendix long">@misc{gröninger2022surviving,
   author = {Gröninger, Lukas},
-  title = {Lukas R Blog: Not so standard evaluations},
-  url = {https://lukas-r.blog/posts/2022-04-20-not-so-standard-evaluations/},
+  title = {Lukas R Blog: Surviving from scratch},
+  url = {https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/},
   year = {2022}
 }</pre>
 </div>
