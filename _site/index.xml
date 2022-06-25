@@ -7,7 +7,18 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Wed, 20 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Surviving from scratch</title>
+      <dc:creator>Lukas Gröninger</dc:creator>
+      <link>https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch</link>
+      <description>How to model exponential survival probabilities using maximum likelihood from scratch</description>
+      <category>R</category>
+      <category>survival analysis</category>
+      <guid>https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch</guid>
+      <pubDate>Sat, 25 Jun 2022 00:00:00 +0000</pubDate>
+      <media:content url="https://lukas-r.blog/posts/2022-06-25-surviving-from-scratch/img/survival_img.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Not so standard evaluations</title>
       <dc:creator>Lukas Gröninger</dc:creator>
