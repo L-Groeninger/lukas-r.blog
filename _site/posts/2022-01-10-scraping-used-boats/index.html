@@ -50,16 +50,17 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
+code span { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { } /* Attribute */
+code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
+code span.cf { color: #00769e; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -73,9 +74,9 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
+code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
+code span.ot { color: #00769e; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
 code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
@@ -131,7 +132,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["data/boat_df.RDS","data/df_e.RDS","data/df_rdy.RDS","data/sailboats3.csv","img/main_page.png","img/specs_html.png","img/used_boats.jpg","scraping-used-boats_files/anchor-4.2.2/anchor.min.js","scraping-used-boats_files/bowser-1.9.3/bowser.min.js","scraping-used-boats_files/distill-2.2.21/template.v2.js","scraping-used-boats_files/figure-html5/unnamed-chunk-12-1.png","scraping-used-boats_files/figure-html5/unnamed-chunk-13-1.png","scraping-used-boats_files/header-attrs-2.11/header-attrs.js","scraping-used-boats_files/jquery-3.6.0/jquery-3.6.0.js","scraping-used-boats_files/jquery-3.6.0/jquery-3.6.0.min.js","scraping-used-boats_files/jquery-3.6.0/jquery-3.6.0.min.map","scraping-used-boats_files/pagedtable-1.1/css/pagedtable.css","scraping-used-boats_files/pagedtable-1.1/js/pagedtable.js","scraping-used-boats_files/popper-2.6.0/popper.min.js","scraping-used-boats_files/tippy-6.2.7/tippy-bundle.umd.min.js","scraping-used-boats_files/tippy-6.2.7/tippy-light-border.css","scraping-used-boats_files/tippy-6.2.7/tippy.css","scraping-used-boats_files/tippy-6.2.7/tippy.umd.min.js","scraping-used-boats_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["data/boat_df.RDS","data/df_e.RDS","data/df_rdy.RDS","data/sailboats3.csv","img/main_page.png","img/specs_html.png","img/used_boats.jpg","scraping-used-boats_files/anchor-4.2.2/anchor.min.js","scraping-used-boats_files/bowser-1.9.3/bowser.min.js","scraping-used-boats_files/distill-2.2.21/template.v2.js","scraping-used-boats_files/figure-html5/unnamed-chunk-12-1.png","scraping-used-boats_files/figure-html5/unnamed-chunk-13-1.png","scraping-used-boats_files/header-attrs-2.11/header-attrs.js","scraping-used-boats_files/header-attrs-2.14.3/header-attrs.js","scraping-used-boats_files/header-attrs-2.14/header-attrs.js","scraping-used-boats_files/jquery-3.6.0/jquery-3.6.0.js","scraping-used-boats_files/jquery-3.6.0/jquery-3.6.0.min.js","scraping-used-boats_files/jquery-3.6.0/jquery-3.6.0.min.map","scraping-used-boats_files/pagedtable-1.1/css/pagedtable.css","scraping-used-boats_files/pagedtable-1.1/js/pagedtable.js","scraping-used-boats_files/popper-2.6.0/popper.min.js","scraping-used-boats_files/tippy-6.2.7/tippy-bundle.umd.min.js","scraping-used-boats_files/tippy-6.2.7/tippy-light-border.css","scraping-used-boats_files/tippy-6.2.7/tippy.css","scraping-used-boats_files/tippy-6.2.7/tippy.umd.min.js","scraping-used-boats_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2399,7 +2400,7 @@ d-appendix d-footnote-list a.footnote-backlink {
   color: var(--hover-color, white);
 }</style>
 <!--/radix_placeholder_distill-->
-  <script src="../../site_libs/header-attrs-2.11/header-attrs.js"></script>
+  <script src="../../site_libs/header-attrs-2.14.3/header-attrs.js"></script>
   <link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
   <script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
   <script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -2516,21 +2517,42 @@ gtag('config', 'G-VJKXRJPYQX');
 </ul>
 </nav>
 </div>
-<p>In the last post I described how to use an API to download financial data. In this post I want to talk about accessing data from the web when we don’t have the luxury of using an API. Maybe there is an interface, but it is not publicly available. Or there is none and we still want to extract data. The concept we will use here is called Web Scraping. It is about collecting structured web data in an automated way. The example to demonstrate this process will be the website <a href="https://www.boat24.com/en/">www.boat24.com</a>.</p>
+<p>In the last post I described how to use an API to download financial data.
+In this post I want to talk about accessing data from the web when we don’t have
+the luxury of using an API. Maybe there is an interface, but it is not publicly
+available. Or there is none and we still want to extract data.
+The concept we will use here is called Web Scraping.
+It is about collecting structured web data in an automated way.
+The example to demonstrate this process will be the website
+<a href="https://www.boat24.com/en/">www.boat24.com</a>.</p>
 <p><img src="https://media.giphy.com/media/26xBExKCnvZLb0PzG/giphy.gif" /></p>
-<p>It is a european two sided marketplace to purchace or sell used sailing or motorboats. I’ve worked on ships for some years and enjoy going sailing during vacation. And so sometimes I end up looking at used sailboats on the Internet… Today the goal is to scrape information from this site.</p>
+<p>It is a european two sided marketplace
+to purchace or sell used sailing or motorboats. I’ve worked on ships for some
+years and enjoy going sailing during vacation. And so sometimes I end up looking at
+used sailboats on the Internet… Today the goal is to scrape information
+from this site.</p>
 <p>Let’s have a look:</p>
 <figure>
-<img src="img/main_page.png" alt="Source: www.boat24.com/en/sailboats/" /><figcaption aria-hidden="true">Source: www.boat24.com/en/sailboats/</figcaption>
+<img src="img/main_page.png" alt="Source: www.boat24.com/en/sailboats/" />
+<figcaption aria-hidden="true">Source: www.boat24.com/en/sailboats/</figcaption>
 </figure>
-<p>We filtered for sailboats and see a list of boats and additional information. The total number of listings is 3296 boats. The general setup of the page is already quite good for our task.</p>
+<p>We filtered for sailboats and see a list of boats and additional information.
+The total number of listings is 3296 boats. The general setup of the page
+is already quite good for our task.</p>
 <h1 id="web-scraping">Web Scraping</h1>
-<p>Now I want to access information about the inventory of this marketplace. We can do this by investigating the structure of the website of interest.</p>
+<p>Now I want to access information about the
+inventory of this marketplace. We can do this by investigating the
+structure of the website of interest.</p>
 <aside>
 Make sure that it’s okay to scrape the site by looking at their <a href="https://developers.google.com/search/docs/advanced/robots/intro">robots.txt file</a>.
 </aside>
-<p>This means answering questions like - <em>How is the content and the information loaded and displayed and what other requests are made in the background?</em> We do this by having a look at the Developer Tools Panel (if you are using a Chrome Browser). On Windows this opens up after typing <em>Control+Shift+C</em>. We will use it to inspect the different elements and extract and parse the relevant html/xml.</p>
-<p>The libraries we’ll need to perform the process of extracting information from a web page are the following:</p>
+<p>This means answering questions like -
+<em>How is the content and the information loaded and displayed and what other requests are made in the background?</em>
+We do this by having a look at the Developer Tools Panel (if you are using a Chrome Browser).
+On Windows this opens up after typing <em>Control+Shift+C</em>.
+We will use it to inspect the different elements and extract and parse the relevant html/xml.</p>
+<p>The libraries we’ll need to perform the process of extracting information from
+a web page are the following:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>  <span class='co'># Main data wrangling</span>
@@ -2544,12 +2566,19 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 </code></pre>
 </div>
 </div>
-<p>We start by scrolling through the boats and click on a link in order to see a more detailed view of the specific boat listing. We see pictures of the boat and further information in a table below. When hovering over this table we see the section is called <em>“specs”</em>.</p>
+<p>We start by scrolling through the boats and click on a link in order to see a
+more detailed view of the specific boat listing. We see pictures of the boat
+and further information in a table below. When hovering over this table we
+see the section is called <em>“specs”</em>.</p>
 <figure>
-<img src="img/specs_html.png" alt="Specs Tag" /><figcaption aria-hidden="true">Specs Tag</figcaption>
+<img src="img/specs_html.png" alt="Specs Tag" />
+<figcaption aria-hidden="true">Specs Tag</figcaption>
 </figure>
-<p>We are definitely interested in extracting this information. To identify this table we can right click and copy the xpath. But first we will set up our R script. We see that on every page there are<br />
-20 boats listed. The starting url from where we’ll navigate this site will therefore be <em><a href="https://www.boat24.com/en/sailboats/?page=0&amp;sort=datdesc" class="uri">https://www.boat24.com/en/sailboats/?page=0&amp;sort=datdesc</a></em>.</p>
+<p>We are definitely interested in extracting this information.
+To identify this table we can right click and copy the xpath.
+But first we will set up our R script. We see that on every page there are<br />
+20 boats listed. The starting url from where we’ll navigate this site will
+therefore be <em><a href="https://www.boat24.com/en/sailboats/?page=0&amp;sort=datdesc" class="uri">https://www.boat24.com/en/sailboats/?page=0&amp;sort=datdesc</a></em>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Starting url</span>
@@ -2560,7 +2589,8 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 </code></pre>
 </div>
 </div>
-<p>Afterwards we’ll initialize our dataframe with all the variables of interest that we want to extract.</p>
+<p>Afterwards we’ll initialize our dataframe with all the variables of interest
+that we want to extract.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Initialize Dataframe (for the moment only char-variables, will be cleaned later)</span>
@@ -2614,8 +2644,16 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  boat_list <span class="ot">&lt;-</span> website  <span class="sc">|&gt;</span>  </span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="at">xpath =</span> <span class="st">&quot;/html/body/main/section[2]/div/ul/li&quot;</span>)</span></code></pre></div>
 </div>
-<p>We’ll use the <code>read_html()</code> function from the {rvest} package to extract all of the html. with <code>html_nodes()</code> we can specify which segment we want to read. We are interested in the links of the detail pages of the boats. With the help of the developer tool view we can select the element of interest, right click and copy the xpath. In the case of the <em>specs</em> table this was “//*<span class="citation" data-cites="id">[@id='specs']</span>“. For the ID, the price or the number of views, there are different xpaths which can be found by inspecting the elements of the site.</p>
-<p>In order to extract the relevant information we need to use some regular expressions (regex). To extract the condition of the boat we use for example a lookahead <em>“[^\n]+(?=Condition?)”</em>.</p>
+<p>We’ll use the <code>read_html()</code> function from the {rvest} package to extract all
+of the html. with <code>html_nodes()</code> we can specify which segment we want to read.
+We are interested in the links of the detail pages of the boats.
+With the help of the developer tool view we can select the element of interest, right click and
+copy the xpath. In the case of the <em>specs</em> table this was “//*[@id=‘specs’]“.
+For the ID, the price or the number of views, there are different xpaths which
+can be found by inspecting the elements of the site.</p>
+<p>In order to extract the relevant information we need to use some regular
+expressions (regex). To extract the condition of the boat we use for example a
+lookahead <em>“[^\n]+(?=Condition?)”</em>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through the 20 boats on the list</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(boat_list)) {</span>
@@ -2687,7 +2725,9 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 <span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        <span class="at">xpath =</span> <span class="st">&quot;//*[@id=&#39;sticky-header-trigger&#39;]/div/div/aside/section[2]/ul[1]/li[4]/strong&quot;</span>) <span class="sc">|&gt;</span>  </span>
 <span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="fu">html_text</span>()</span></code></pre></div>
 </div>
-<p>After having stored all information in variables we fill them in a dataframe/tibble. For some boats there were missing variables which had to be coded as <code>NA</code>. We can write a short function to do that.</p>
+<p>After having stored all information in variables we fill them in a dataframe/tibble.
+For some boats there were missing variables which had to be coded as <code>NA</code>.
+We can write a short function to do that.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Function to select only the first element, if empty --&gt; NA</span>
@@ -2712,7 +2752,8 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    boat_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(boat_df, df)</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span></span></code></pre></div>
 </div>
-<p>Afterwards the dataframe is appended to our previously created one. Then we have to increase the <code>page_num</code> counter and go to the next page.</p>
+<p>Afterwards the dataframe is appended to our previously created one.
+Then we have to increase the <code>page_num</code> counter and go to the next page.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Jump to the next page in steps of 20 (boats per page)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  page_num <span class="ot">&lt;-</span> page_num <span class="sc">+</span> <span class="dv">20</span></span>
@@ -2720,7 +2761,8 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                <span class="fu">as.character</span>(page_num), <span class="st">&quot;&amp;sort=datdesc&quot;</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
 </div>
-<p>In the end we can save our final dataframe as a csv or any other file format. Now we’ll look at the first entries of our data:</p>
+<p>In the end we can save our final dataframe as a csv or any other file format.
+Now we’ll look at the first entries of our data:</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>boat_df</span> |&gt; 
@@ -2734,9 +2776,13 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
   </script>
 </div>
 </div>
-<p>For simplicity the variables are all encoded as character. The next step is to clean the data.</p>
+<p>For simplicity the variables are all encoded as character.
+The next step is to clean the data.</p>
 <h1 id="data-cleaning">Data Cleaning</h1>
-<p>The main function to clean the data is the <code>readr::parse_number()</code> function. With <code>across()</code> we can apply this function to several variables. Another aspect is the fact that the prices are not displayed in a consistent format. That’s why I had to extract the currency and convert all prices in Euro.</p>
+<p>The main function to clean the data is the <code>readr::parse_number()</code> function.
+With <code>across()</code> we can apply this function to several variables.
+Another aspect is the fact that the prices are not displayed in a consistent format.
+That’s why I had to extract the currency and convert all prices in Euro.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='va'>cleaned_df</span> <span class='op'>&lt;-</span> <span class='va'>boat_df</span> |&gt;  
@@ -2771,9 +2817,18 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 </div>
 </div>
 <h1 id="further-steps">Further steps</h1>
-<p>Now we could do some analysis, picking our favorite boat etc. We could calculate statistics of which boats get the most views or are getting marked as favorites most often. We could try to answer questions like - <em>Does the country where I sell my boat has an impact on the price?</em> and so on.</p>
+<p>Now we could do some analysis, picking our favorite boat etc. We could calculate
+statistics of which boats get the most views or are getting marked as
+favorites most often. We could try to answer questions like -
+<em>Does the country where I sell my boat has an impact on the price?</em> and so on.</p>
 <h1 id="geographical-representation">Geographical Representation</h1>
-<p>At last I will give a geographical view on how many boats are listed in different european countries. Here I use a dataframe where I scraped information from not only sailing but motorboats as well. To plot it on a map, there are packages like <code>rnaturalearth</code> or <code>spData</code> which offer datasets for spatial analysis. There are lots of great <a href="https://r-spatial.org/r/2018/10/25/ggplot2-sf-3.html">tutorials</a> which show how to do that. I work with <a href="https://r-spatial.github.io/sf/"><em>simple Features (sf)</em></a> objects and {ggplot2}.</p>
+<p>At last I will give a geographical view on how many boats are listed in different
+european countries. Here I use a dataframe where I scraped information from not only sailing
+but motorboats as well. To plot it on a map, there are packages like
+<code>rnaturalearth</code> or <code>spData</code> which offer datasets for spatial analysis.
+There are lots of great <a href="https://r-spatial.org/r/2018/10/25/ggplot2-sf-3.html">tutorials</a>
+which show how to do that. I work with <a href="https://r-spatial.github.io/sf/"><em>simple Features (sf)</em></a>
+objects and {ggplot2}.</p>
 <div class="layout-chunk" data-layout="l-body-outset">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
@@ -2789,9 +2844,16 @@ Make sure that it’s okay to scrape the site by looking at their <a href="https
 </div>
 <p><img src="scraping-used-boats_files/figure-html5/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
-<p>We can directly see that this marketplace focuses mainly on the german/swiss market. The portfolio of boats outside of Central/Western Europe is negligible.</p>
+<p>We can directly see that this marketplace focuses mainly on the german/swiss market.
+The portfolio of boats outside of Central/Western Europe is negligible.</p>
 <h1 id="conclusion">Conclusion</h1>
-<p>In this post I wanted to show how to scrape information from a webpage. It is a useful skill to be able to analyze the structure of websites and see how they are built. I went with the Boat24.com example as I am interested in sailing yachts but the use cases are quite diverse. The Internet offers the largest source of data and with Webscraping it can be accessed. You could use it to compare prices of products on different websites, monitor competitors or just for general research tasks.</p>
+<p>In this post I wanted to show how to scrape information from a webpage.
+It is a useful skill to be able to analyze the structure of websites
+and see how they are built. I went with the Boat24.com example as I am interested
+in sailing yachts but the use cases are quite diverse.
+The Internet offers the largest source of data and with Webscraping it can be accessed.
+You could use it to compare prices of products on different websites, monitor competitors or
+just for general research tasks.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <div class="article-footer">

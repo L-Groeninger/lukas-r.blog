@@ -106,7 +106,7 @@ estimates <- tibble::tibble(`Patient Group` = c("AG positive", "AG negative"),
        `sd b`= c(20.1, 8.2))
 
 kable(estimates, booktabs = T, 
-      caption = "Maximum Likelihood parameters") %>%
+      caption = "Maximum Likelihood parameters") |> 
   kable_styling(latex_options = c("striped", "HOLD_position"))
 ```
 
@@ -274,8 +274,8 @@ s_df_1 <- tibble(s = unlist(map(d_values, survie)),
 
 # Create the plot
 ggplot(s_df_1, aes(x = t, y = s, colour = as.factor(wbc))) +
-  geom_point(size = 1.7) +
-  geom_line(size = 0.9) +
+  geom_point(size = 2.7) +
+  geom_line(size = 1.9) +
   labs(title = "Modeling Survival Probability",
        x = "Time (weeks)",
        y = "Probability",

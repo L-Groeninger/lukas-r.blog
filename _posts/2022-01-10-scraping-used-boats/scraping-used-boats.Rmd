@@ -163,7 +163,7 @@ We'll use the `read_html()` function from the {rvest} package to extract all
 of the html. with `html_nodes()` we can specify which segment we want to read.
 We are interested in the links of the detail pages of the boats.
 With the help of the developer tool view we can select the element of interest, right click and
-copy the xpath. In the case of the *specs* table this was "//*[@id='specs']".
+copy the xpath. In the case of the *specs* table this was "//*[\@id='specs']".
 For the ID, the price or the number of views, there are different xpaths which
 can be found by inspecting the elements of the site.
 
