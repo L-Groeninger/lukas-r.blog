@@ -7,7 +7,18 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 25 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 05 Mar 2023 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Finally solving the Mac M1 odbc issue...</title>
+      <dc:creator>Lukas Gröninger</dc:creator>
+      <link>https://lukas-r.blog/posts/2023-03-05-finally-solving-the-mac-m1-odbc-issue</link>
+      <description>How I was finally able to connect to Snowflake from R using an odbc connection.</description>
+      <category>R</category>
+      <category>Database connection</category>
+      <guid>https://lukas-r.blog/posts/2023-03-05-finally-solving-the-mac-m1-odbc-issue</guid>
+      <pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://lukas-r.blog/posts/2023-03-05-finally-solving-the-mac-m1-odbc-issue/img/snowflake_cloud_comp.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Surviving from scratch</title>
       <dc:creator>Lukas Gröninger</dc:creator>
