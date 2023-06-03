@@ -7,7 +7,18 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 05 Mar 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 03 Jun 2023 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Searching for User Sessions</title>
+      <dc:creator>Lukas Gröninger</dc:creator>
+      <link>https://lukas-r.blog/posts/2023-06-03-searching-for-user-sessions</link>
+      <description>How to assign Session ID's to group event data.</description>
+      <category>R</category>
+      <category>SQL</category>
+      <guid>https://lukas-r.blog/posts/2023-06-03-searching-for-user-sessions</guid>
+      <pubDate>Sat, 03 Jun 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://lukas-r.blog/posts/2023-06-03-searching-for-user-sessions/img/searching.jpeg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>Finally solving the Mac M1 odbc issue...</title>
       <dc:creator>Lukas Gröninger</dc:creator>
