@@ -118,7 +118,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["img/searching.jpeg","searching-for-user-sessions_files/anchor-4.2.2/anchor.min.js","searching-for-user-sessions_files/bowser-1.9.3/bowser.min.js","searching-for-user-sessions_files/distill-2.2.21/template.v2.js","searching-for-user-sessions_files/header-attrs-2.14.3/header-attrs.js","searching-for-user-sessions_files/header-attrs-2.22/header-attrs.js","searching-for-user-sessions_files/jquery-3.6.0/jquery-3.6.0.js","searching-for-user-sessions_files/jquery-3.6.0/jquery-3.6.0.min.js","searching-for-user-sessions_files/jquery-3.6.0/jquery-3.6.0.min.map","searching-for-user-sessions_files/popper-2.6.0/popper.min.js","searching-for-user-sessions_files/tippy-6.2.7/tippy-bundle.umd.min.js","searching-for-user-sessions_files/tippy-6.2.7/tippy-light-border.css","searching-for-user-sessions_files/tippy-6.2.7/tippy.css","searching-for-user-sessions_files/tippy-6.2.7/tippy.umd.min.js","searching-for-user-sessions_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["img/first_search.png","img/further_filter_options.png","img/searching.jpeg","searching-for-user-sessions_files/anchor-4.2.2/anchor.min.js","searching-for-user-sessions_files/bowser-1.9.3/bowser.min.js","searching-for-user-sessions_files/distill-2.2.21/template.v2.js","searching-for-user-sessions_files/header-attrs-2.14.3/header-attrs.js","searching-for-user-sessions_files/header-attrs-2.22/header-attrs.js","searching-for-user-sessions_files/jquery-3.6.0/jquery-3.6.0.js","searching-for-user-sessions_files/jquery-3.6.0/jquery-3.6.0.min.js","searching-for-user-sessions_files/jquery-3.6.0/jquery-3.6.0.min.map","searching-for-user-sessions_files/pagedtable-1.1/css/pagedtable.css","searching-for-user-sessions_files/pagedtable-1.1/js/pagedtable.js","searching-for-user-sessions_files/popper-2.6.0/popper.min.js","searching-for-user-sessions_files/tippy-6.2.7/tippy-bundle.umd.min.js","searching-for-user-sessions_files/tippy-6.2.7/tippy-light-border.css","searching-for-user-sessions_files/tippy-6.2.7/tippy.css","searching-for-user-sessions_files/tippy-6.2.7/tippy.umd.min.js","searching-for-user-sessions_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1469,6 +1469,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
   <!--/radix_placeholder_distill-->
   <script src="searching-for-user-sessions_files/header-attrs-2.22/header-attrs.js"></script>
+  <link href="searching-for-user-sessions_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+  <script src="searching-for-user-sessions_files/pagedtable-1.1/js/pagedtable.js"></script>
   <script src="searching-for-user-sessions_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <script src="searching-for-user-sessions_files/popper-2.6.0/popper.min.js"></script>
   <link href="searching-for-user-sessions_files/tippy-6.2.7/tippy.css" rel="stylesheet" />
@@ -1516,24 +1518,247 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#the-concept-of-a-user-session" id="toc-the-concept-of-a-user-session">The concept of a User Session</a></li>
+<li><a href="#searching-in-an-online-marketplace" id="toc-searching-in-an-online-marketplace">Searching in an online marketplace</a></li>
+<li><a href="#calculating-a-session_id-in-r" id="toc-calculating-a-session_id-in-r">Calculating a session_id in R</a></li>
+<li><a href="#calculating-a-session_id-in-sql" id="toc-calculating-a-session_id-in-sql">Calculating a session_id in SQL</a></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
+</div>
+<p>This blog post will show how we can calculate user session_id’s and group event data.
+It will be illustrated with the help of R and SQL.</p>
+<h1 id="the-concept-of-a-user-session">The concept of a User Session</h1>
+<p>I’m working in the realm of (online) Data Analytics. That means I’m interested in analyzing
+the behaviour of people who use our products and how they interact with it.
+A helpful concept in this domain is that of a User Session.
+Maybe u have heard about it, maybe not. But here u go:</p>
+<blockquote>
+<p>A session is a group of interactions between a user and an application that take place within a given timeframe. A single session can contain multiple activities (such as page views, events, social interactions, and e-commerce transactions)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</blockquote>
+<p>This concept leads to further metrics that are of interest such as the number of sessions, the average
+duration of a session or the probability of a user/customer performing certain actions within a session.
+Let’s take a simple example to illustrate this idea and narrow it down.</p>
+<h1 id="searching-in-an-online-marketplace">Searching in an online marketplace</h1>
+<p>Imagine I’m searching for a new bike and visit Kleinanzeigen.de
+(a german classifieds site where u can buy and sell pretty much anything).
+Typically I enter the thing of interest (here a bike) and get already proposals (see screenshot).
+As soon as I click on any of these, the results load and are
+displayed. This typically triggers an event that a user has done a search.</p>
+<figure>
+<img src="img/first_search.png" alt="Searching for a bike" />
+<figcaption aria-hidden="true">Searching for a bike</figcaption>
+</figure>
+<p>However for the process of finding a bike for me, it is probably not sufficient
+just to specify that I search for a bike.
+I will also want to include the location and possibly apply other filter options such as a price range.</p>
+<figure>
+<img src="img/further_filter_options.png" alt="Further Filter Options" />
+<figcaption aria-hidden="true">Further Filter Options</figcaption>
+</figure>
+<p>After having entered the location of e.g. Hamburg-Eimsbüttel and defined a price range from
+let’s say 200 to 500 €,
+this resulted in multiple triggered search events.
+But in a more general sense, we might argue that these events belong together and result
+in one search (session).
+At this point we want to group these searches together and assign one session_id.
+In order to make it easier to comprehend, I am creating dummy data of how
+these searches may be stored.</p>
+<h1 id="calculating-a-session_id-in-r">Calculating a session_id in R</h1>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
-
-<span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>test <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='va'>df</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># required libraries</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dbplyr.tidyverse.org/'>dbplyr</a></span><span class='op'>)</span>
 </code></pre>
 </div>
-<pre><code># A tibble: 3 × 1
-   test
-  &lt;dbl&gt;
-1     1
-2     2
-3     3</code></pre>
 </div>
-<p>We’ll be using Snowflake SQL</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>At first, I create a dataframe with 3 columns:</p>
+<ul>
+<li>a unique <code>search_id</code></li>
+<li>a <code>user_id</code> to define who has done the search</li>
+<li>a timestamp <code>created_at</code> to indicate the time when the search has been done</li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Create dummy data</span>
+<span class='va'>searches</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span>search_id <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, 
+                   user_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>, 
+                   created_at <span class='op'>=</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd_hms.html'>ymd_hms</a></span><span class='op'>(</span>
+                        <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"2023-06-03 08:10:00"</span>, <span class='st'>"2023-06-03 08:10:08"</span>,
+                          <span class='st'>"2023-06-03 08:11:21"</span>, <span class='st'>"2023-06-03 08:11:24"</span>,
+                          <span class='st'>"2023-06-03 08:11:33"</span>, <span class='st'>"2023-06-03 08:10:48"</span>,
+                          <span class='st'>"2023-06-03 08:11:05"</span>, <span class='st'>"2023-06-03 08:11:11"</span>,
+                          <span class='st'>"2023-06-03 08:12:13"</span>, <span class='st'>"2023-06-03 08:12:20"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='va'>user_id</span>, <span class='va'>created_at</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["search_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["user_id"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["created_at"],"name":[3],"type":["dttm"],"align":["right"]}],"data":[{"1":"1","2":"1","3":"2023-06-03 08:10:00"},{"1":"2","2":"1","3":"2023-06-03 08:10:08"},{"1":"3","2":"1","3":"2023-06-03 08:11:21"},{"1":"4","2":"1","3":"2023-06-03 08:11:24"},{"1":"5","2":"1","3":"2023-06-03 08:11:33"},{"1":"6","2":"2","3":"2023-06-03 08:10:48"},{"1":"7","2":"2","3":"2023-06-03 08:11:05"},{"1":"8","2":"2","3":"2023-06-03 08:11:11"},{"1":"9","2":"2","3":"2023-06-03 08:12:13"},{"1":"10","2":"2","3":"2023-06-03 08:12:20"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>We’ve got 10 individual searches of 2 users. Each user has done 5 searches and
+we want to know how to assign session_id’s to these searches.
+Maybe someone in our team has already done some research and came to the conclusion that it is
+best to define the timeframe of a search session to be 10 seconds.
+This means if a subsequent search of a user is done within 10 seconds, these
+belong to the same search session_id.</p>
+<p>Therefore we want to first sort our data based on user_id and created_at.
+Then we can calculate the time difference between searches.
+In base R we’ve got the nice function <code>diff</code> which as the name suggests calculates the
+lagged difference.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1]  0  2  1 -2</code></pre>
+</div>
+<p>We have to pad the first value to get a vector of the same length.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>searches</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>time_dif <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='va'>created_at</span><span class='op'>)</span><span class='op'>)</span>,
+         time_dif_reset <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>time_dif</span> <span class='op'>&gt;=</span> <span class='fl'>10</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>,
+         user_reset <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='va'>user_id</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>!=</span> <span class='fl'>0</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["search_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["user_id"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["created_at"],"name":[3],"type":["dttm"],"align":["right"]},{"label":["time_dif"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["time_dif_reset"],"name":[5],"type":["lgl"],"align":["right"]},{"label":["user_reset"],"name":[6],"type":["lgl"],"align":["right"]}],"data":[{"1":"1","2":"1","3":"2023-06-03 08:10:00","4":"0","5":"FALSE","6":"TRUE"},{"1":"2","2":"1","3":"2023-06-03 08:10:08","4":"8","5":"FALSE","6":"FALSE"},{"1":"3","2":"1","3":"2023-06-03 08:11:21","4":"73","5":"TRUE","6":"FALSE"},{"1":"4","2":"1","3":"2023-06-03 08:11:24","4":"3","5":"FALSE","6":"FALSE"},{"1":"5","2":"1","3":"2023-06-03 08:11:33","4":"9","5":"FALSE","6":"FALSE"},{"1":"6","2":"2","3":"2023-06-03 08:10:48","4":"-45","5":"FALSE","6":"TRUE"},{"1":"7","2":"2","3":"2023-06-03 08:11:05","4":"17","5":"TRUE","6":"FALSE"},{"1":"8","2":"2","3":"2023-06-03 08:11:11","4":"6","5":"FALSE","6":"FALSE"},{"1":"9","2":"2","3":"2023-06-03 08:12:13","4":"62","5":"TRUE","6":"FALSE"},{"1":"10","2":"2","3":"2023-06-03 08:12:20","4":"7","5":"FALSE","6":"FALSE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>We added a boolean variable indicating whether the time difference between the
+following search is greater than 10 seconds. If this is the case the session is
+“reset” and starts again.
+What we also have to account for is the fact that a new session starts for every
+user. This can be achieved in a similar way.
+Here we pad the first value of <code>user_reset</code> with a 1 because we want to start our session_id variable with 1.</p>
+<p>What is now left is to combine these 2 <code>time_dif_reset</code> and <code>user_reset</code> variables
+into a general <code>reset</code> variable (<code>time_dif_reset OR user_reset</code>). The cumulative sum of this variable will then give us our
+desired session_id.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>searches</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>time_dif <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='va'>created_at</span><span class='op'>)</span><span class='op'>)</span>,
+         time_dif_reset <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>time_dif</span> <span class='op'>&gt;=</span> <span class='fl'>10</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>,
+         user_reset <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='va'>user_id</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>!=</span> <span class='fl'>0</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>,
+         reset <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>time_dif_reset</span> <span class='op'>|</span> <span class='va'>user_reset</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>,
+         session_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='va'>reset</span><span class='op'>)</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body-outset">
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["search_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["user_id"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["created_at"],"name":[3],"type":["dttm"],"align":["right"]},{"label":["time_dif"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["time_dif_reset"],"name":[5],"type":["lgl"],"align":["right"]},{"label":["user_reset"],"name":[6],"type":["lgl"],"align":["right"]},{"label":["reset"],"name":[7],"type":["lgl"],"align":["right"]},{"label":["session_id"],"name":[8],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"1","3":"2023-06-03 08:10:00","4":"0","5":"FALSE","6":"TRUE","7":"TRUE","8":"1"},{"1":"2","2":"1","3":"2023-06-03 08:10:08","4":"8","5":"FALSE","6":"FALSE","7":"FALSE","8":"1"},{"1":"3","2":"1","3":"2023-06-03 08:11:21","4":"73","5":"TRUE","6":"FALSE","7":"TRUE","8":"2"},{"1":"4","2":"1","3":"2023-06-03 08:11:24","4":"3","5":"FALSE","6":"FALSE","7":"FALSE","8":"2"},{"1":"5","2":"1","3":"2023-06-03 08:11:33","4":"9","5":"FALSE","6":"FALSE","7":"FALSE","8":"2"},{"1":"6","2":"2","3":"2023-06-03 08:10:48","4":"-45","5":"FALSE","6":"TRUE","7":"TRUE","8":"3"},{"1":"7","2":"2","3":"2023-06-03 08:11:05","4":"17","5":"TRUE","6":"FALSE","7":"TRUE","8":"4"},{"1":"8","2":"2","3":"2023-06-03 08:11:11","4":"6","5":"FALSE","6":"FALSE","7":"FALSE","8":"4"},{"1":"9","2":"2","3":"2023-06-03 08:12:13","4":"62","5":"TRUE","6":"FALSE","7":"TRUE","8":"5"},{"1":"10","2":"2","3":"2023-06-03 08:12:20","4":"7","5":"FALSE","6":"FALSE","7":"FALSE","8":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>This tells us now that the first user has done 2 search sessions (session_id 1 and 2)
+and the second user has done 3 search sessions (session_id 3, 4 and 5).
+We would probably not divide this calculation into several steps, but
+combine them into a function.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Put it into a function</span>
+<span class='va'>create_session_id</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>created_at</span>, <span class='va'>user_id</span>, <span class='va'>time_dif</span> <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/cumsum.html'>cumsum</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='va'>created_at</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&gt;=</span> <span class='va'>time_dif</span> <span class='op'>|</span> 
+                <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span><span class='op'>(</span><span class='va'>user_id</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>!=</span> <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+<span class='va'>searches</span> |&gt; 
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>session_id <span class='op'>=</span> <span class='fu'>create_session_id</span><span class='op'>(</span><span class='va'>created_at</span>, <span class='va'>user_id</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h1 id="calculating-a-session_id-in-sql">Calculating a session_id in SQL</h1>
+<p>Now we also look at how this can be accomplished in SQL. We’ll
+create an in memory SQLite database table with our searches data.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>con</span> <span class='op'>&lt;-</span> <span class='fu'>DBI</span><span class='fu'>::</span><span class='fu'><a href='https://dbi.r-dbi.org/reference/dbConnect.html'>dbConnect</a></span><span class='op'>(</span><span class='fu'>RSQLite</span><span class='fu'>::</span><span class='fu'><a href='https://rsqlite.r-dbi.org/reference/SQLite.html'>SQLite</a></span><span class='op'>(</span><span class='op'>)</span>, dbname <span class='op'>=</span> <span class='st'>":memory:"</span><span class='op'>)</span>
+
+<span class='co'># Fill this with our searches data</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/copy_to.html'>copy_to</a></span><span class='op'>(</span><span class='va'>con</span>, <span class='va'>searches</span><span class='op'>)</span>
+
+<span class='co'># SQL query to create session_id's</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/tbl.html'>tbl</a></span><span class='op'>(</span><span class='va'>con</span>, 
+    <span class='fu'><a href='https://dbplyr.tidyverse.org/reference/sql.html'>sql</a></span><span class='op'>(</span>
+        <span class='st'>"
+         with 
+         searches_prep as (
+            select 
+                search_id,
+                user_id,
+                created_at,
+                case when 
+                    created_at - lag(created_at) over 
+                        (partition by user_id order by created_at) &gt;= 10 
+                    or row_number() over 
+                        (partition by user_id order by created_at) = 1
+                    then 1 
+                    else 0 
+                end as reset
+            from searches) 
+         
+         select 
+            search_id,
+            user_id,
+            created_at,
+            reset,
+            sum(reset) over (order by user_id, created_at) as session_id
+         from searches_prep
+        "</span>
+        <span class='op'>)</span><span class='op'>)</span> 
+</code></pre>
+</div>
+<pre><code># Source:   SQL [10 x 5]
+# Database: sqlite 3.38.5 [:memory:]
+   search_id user_id created_at reset session_id
+       &lt;int&gt;   &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;      &lt;int&gt;
+ 1         1       1 1685779800     1          1
+ 2         2       1 1685779808     0          1
+ 3         3       1 1685779881     1          2
+ 4         4       1 1685779884     0          2
+ 5         5       1 1685779893     0          2
+ 6         6       2 1685779848     1          3
+ 7         7       2 1685779865     1          4
+ 8         8       2 1685779871     0          4
+ 9         9       2 1685779933     1          5
+10        10       2 1685779940     0          5</code></pre>
+</div>
+<p>Here we’re using a first CTE to create our reset variable similar to the way we have
+defined it in R. We calculate the lagged difference by user_id and assign a 1 if
+it exceeds 10 seconds and for every first row of
+a new user we assign a 1 as well.
+In the bottom query we calculate the cumulative sum that gives us our session_id.</p>
+<h1 id="conclusion">Conclusion</h1>
+<p>We have looked at the important concept of User Sessions and at the logic of
+how this can be calculated. The implementation was demonstrated with R as well
+as with SQL and focused on the example of Searches done in an Online Marketplace.
+This was a basic example and you would often add further conditions for specific cases.</p>
+<p>These Session ID’s can be viewed as a cornerstone on which to build
+further metrics of interest like the average session duration or a count of
+specific events per session.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>see <a href="https://auth0.com/docs/manage-users/sessions" class="uri">https://auth0.com/docs/manage-users/sessions</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
