@@ -1,0 +1,47 @@
+---
+title: "Searching for User Sessions"
+description: |
+  How to assign Session ID's to group event data. 
+author:
+  - name: Lukas Gröninger
+preview: img/searching.jpeg
+date: 2023-06-03
+categories:
+  - R
+  - SQL
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+    self_contained: false
+draft: false
+---
+
+```{r setup, include = FALSE}
+library(knitr)
+library(kableExtra)
+options(scipen = 1, digits = 3)
+opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
+
+```
+
+
+
+```{r}
+library(tidyverse)
+
+df <- tibble(test = c(1,2,3))
+
+df
+```
+
+
+
+
+We'll be using Snowflake SQL
+
+
+
+
+
+
