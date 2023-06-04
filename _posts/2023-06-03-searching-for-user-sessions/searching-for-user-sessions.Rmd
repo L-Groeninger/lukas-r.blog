@@ -139,7 +139,8 @@ searches |>
 
 We added a boolean variable indicating whether the time difference between the
 following search is greater than 10 seconds. If this is the case the session is
-"reset" and starts again.
+"reset" and starts again (here I use `dplyr::if_else()` which would not be necessary
+but I feel it makes it easier to follow).
 What we also have to account for is the fact that a new session starts for every
 user. This can be achieved in a similar way.
 Here we pad the first value of `user_reset` with a 1 because we want to start our session_id variable with 1.
