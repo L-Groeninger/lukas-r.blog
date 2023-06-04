@@ -1641,7 +1641,8 @@ lagged difference.</p>
 </div>
 <p>We added a boolean variable indicating whether the time difference between the
 following search is greater than 10 seconds. If this is the case the session is
-“reset” and starts again.
+“reset” and starts again (here I use <code>dplyr::if_else()</code> which would not be necessary
+but I feel it makes it easier to follow).
 What we also have to account for is the fact that a new session starts for every
 user. This can be achieved in a similar way.
 Here we pad the first value of <code>user_reset</code> with a 1 because we want to start our session_id variable with 1.</p>
@@ -1751,7 +1752,8 @@ as with SQL and focused on the example of Searches done in an Online Marketplace
 This was a basic example and you would often add further conditions for specific cases.</p>
 <p>These Session ID’s can be viewed as a cornerstone on which to build
 further metrics of interest like the average session duration or a count of
-specific events per session.</p>
+specific events per session. For our example we might want to look into which search
+filters are used regularly by our customers and which almost never that could be removed.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
