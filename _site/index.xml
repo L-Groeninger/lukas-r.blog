@@ -7,7 +7,19 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sat, 03 Jun 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 28 Jul 2023 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>R Support for Data Science Notebook Tools</title>
+      <dc:creator>Lukas Gröninger</dc:creator>
+      <link>https://lukas-r.blog/posts/2023-07-29-r-support-for-data-science-notebook-tools</link>
+      <description>How to use a custom Docker image to access a Snowflake DB in Deepnote.</description>
+      <category>R</category>
+      <category>Database connection</category>
+      <category>Docker</category>
+      <guid>https://lukas-r.blog/posts/2023-07-29-r-support-for-data-science-notebook-tools</guid>
+      <pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://lukas-r.blog/posts/2023-07-29-r-support-for-data-science-notebook-tools/img/notebook_1.png" medium="image" type="image/png" width="512" height="512"/>
+    </item>
     <item>
       <title>Searching for User Sessions</title>
       <dc:creator>Lukas Gröninger</dc:creator>
