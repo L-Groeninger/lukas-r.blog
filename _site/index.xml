@@ -7,7 +7,19 @@
     <description>Lukas R Blog
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Fri, 28 Jul 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 29 Aug 2023 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Wrapping the Mixpanel API</title>
+      <dc:creator>Lukas Gröninger</dc:creator>
+      <link>https://lukas-r.blog/posts/2023-08-30-wrapping-the-mixpanel-api</link>
+      <description>How to create a package with {fusen} to enhance your Product Analytics in Mixpanel.</description>
+      <category>R</category>
+      <category>API</category>
+      <category>Package dev</category>
+      <guid>https://lukas-r.blog/posts/2023-08-30-wrapping-the-mixpanel-api</guid>
+      <pubDate>Tue, 29 Aug 2023 00:00:00 +0000</pubDate>
+      <media:content url="https://lukas-r.blog/posts/2023-08-30-wrapping-the-mixpanel-api/img/dj_panel.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>R Support for Data Science Notebook Tools</title>
       <dc:creator>Lukas Gröninger</dc:creator>
@@ -17,7 +29,7 @@
       <category>Database connection</category>
       <category>Docker</category>
       <guid>https://lukas-r.blog/posts/2023-07-29-r-support-for-data-science-notebook-tools</guid>
-      <pubDate>Fri, 28 Jul 2023 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 29 Jul 2023 00:00:00 +0000</pubDate>
       <media:content url="https://lukas-r.blog/posts/2023-07-29-r-support-for-data-science-notebook-tools/img/notebook_1.png" medium="image" type="image/png" width="512" height="512"/>
     </item>
     <item>

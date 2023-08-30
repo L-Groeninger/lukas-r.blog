@@ -1,5 +1,26 @@
 [
   {
+    "path": "posts/2023-08-30-wrapping-the-mixpanel-api/",
+    "title": "Wrapping the Mixpanel API",
+    "description": "How to create a package with {fusen} to enhance your Product Analytics in Mixpanel.",
+    "author": [
+      {
+        "name": "Lukas Gröninger",
+        "url": {}
+      }
+    ],
+    "date": "2023-08-30",
+    "categories": [
+      "R",
+      "API",
+      "Package dev"
+    ],
+    "contents": "\nHello\n\n\n\n",
+    "preview": "posts/2023-08-30-wrapping-the-mixpanel-api/img/dj_panel.jpg",
+    "last_modified": "2023-08-30T15:53:32+02:00",
+    "input_file": "wrapping-the-mixpanel-api.knit.md"
+  },
+  {
     "path": "posts/2023-07-29-r-support-for-data-science-notebook-tools/",
     "title": "R Support for Data Science Notebook Tools",
     "description": "How to use a custom Docker image to access a Snowflake DB in Deepnote.",

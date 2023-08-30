@@ -1,0 +1,33 @@
+---
+title: "Wrapping the Mixpanel API"
+description: |
+  How to create a package with {fusen} to enhance your Product Analytics in Mixpanel. 
+author:
+  - name: Lukas Gröninger
+preview: img/dj_panel.jpg
+date: 2023-08-30
+categories:
+  - R
+  - API
+  - Package dev
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 3
+    self_contained: false
+draft: false
+---
+
+```{r setup, include = FALSE}
+library(knitr)
+library(kableExtra)
+options(scipen = 1, digits = 3)
+opts_chunk$set(comment=NA, warning = FALSE, message = FALSE)
+
+```
+
+
+Hello
+
+
+
